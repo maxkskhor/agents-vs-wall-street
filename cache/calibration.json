@@ -1,24 +1,24 @@
 {
  "weights": {
   "money": {
-   "guidance": 0.3,
-   "llm_analyst": 0.4,
-   "statistical": 0.3,
-   "backtest_score": 4.036,
-   "n": 38
+   "guidance": 0.9,
+   "llm_analyst": 0.1,
+   "statistical": 0.0,
+   "backtest_score": 4.08,
+   "n": 39
   },
   "eps": {
-   "guidance": 0.1,
+   "guidance": 0.6,
    "llm_analyst": 0.0,
-   "statistical": 0.9,
-   "backtest_score": 4.534,
+   "statistical": 0.4,
+   "backtest_score": 4.408,
    "n": 29
   },
   "percent": {
    "guidance": 0.0,
    "llm_analyst": 0.6,
    "statistical": 0.4,
-   "backtest_score": 2.674,
+   "backtest_score": 2.744,
    "n": 18
   }
  },
@@ -63,18 +63,18 @@
    "pct_periods_improved": 40
   },
   "ADI/revenue": {
-   "n": 9,
-   "median_signed": 0.0281,
-   "median_abs": 0.0281,
+   "n": 10,
+   "median_signed": 0.0267,
+   "median_abs": 0.0267,
    "p80_abs": 0.0353,
    "pct_actual_above": 100,
    "correction_recommended": true,
-   "reason": "walk-forward median error 99.791 -> 30.0188, 100% of periods improved",
-   "walk_forward_tests": 6,
-   "wf_raw_median_abs": 99.791,
-   "wf_corrected_median_abs": 30.0188,
+   "reason": "walk-forward median error 76.117 -> 30.1733, 100% of periods improved",
+   "walk_forward_tests": 7,
+   "wf_raw_median_abs": 76.117,
+   "wf_corrected_median_abs": 30.1733,
    "pct_periods_improved": 100,
-   "mean_signed": 0.028113809523809628
+   "bias_estimate": 0.026743071428571512
   },
   "ADI/adj_eps": {
    "n": 10,
@@ -88,7 +88,7 @@
    "wf_raw_median_abs": 0.13,
    "wf_corrected_median_abs": 0.0404,
    "pct_periods_improved": 71,
-   "mean_signed": 0.06
+   "bias_estimate": 0.06
   },
   "HAS/net_fees": {
    "n": 2,
@@ -111,6 +111,6 @@
    "walk_forward_tests": 0
   }
  },
- "generated": "2026-08-16T13:52:19.532203+00:00",
- "n_rows": 85
+ "generated": "2026-08-16T16:14:35.390760+00:00",
+ "n_rows": 86
 }

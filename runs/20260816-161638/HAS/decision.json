@@ -1,0 +1,650 @@
+{
+ "target": "FY2026",
+ "finals": {
+  "net_fees": 893.0,
+  "preex_op": 42.0,
+  "preex_eps": 1.0053
+ },
+ "lineage": {
+  "net_fees": {
+   "methods": {
+    "llm_analyst": {
+     "value": 903.5,
+     "n_samples": 5,
+     "spread": 9.600000000000023,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2025",
+        "value": 972.4,
+        "why": "FY2025 full-year net fees provide the latest comparable full-year base."
+       },
+       "adjustments": [
+        {
+         "delta": -42.7,
+         "reason": "Replace FY2025H1 with reported FY2026H1 net fees.",
+         "evidence": "FY2025H1 net fees were GBP496.0m versus FY2026H1 net fees of GBP453.3m."
+        },
+        {
+         "delta": -16.7,
+         "reason": "Apply the reported Q3 actual-basis decline to an equal-share estimate of FY2025H2 fees.",
+         "evidence": "FY2026Q3 Group net fees decreased by 7% on an actual basis; FY2025H2 was GBP476.4m, with Q3 assumed to represent half."
+        },
+        {
+         "delta": -9.5,
+         "reason": "Apply the reported Q4 actual-basis decline to an equal-share estimate of FY2025H2 fees.",
+         "evidence": "FY2026Q4 Group net fees decreased by 4% on an actual basis; FY2025H2 was GBP476.4m, with Q4 assumed to represent half."
+        }
+       ],
+       "confidence": "medium",
+       "model": "gpt-5.6-luna",
+       "formula": "base 972.4 + adjustments [-42.7, -16.7, -9.5]",
+       "value": 903.5
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2025",
+        "value": 972.4,
+        "why": "FY2025 reported net fees provide the prior-year full-year base."
+       },
+       "adjustments": [
+        {
+         "delta": -42.7,
+         "reason": "Replace FY2025H1 with reported FY2026H1 net fees, which were GBP42.7m lower.",
+         "evidence": "FY2025H1 net fees of GBP496.0m versus FY2026H1 net fees of GBP453.3m; FY2026Q1 and Q2 like-for-like declines were 8% and 10%."
+        },
+        {
+         "delta": -21.4,
+         "reason": "Apply an approximately 5.5% decline to the FY2025H2 base, reflecting the reported FY2026Q3 and Q4 actual-basis declines of 7% and 4%.",
+         "evidence": "FY2025H2 is GBP476.4m, derived from FY2025 GBP972.4m less FY2025H1 GBP496.0m; FY2026Q3 actual net fees declined 7% and FY2026Q4 declined 4%."
+        }
+       ],
+       "confidence": "medium",
+       "model": "gpt-5.6-luna",
+       "formula": "base 972.4 + adjustments [-42.7, -21.4]",
+       "value": 908.3
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2025",
+        "value": 972.4,
+        "why": "FY2025 reported net fees provide the prior-year base for estimating FY2026."
+       },
+       "adjustments": [
+        {
+         "delta": -42.7,
+         "reason": "Reflects the reported FY2026H1 shortfall versus FY2025H1.",
+         "evidence": "FY2026H1 net fees were GBP453.3m versus GBP496.0m in FY2025H1."
+        },
+        {
+         "delta": -26.2,
+         "reason": "Applies an approximately 5.5% decline to FY2025H2, based on the average of the reported FY2026Q3 and Q4 actual-basis declines.",
+         "evidence": "FY2026Q3 total net fees decreased 7% on an actual basis and FY2026Q4 decreased 4% on an actual basis."
+        }
+       ],
+       "confidence": "medium",
+       "model": "gpt-5.6-luna",
+       "formula": "base 972.4 + adjustments [-42.7, -26.2]",
+       "value": 903.5
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2025",
+        "value": 972.4,
+        "why": "Most recent full-year reported net fees provide the starting point."
+       },
+       "adjustments": [
+        {
+         "delta": -42.7,
+         "reason": "Replace FY2025H1 with FY2026H1 actual net fees, reducing the comparable half-year by GBP42.7m.",
+         "evidence": "FY2026H1 net fees were GBP453.3m versus FY2025H1 GBP496.0m."
+        },
+        {
+         "delta": -30.9,
+         "reason": "Apply the reported Q3 and Q4 like-for-like declines to the FY2025H2 run-rate, implying an approximately 6.5% H2 reduction.",
+         "evidence": "FY2026Q3 group net fees decreased 8% YoY like-for-like; FY2026Q4 decreased 5% YoY like-for-like; FY2025H2 was GBP476.4m, calculated as FY2025 GBP972.4m less FY2025H1 GBP496.0m."
+        }
+       ],
+       "confidence": "medium",
+       "model": "gpt-5.6-luna",
+       "formula": "base 972.4 + adjustments [-42.7, -30.9]",
+       "value": 898.8
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2025",
+        "value": 972.4,
+        "why": "FY2025 reported net fees provide the prior-year full-year base."
+       },
+       "adjustments": [
+        {
+         "delta": -42.7,
+         "reason": "Reflects the reported FY2026H1 net-fee decline versus FY2025H1.",
+         "evidence": "FY2026H1 net fees of GBP453.3m versus FY2025H1 GBP496.0m."
+        },
+        {
+         "delta": -31.0,
+         "reason": "Applies an approximately 6.5% decline to FY2025H2, based on the reported Q3 and Q4 FY2026 like-for-like declines of 8% and 5%, respectively.",
+         "evidence": "FY2025H2 is GBP476.4m (FY2025 GBP972.4m less FY2025H1 GBP496.0m); FY2026Q3 net fees decreased 8% YoY and FY2026Q4 decreased 5% YoY on a like-for-like basis."
+        }
+       ],
+       "confidence": "medium",
+       "model": "gpt-5.6-luna",
+       "formula": "base 972.4 + adjustments [-42.7, -31.0]",
+       "value": 898.6999999999999
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025",
+     "base_value": 972.4,
+     "yoy_pairs": [
+      {
+       "period": "FY2025",
+       "value": 972.4,
+       "prior": 1113.6
+      },
+      {
+       "period": "FY2024",
+       "value": 1113.6,
+       "prior": 1294.6
+      }
+     ],
+     "formula": "prior-year value 972.4 x (1 + median YoY growth -13.330%)",
+     "value": 842.7754326215348
+    },
+    "guidance": {
+     "formula": "reported H1 453.3 + prior-year H2 476.4 x (1 + pre-announced H2 growth -5.5%)",
+     "h2_growth_quotes": [
+      {
+       "period": "FY2026Q3",
+       "growth": -7.0,
+       "doc": "2026-04-16__has-ln-20260416-q3-8k-2__955907.md",
+       "quote": "On an actual basis, net fees decreased by 7% due to a weakening of sterling versus the Euro and Australian Dollar partially offset by our previously communicated action to close our operations in four"
+      },
+      {
+       "period": "FY2026Q4",
+       "growth": -4.0,
+       "doc": "2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+       "quote": "On an actual basis, net fees decreased by 4% due to a weakening of sterling versus the Euro and Australian Dollar partially offset by our previously communicated action to close our operations in four"
+      }
+     ],
+     "fact_type": "preannounce",
+     "guidance_doc": "2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+     "quote": "On an actual basis, net fees decreased by 4% due to a weakening of sterling versus the Euro and Australian Dollar partially offset by our previously communicated action to close our operations in four countries and divest in the Czech Republic, Denmark, Hungary, Luxembourg, Romania, and Sweden.",
+     "value": 903.498
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 891.354086524307,
+    "formula": "weighted mean of method values"
+   },
+   "consensus_blend": {
+    "consensus": 902.4,
+    "beta": 0.85,
+    "formula": "consensus + 0.85 x (ensemble - consensus)",
+    "value": 893.0109735456609
+   },
+   "final": 893.0
+  },
+  "preex_op": {
+   "methods": {
+    "llm_analyst": {
+     "value": 46.0,
+     "n_samples": 5,
+     "spread": 0.0,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2025",
+        "value": 45.6,
+        "why": "Reported FY2025 pre-exceptional operating profit provides the closest full-year historical base."
+       },
+       "adjustments": [
+        {
+         "delta": 0.4,
+         "reason": "Lift to the top of the current consensus range, reflecting management's stated expectation.",
+         "evidence": "Q4 FY2026 trading update, 10 July 2026: FY2026 pre-exceptional operating profit expected at the top of the \u00a337.0-46.0m consensus range."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 45.6 + adjustments [0.4]",
+       "value": 46.0
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2025",
+        "value": 45.6,
+        "why": "FY2025 reported pre-exceptional operating profit provides the closest full-year historical base."
+       },
+       "adjustments": [
+        {
+         "delta": 0.4,
+         "reason": "Move to the top end of the latest company-compiled consensus range, reflecting management's current expectation.",
+         "evidence": "Q4 FY2026 trading update: management expects FY26 pre-exceptional operating profit at the top of the \u00a337.0-46.0m consensus range."
+        }
+       ],
+       "confidence": "medium",
+       "model": "gpt-5.6-luna",
+       "formula": "base 45.6 + adjustments [0.4]",
+       "value": 46.0
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2025",
+        "value": 45.6,
+        "why": "FY2025 pre-exceptional operating profit provides the closest full-year historical base."
+       },
+       "adjustments": [
+        {
+         "delta": 0.4,
+         "reason": "Raise the FY2025 base to the top of the current FY2026 consensus range, consistent with company guidance.",
+         "evidence": "Q4 FY2026 trading update, 10 July 2026: FY2026 pre-exceptional operating profit expected at the top of the \u00a337.0m\u2013\u00a346.0m consensus range."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 45.6 + adjustments [0.4]",
+       "value": 46.0
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2025",
+        "value": 45.6,
+        "why": "Latest comparable full-year pre-exceptional operating profit reported in the evidence table."
+       },
+       "adjustments": [
+        {
+         "delta": 0.4,
+         "reason": "Move to the top of the current FY2026 consensus range, consistent with management's latest expectation.",
+         "evidence": "Q4 FY2026 trading update dated 10 July 2026: management expects FY2026 pre-exceptional operating profit at the top of the \u00a337.0m\u2013\u00a346.0m consensus range."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 45.6 + adjustments [0.4]",
+       "value": 46.0
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2026H1",
+        "value": 20.1,
+        "why": "Reported FY2026 first-half pre-exceptional operating profit provides the latest actual-period base."
+       },
+       "adjustments": [
+        {
+         "delta": 25.9,
+         "reason": "Adds the implied H2 contribution required to reach the top end of management's FY2026 guidance range.",
+         "evidence": "Q4 FY2026 trading update dated 10 July 2026: FY2026 pre-exceptional operating profit expected at the top of the \u00a337.0m-\u00a346.0m consensus range."
+        }
+       ],
+       "confidence": "medium",
+       "model": "gpt-5.6-luna",
+       "formula": "base 20.1 + adjustments [25.9]",
+       "value": 46.0
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025",
+     "base_value": 45.6,
+     "yoy_pairs": [
+      {
+       "period": "FY2025",
+       "value": 45.6,
+       "prior": 105.1
+      },
+      {
+       "period": "FY2024",
+       "value": 105.1,
+       "prior": 197.0
+      }
+     ],
+     "formula": "prior-year value 45.6 x (1 + median YoY growth -51.631%)",
+     "value": 22.056150922254368
+    },
+    "guidance": {
+     "guidance_doc": "2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+     "guidance_period": "FY2026",
+     "guidance_units": "GBPm",
+     "quote": "Our actions to deliver strong consultant net fee productivity growth and cost discipline continued to offset our lower net fees in H2 26 and we currently expect FY26 pre-exceptional operating profit will be at the top of the \u00a337.0-46.0m consensus range (2)",
+     "fact_type": "guidance",
+     "formula": "midpoint of stated guidance = 46.0",
+     "value": 46.0
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 41.21123018445087,
+    "formula": "weighted mean of method values"
+   },
+   "consensus_blend": {
+    "consensus": 45.3,
+    "beta": 0.85,
+    "formula": "consensus + 0.85 x (ensemble - consensus)",
+    "value": 41.824545656783236
+   },
+   "final": 42.0
+  },
+  "preex_eps": {
+   "methods": {
+    "llm_analyst": {
+     "value": 0.96,
+     "n_samples": 8,
+     "spread": 0.35,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2026H1",
+        "value": 0.46,
+        "why": "Most recent reported pre-exceptional basic EPS available for the FY2026 target period."
+       },
+       "adjustments": [
+        {
+         "delta": 0.5,
+         "reason": "Adds an H2 contribution using the latest comparable full-year H2 EPS contribution as a proxy.",
+         "evidence": "FY2025 H2 contribution was 0.50 GBp, calculated as FY2025 EPS of 1.31 less FY2025H1 EPS of 0.81."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 0.46 + adjustments [0.5]",
+       "value": 0.96
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2025",
+        "value": 1.31,
+        "why": "Most recent reported full-year pre-exceptional basic EPS."
+       },
+       "adjustments": [
+        {
+         "delta": -0.35,
+         "reason": "Reduce for the year-on-year decline already evident in first-half EPS.",
+         "evidence": "FY2026H1 EPS was 0.46 GBp versus 0.81 GBp in FY2025H1, a decline of 0.35 GBp."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 1.31 + adjustments [-0.35]",
+       "value": 0.9600000000000001
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2025",
+        "value": 1.31,
+        "why": "Most recent reported full-year pre-exceptional basic EPS before FY2026."
+       },
+       "adjustments": [
+        {
+         "delta": -0.35,
+         "reason": "Reflects the year-on-year decline in first-half EPS, assuming the second-half contribution is unchanged from the prior year.",
+         "evidence": "FY2025H1 EPS of 0.81 GBp versus FY2026H1 EPS of 0.46 GBp."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 1.31 + adjustments [-0.35]",
+       "value": 0.9600000000000001
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2026H1",
+        "value": 0.46,
+        "why": "Most recent reported pre-exceptional basic EPS and the closest evidence to the FY2026 target."
+       },
+       "adjustments": [
+        {
+         "delta": 0.28,
+         "reason": "Adds an estimated FY2026H2 contribution using FY2025's observed H2-to-H1 EPS seasonality.",
+         "evidence": "FY2025 H2 EPS was 0.50 GBp, calculated as FY2025 1.31 less FY2025H1 0.81; applying the resulting 0.62x ratio to FY2026H1 EPS of 0.46 GBp implies approximately 0.28 GBp."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 0.46 + adjustments [0.28]",
+       "value": 0.74
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2025",
+        "value": 1.31,
+        "why": "Most recent reported full-year pre-exceptional basic EPS available in the history."
+       },
+       "adjustments": [
+        {
+         "delta": -0.35,
+         "reason": "Replace FY2025 first-half EPS with FY2026 first-half EPS while assuming the second-half contribution is unchanged.",
+         "evidence": "FY2025H1 EPS was 0.81 GBp versus FY2026H1 EPS of 0.46 GBp."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 1.31 + adjustments [-0.35]",
+       "value": 0.9600000000000001
+      },
+      {
+       "provider": "openai",
+       "sample": 5,
+       "base": {
+        "period": "FY2026H1",
+        "value": 0.46,
+        "why": "Most recent reported pre-exceptional basic EPS and the only FY2026 EPS evidence available."
+       },
+       "adjustments": [
+        {
+         "delta": 0.5,
+         "reason": "Add an H2 contribution in line with the prior-year second-half EPS contribution.",
+         "evidence": "FY2025 full-year EPS of 1.31 GBp less FY2025H1 EPS of 0.81 GBp implies FY2025H2 EPS of 0.50 GBp."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 0.46 + adjustments [0.5]",
+       "value": 0.96
+      },
+      {
+       "provider": "openai",
+       "sample": 6,
+       "base": {
+        "period": "FY2025",
+        "value": 1.31,
+        "why": "Most recent reported full-year pre-exceptional basic EPS available in the history."
+       },
+       "adjustments": [
+        {
+         "delta": -0.7,
+         "reason": "Annualise the FY2026H1 year-on-year EPS shortfall across the full year.",
+         "evidence": "FY2026H1 EPS was 0.46 GBp versus FY2025H1 EPS of 0.81 GBp, a 0.35 GBp decline; twice this decline implies a 0.70 GBp reduction."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 1.31 + adjustments [-0.7]",
+       "value": 0.6100000000000001
+      },
+      {
+       "provider": "openai",
+       "sample": 7,
+       "base": {
+        "period": "FY2025",
+        "value": 1.31,
+        "why": "FY2025 is the latest reported full-year pre-exceptional basic EPS before the target period."
+       },
+       "adjustments": [
+        {
+         "delta": -0.35,
+         "reason": "Reflect the weaker first-half performance year on year, assuming the second-half contribution is unchanged from FY2025.",
+         "evidence": "FY2026H1 EPS of 0.46 GBp versus FY2025H1 EPS of 0.81 GBp, a decline of 0.35 GBp."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 1.31 + adjustments [-0.35]",
+       "value": 0.9600000000000001
+      }
+     ]
+    },
+    "derived": {
+     "formula": "forecast preex_op 42.0 x most-recent preex_eps/preex_op ratio 0.02289 (from FY2026H1: 0.46 / 20.1)",
+     "ratio_period": "FY2026H1",
+     "ratio": 0.022885572139303482,
+     "source_metric": "preex_op",
+     "source_forecast": 42.0,
+     "value": 0.9611940298507462
+    },
+    "statistical": {
+     "base_period": "FY2025",
+     "base_value": 1.31,
+     "yoy_pairs": [
+      {
+       "period": "FY2025",
+       "value": 1.31,
+       "prior": 4.03
+      },
+      {
+       "period": "FY2024",
+       "value": 4.03,
+       "prior": 8.59
+      }
+     ],
+     "formula": "prior-year value 1.31 x (1 + median YoY growth -60.289%)",
+     "value": 0.5202089971315252
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 0.8806892884879571,
+    "formula": "weighted mean of method values"
+   },
+   "consensus_blend": {
+    "consensus": 1.13,
+    "beta": 0.5,
+    "formula": "consensus + 0.5 x (ensemble - consensus)",
+    "value": 1.0053446442439786
+   },
+   "final": 1.0053
+  }
+ },
+ "consensus": {
+  "fetched_at": "2026-08-16T14:27:29.726063+00:00",
+  "period": "FY2026",
+  "gated_on_date": "2026-08-16",
+  "net_fees": {
+   "value": 902.4,
+   "sources": [
+    {
+     "source": "Hays plc \u2014 company-compiled analyst consensus",
+     "value": 902.4,
+     "basis": "company-compiled consensus",
+     "as_of": "2026-08-11",
+     "url": "https://www.haysplc.com/investors/analysts-consensus"
+    },
+    {
+     "source": "Hays plc company-compiled consensus",
+     "value": 902.4,
+     "basis": "company-compiled consensus",
+     "as_of": "2026-08-11",
+     "url": "https://www.haysplc.com/investors/analysts-consensus"
+    }
+   ],
+   "rejected": [],
+   "corroboration": 2,
+   "usable": true,
+   "why": "median of agreeing sources"
+  },
+  "preex_eps": {
+   "value": 1.13,
+   "sources": [
+    {
+     "source": "Hays plc \u2014 company-compiled analyst consensus",
+     "value": 1.13,
+     "basis": "company-compiled consensus",
+     "as_of": "2026-08-11",
+     "url": "https://www.haysplc.com/investors/analysts-consensus"
+    },
+    {
+     "source": "Hays plc company-compiled consensus",
+     "value": 1.13,
+     "basis": "company-compiled consensus",
+     "as_of": "2026-08-11",
+     "url": "https://www.haysplc.com/investors/analysts-consensus"
+    }
+   ],
+   "rejected": [],
+   "corroboration": 2,
+   "usable": true,
+   "why": "median of agreeing sources"
+  },
+  "preex_op": {
+   "value": 45.3,
+   "sources": [
+    {
+     "source": "Hays plc \u2014 company-compiled analyst consensus",
+     "value": 45.3,
+     "basis": "company-compiled consensus",
+     "as_of": "2026-08-11",
+     "url": "https://www.haysplc.com/investors/analysts-consensus"
+    },
+    {
+     "source": "Hays plc company-compiled consensus",
+     "value": 45.3,
+     "basis": "company-compiled consensus",
+     "as_of": "2026-08-11",
+     "url": "https://www.haysplc.com/investors/analysts-consensus"
+    }
+   ],
+   "rejected": [],
+   "corroboration": 2,
+   "usable": true,
+   "why": "median of agreeing sources"
+  }
+ }
+}

@@ -1,0 +1,57 @@
+[
+ {
+  "name": "net_sales: value present",
+  "status": "pass",
+  "detail": "final=46876.0"
+ },
+ {
+  "name": "net_sales: magnitude vs prior year",
+  "status": "pass",
+  "detail": "46876.0 vs prior-year 45277.0 (ratio 1.04, band 0.7-1.42)"
+ },
+ {
+  "name": "net_sales: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 584 (1.2% of final)"
+ },
+ {
+  "name": "adj_eps: value present",
+  "status": "pass",
+  "detail": "final=4.7343"
+ },
+ {
+  "name": "adj_eps: magnitude vs prior year",
+  "status": "pass",
+  "detail": "4.7343 vs prior-year 4.68 (ratio 1.01, band 0.55-1.7)"
+ },
+ {
+  "name": "adj_eps: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 0.13 (2.7% of final)"
+ },
+ {
+  "name": "comp_sales: value present",
+  "status": "pass",
+  "detail": "final=1.1333"
+ },
+ {
+  "name": "comp_sales: plausibility vs prior year",
+  "status": "pass",
+  "detail": "1.1333pp vs prior-year 1.0pp (max delta 4.0pp)"
+ },
+ {
+  "name": "comp_sales: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 0 (0.0% of final)"
+ },
+ {
+  "name": "HD: net sales growth vs comp sales",
+  "status": "pass",
+  "detail": "sales growth 3.5pp vs comps 1.1pp (gap covers new stores/acquisitions/FX; limit 4pp)"
+ },
+ {
+  "name": "red-team review",
+  "status": "pass",
+  "detail": "no objections (openai)"
+ }
+]

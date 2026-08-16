@@ -60,7 +60,15 @@ def run_company(company: Company, log: RunLog, run_id: str,
 
     consensus = None
     if asof is None:
-        consensus = load_consensus(company) or fetch_consensus(
+        # a cached snapshot silently overriding a fresh fetch forever is how
+        # the final artifacts drift out of sync — only reuse a same-day one
+        consensus = load_consensus(company)
+        fetched = str((consensus or {}).get("fetched_at", ""))[:10]
+        if consensus is not None and fetched != dt.date.today().isoformat():
+            log.log("consensus", f"{company.short}: cached snapshot from "
+                                 f"{fetched or 'unknown'} is stale — refetching")
+            consensus = None
+        consensus = consensus or fetch_consensus(
             company, log, series, offline=offline)
 
     # raw outlook lines from the newest documents, handed to the analyst as

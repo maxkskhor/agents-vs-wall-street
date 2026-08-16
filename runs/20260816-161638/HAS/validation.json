@@ -1,0 +1,57 @@
+[
+ {
+  "name": "net_fees: value present",
+  "status": "pass",
+  "detail": "final=893.0"
+ },
+ {
+  "name": "net_fees: magnitude vs prior year",
+  "status": "pass",
+  "detail": "893.0 vs prior-year 972.4 (ratio 0.92, band 0.7-1.42)"
+ },
+ {
+  "name": "net_fees: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 9.6 (1.1% of final)"
+ },
+ {
+  "name": "preex_eps: value present",
+  "status": "pass",
+  "detail": "final=1.0053"
+ },
+ {
+  "name": "preex_eps: magnitude vs prior year",
+  "status": "pass",
+  "detail": "1.0053 vs prior-year 1.31 (ratio 0.77, band 0.55-1.7)"
+ },
+ {
+  "name": "preex_eps: analyst-sample agreement",
+  "status": "warn",
+  "detail": "cross-provider spread 0.35 (34.8% of final)"
+ },
+ {
+  "name": "preex_op: value present",
+  "status": "pass",
+  "detail": "final=42.0"
+ },
+ {
+  "name": "preex_op: magnitude vs prior year",
+  "status": "pass",
+  "detail": "42.0 vs prior-year 45.6 (ratio 0.92, band 0.4-2.0)"
+ },
+ {
+  "name": "preex_op: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 0 (0.0% of final)"
+ },
+ {
+  "name": "HAS: preex_op/net_fees conversion ratio",
+  "status": "pass",
+  "detail": "ratio 0.047, history-derived band 0.035-0.190"
+ },
+ {
+  "name": "red-team review",
+  "status": "pass",
+  "detail": "no objections (openai)"
+ }
+]

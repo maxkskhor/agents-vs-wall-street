@@ -291,28 +291,12 @@ def derived(metric: Metric, all_series: dict[str, Series], finals: dict[str, flo
 
 
 # --------------------------------------------------------------- llm analyst
-
-def _backtest_bias_note(company: Company, metric: Metric) -> str:
-    """Empirical finding from our own time-travel backtest, stated to the
-    analyst as evidence (e.g. ADI's actuals beat its guide midpoint ~3.5%)."""
-    import json as _json
-    from .config import CACHE
-    p = CACHE / "calibration.json"
-    if not p.exists():
-        return ""
-    bias = _json.loads(p.read_text()).get("guidance_bias", {}).get(
-        f"{company.short}/{metric.key}")
-    # only a walk-forward-validated bias is worth telling the analyst about
-    if not bias or not bias.get("correction_recommended") or "mean_signed" not in bias:
-        return ""
-    b = bias["mean_signed"]
-    unit = "percentage points" if metric.kind == "percent" else "relative"
-    return (f"Backtest finding (our own time-travel evaluation over {bias['n']} past "
-            f"periods): this company's reported {metric.label} differed from a "
-            f"guidance-anchored estimate by {b:+.3f} ({unit}) on average — i.e. it "
-            f"{'beat' if b > 0 else 'missed'} guidance-based expectations. Weigh this "
-            f"pattern when sizing adjustments.")
-
+# NOTE: the walk-forward-validated guidance bias is deliberately NOT stated to
+# the analyst. It is applied exactly once, deterministically, in the engine;
+# feeding it here too double-counted the correction, and — because the note
+# was read from calibration.json — made backtest analyst prompts depend on the
+# previous backtest's output, contaminating the very evaluation that justifies
+# the correction.
 
 _ANALYST_SYSTEM = """You are a sell-side equity analyst. You never state a final forecast directly.
 You propose (1) a base figure copied from the evidence table and (2) a short
@@ -339,9 +323,6 @@ def llm_analyst(company: Company, metric: Metric, series: Series,
     if extra_evidence:
         gtxt += ("\n\nRecent outlook excerpts from the newest filings "
                  "(verbatim, may cover other metrics):\n" + extra_evidence)
-    bias = _backtest_bias_note(company, metric)
-    if bias:
-        gtxt += "\n\n" + bias
     # Deliberately NOT shown the consensus anchor: it is applied once,
     # deterministically, in the engine. Feeding it here too double-counted it
     # and let a mis-defined anchor drag the analyst samples with it, which

@@ -6,7 +6,7 @@ import unittest
 
 from agent import periods
 from agent.config import get_company, load_companies
-from agent.engine import weighted_median
+from agent.engine import combine_methods, weighted_mean, weighted_median
 from agent.estimators import statistical, guidance, _fy_catchup_money
 from agent.extract import Fact, _value_in_quote, _quote_in_doc
 from agent.workbook import write_workbook, WorkbookError
@@ -83,6 +83,26 @@ class TestEngine(unittest.TestCase):
     def test_weighted_median(self):
         self.assertEqual(weighted_median([(1, .2), (2, .5), (10, .3)]), 2)
         self.assertEqual(weighted_median([(5, 1.0)]), 5)
+
+    def test_weighted_mean(self):
+        self.assertAlmostEqual(weighted_mean([(100, .5), (200, .3), (300, .2)]), 170)
+        # weights renormalise over the methods present
+        self.assertAlmostEqual(weighted_mean([(100, .5), (200, .3)]), 137.5)
+
+    def test_combine_methods_by_kind(self):
+        # money/eps blend continuously: a shifted input moves the answer
+        base, _ = combine_methods("money", [(4009.2, .5), (3900, .3), (3691, .2)])
+        raw, _ = combine_methods("money", [(3900.0, .5), (3900, .3), (3691, .2)])
+        self.assertGreater(base, raw)   # the bias correction is reachable
+        # percent still selects by weighted median
+        v, how = combine_methods("percent", [(1.13, .4), (1.0, .3), (2.2, .3)])
+        self.assertEqual(v, 1.13)
+        self.assertIn("median", how)
+
+    def test_two_estimator_mean_not_winner_take_all(self):
+        # the old median handed a 2-way tie to the heavier weight verbatim
+        v, _ = combine_methods("money", [(323.1, .2), (330.0, .3)])
+        self.assertTrue(323.1 < v < 330.0)
 
 
 class TestWorkbook(unittest.TestCase):

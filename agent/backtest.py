@@ -23,7 +23,7 @@ import statistics
 from . import llm, periods
 from .config import CACHE, RESEARCH, Company, load_companies, get_company
 from .corpus import results_docs
-from .engine import weighted_median
+from .engine import combine_methods
 from .estimators import guidance, llm_analyst, statistical
 from .extract import build_fact_table, guidance_facts, reported_series
 from .runlog import RunLog, new_run_id
@@ -131,7 +131,11 @@ def _floor_rel(v: float, actual: float, floor: float) -> float:
 
 def _calibrate(rows: list[dict]) -> dict:
     """Grid-search method weights per metric kind, minimising mean capped
-    floor-relative miss of the weighted-median ensemble."""
+    floor-relative miss of the ensemble — computed by the SAME combine_methods
+    the engine uses in production (weighted mean for money/eps, weighted
+    median for percent), so the weights are fit under the function that will
+    consume them. A zero weight drops the method, exactly as an absent method
+    would; a grid point that silences every available method scores 5.0."""
     out: dict[str, dict] = {}
     grid = [w for w in itertools.product(range(11), repeat=3) if sum(w) == 10]
     for kind in ("money", "eps", "percent"):
@@ -144,10 +148,11 @@ def _calibrate(rows: list[dict]) -> dict:
             for r in krows:
                 pairs = [(v, {"guidance": wg, "llm_analyst": wl, "statistical": ws}[m])
                          for m, v in r["methods"].items()]
-                if all(p[1] == 0 for p in pairs):
+                pairs = [(v, w) for v, w in pairs if w > 0]
+                if not pairs:
                     score += 5.0
                     continue
-                ens = weighted_median([(v, w or 0.001) for v, w in pairs])
+                ens, _ = combine_methods(kind, pairs)
                 score += _floor_rel(ens, r["actual"], r["floor"])
             score /= len(krows)
             if score < best_score:
@@ -237,7 +242,12 @@ def _guidance_bias(rows: list[dict]) -> dict:
                                 f"improved (need >=50%)")
         else:
             record["correction_recommended"] = True
-            record["mean_signed"] = _cap(statistics.median(errs), kind)
+            # deployed estimate: capped MEDIAN of all signed errors (a median,
+            # not a mean — the field was once mislabelled "mean_signed"). The
+            # full sample is used deliberately: walk-forward proved the rolling
+            # estimate helps out-of-sample; the full-sample median is simply
+            # the best available estimate to carry forward from here.
+            record["bias_estimate"] = _cap(statistics.median(errs), kind)
             record["reason"] = (
                 f"walk-forward median error {record['wf_raw_median_abs']} -> "
                 f"{record['wf_corrected_median_abs']}, "

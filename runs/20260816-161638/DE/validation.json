@@ -1,0 +1,57 @@
+[
+ {
+  "name": "net_sales_rev: value present",
+  "status": "pass",
+  "detail": "final=12980.0"
+ },
+ {
+  "name": "net_sales_rev: magnitude vs prior year",
+  "status": "pass",
+  "detail": "12980.0 vs prior-year 12018.0 (ratio 1.08, band 0.7-1.42)"
+ },
+ {
+  "name": "net_sales_rev: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 366 (2.8% of final)"
+ },
+ {
+  "name": "eps: value present",
+  "status": "pass",
+  "detail": "final=4.4276"
+ },
+ {
+  "name": "eps: magnitude vs prior year",
+  "status": "pass",
+  "detail": "4.4276 vs prior-year 4.75 (ratio 0.93, band 0.55-1.7)"
+ },
+ {
+  "name": "eps: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 0.36 (8.1% of final)"
+ },
+ {
+  "name": "ppa_op: value present",
+  "status": "pass",
+  "detail": "final=327.0"
+ },
+ {
+  "name": "ppa_op: magnitude vs prior year",
+  "status": "pass",
+  "detail": "327.0 vs prior-year 580.0 (ratio 0.56, band 0.4-2.0)"
+ },
+ {
+  "name": "ppa_op: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 27.5 (8.4% of final)"
+ },
+ {
+  "name": "DE: ppa_op/net_sales_rev conversion ratio",
+  "status": "pass",
+  "detail": "ratio 0.025, history-derived band 0.012-0.135"
+ },
+ {
+  "name": "red-team: No unit or scale errors identified in the forecasts.",
+  "status": "pass",
+  "detail": "No unit or scale errors identified in the forecasts."
+ }
+]
