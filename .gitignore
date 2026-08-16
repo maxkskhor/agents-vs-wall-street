@@ -1,5 +1,8 @@
 node_modules/
 __pycache__/
+.venv/
+cache/
+runs/
 *.py[cod]
 research/
 .DS_Store
