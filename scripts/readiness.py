@@ -36,7 +36,14 @@ html = (ROOT / "architecture/index.html").read_text()
 emails = re.findall(r"[\w.+-]+@[\w-]+\.[\w.]+", html)
 check("no email addresses in the architecture HTML", not emails, str(emails[:3]))
 secretish = [f for f in tracked
-             if re.search(r"(^|/)\.env($|\.)|secret|credential", f, re.I)]
+             if re.search(r"(^|/)\.env($|\.)|secret|credential", f, re.I)
+             and not f.endswith(".env.example")]
+# the template must be tracked; it carries variable names and no values
+example = (ROOT / ".env.example").read_text()
+check("`.env.example` has names but no values",
+      all(not line.split("=", 1)[1].strip()
+          for line in example.splitlines()
+          if "=" in line and not line.startswith("#")))
 check("no secret-looking files tracked", not secretish, str(secretish[:3]))
 
 # --- entry.json --------------------------------------------------------------
