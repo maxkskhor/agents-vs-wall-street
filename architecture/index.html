@@ -169,7 +169,20 @@
     <section>
       <h2>What the backtest measured</h2>
       <p>The corpus is frozen and dated, so the same pipeline can run "as of" the day before each past earnings report and be scored against the actual that later filings reveal. We report the <em>floor-relative miss</em> (our miss ÷ scoring floor, capped at 5.0) — the score we would receive if Wall Street were perfect, an upper bound on the real score.</p>
-      <div class="fill-me"><strong>TO FILL AFTER BACKTEST RUN:</strong> calibration table from <code>research/backtest-report.md</code> — per-method misses, chosen weights per metric kind, guidance-bias findings.</div>
+      <p>We backtested 14 past reporting events (40 metric-level forecasts) across the four companies — every quarter reported since mid-2025 plus two Hays fiscal years. Mean floor-relative miss per route:</p>
+      <table>
+        <tr><th>Route</th><th class="num">n</th><th class="num">Mean floor-relative miss</th><th>Reading</th></tr>
+        <tr><td>Guidance arithmetic</td><td class="num">23</td><td class="num"><span class="ok">3.42</span></td><td>Best where it applies; abstains on 17/40 (Deere gives no usable quarterly guidance)</td></tr>
+        <tr><td>LLM analyst</td><td class="num">40</td><td class="num">3.94</td><td>Always available; strongest on percent metrics</td></tr>
+        <tr><td>Statistical (no LLM)</td><td class="num">39</td><td class="num">4.25</td><td>Honest baseline; beats the others on ~a quarter of rows</td></tr>
+      </table>
+      <p>Findings the final forecasts actually use (full table in <code>research/backtest-report.md</code>):</p>
+      <ul>
+        <li><strong>ADI beats its own guidance midpoint every quarter</strong> in the window (revenue ~+3.5% on average; adjusted EPS beat all four quarters). The engine applies this as a capped correction to the guidance route, and the fetched public consensus sits exactly at the midpoint — this is where we deliberately deviate from Wall Street.</li>
+        <li><strong>HD over-promised FY2025 comps by ~1.25pp</strong> on average, so the grid search de-weighted guidance for percent metrics (0 → we shrink to 0.25 given n=8).</li>
+        <li><strong>The Hays H1 + pre-announced-H2 build-up scored 0.18–0.19</strong> on net fees — our single best route anywhere, and the July trading update's "top of the £37.0–46.0m range" statement anchors operating profit.</li>
+        <li><strong>The EPS weight grid over-fitted</strong> (n=14 in the capped-score regime, its own backtest score 4.2) — the engine detects that and falls back to priors rather than trusting it. This rule exists because the over-fit produced a visibly wrong Hays EPS in a dry run and the red-team gate caught it.</li>
+      </ul>
       <p>Caveat, stated plainly: for quarters reported before the models' training cutoffs the LLM-analyst route may have seen the actuals; quarters reported in 2026 are the cleanest window, and the two deterministic routes are contamination-free by construction.</p>
     </section>
 
@@ -202,8 +215,17 @@
         <li>Extraction quality bounds everything: a guidance sentence the extractor misses is an estimate the ensemble never sees. The grounding gate stops hallucination, not omission.</li>
         <li>The consensus anchor trusts public websites found during the event; a stale or wrong consensus shifts the final number by up to β of the gap. The snapshot is cited and timestamped so judges can inspect it.</li>
         <li>Backtest sample sizes are small (≈4 quarters × 3 metrics per company) and partially contaminated for the LLM route (declared above).</li>
-        <li>Deere's segment metric (PP&amp;A operating profit) has the thinnest guidance signal; we lean on seasonality and the analyst route there.</li>
-        <li><span class="fill-me">ADD anything dropped/changed during the day (honesty section — fill before 17:15).</span></li>
+        <li>Deere's segment metric (PP&amp;A operating profit) has the thinnest guidance signal; we lean on seasonality and the analyst route there, and its answers varied the most between runs.</li>
+      </ul>
+      <h3>What actually went wrong today (and what it changed)</h3>
+      <ul>
+        <li>Our first extraction system prompt said the model must "never compute" — so it refused to convert $41.8bn to USD millions and returned <em>zero facts</em>. Mechanical unit conversion is now explicitly permitted; inventing numbers is not.</li>
+        <li>An early bug sent the extraction <em>instructions without the document</em> — the model correctly returned <code>[]</code>. The cache key now hashes the full prompt so a prompt change can never serve stale results.</li>
+        <li>A newer 8-K's "an <em>increase</em> of $1.8 billion" was recorded as the quarter's level and, being newest, beat the correct 45,277 in the series. Fix: majority-vote clustering across every document that restates a figure — the truth appears many times, an extraction slip once.</li>
+        <li>The grounding gate rejected true facts for surprising reasons: Hays writes "pre -exceptional" with an OCR space, "£4 3.5m" with digits split, and tables get reconstructed rather than quoted. We added normalisation plus a fallback that accepts a fact only if all its numbers co-occur next to the metric's name in the document.</li>
+        <li>The red-team reviewer originally chose its own "blocking" severity and blocked ADI over a 0.2-in-6,784 rounding difference; it now only reports <code>unit_error</code> true/false, and only unit errors block.</li>
+        <li>We planned cross-provider ensembling (Claude vs GPT); only an OpenAI key was available on the day, so the disagreement check runs between independent gpt-5.1 samples instead.</li>
+        <li><code>rg</code>'s parallel file walk returned evidence in a different order on each run, which changed analyst prompts and made Deere's numbers wobble between runs — search output is now deterministically sorted.</li>
       </ul>
     </section>
 
