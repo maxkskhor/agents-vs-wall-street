@@ -25,6 +25,7 @@
     .ok { color: var(--green); font-weight: 700; }
     figure { margin: 24px 0; }
     figcaption { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .tight li { margin-bottom: 4px; }
     .fill-me { background: #fff7d6; border: 1px dashed var(--gold); padding: 8px 12px; border-radius: 8px; }
   </style>
 </head>
@@ -71,7 +72,7 @@
           <text class="t" x="34" y="146">1 · Retrieve</text>
           <text class="s" x="34" y="166">newest results docs, by date/type</text>
 
-          <rect class="box stage" x="20" y="220" width="200" height="76" rx="10"/>
+          <rect class="box stage" x="20" y="220" width="216" height="76" rx="10"/>
           <text class="t" x="34" y="246">2 · Extract (LLM)</text>
           <text class="s" x="34" y="264">reported values · guidance ranges</text>
           <text class="s" x="34" y="280">pre-announcements, per document</text>
@@ -80,11 +81,11 @@
           <text class="t" x="34" y="356">Quote-grounding gate</text>
           <text class="s" x="34" y="376">number must appear in its quote</text>
 
-          <rect class="box" x="20" y="430" width="200" height="64" rx="10"/>
+          <rect class="box" x="20" y="430" width="216" height="64" rx="10"/>
           <text class="t" x="34" y="456">facts.json</text>
           <text class="s" x="34" y="476">value · period · doc · verbatim quote</text>
 
-          <rect class="box stage" x="330" y="120" width="180" height="88" rx="10"/>
+          <rect class="box stage" x="330" y="120" width="192" height="88" rx="10"/>
           <text class="t" x="344" y="146">3a · Guidance</text>
           <text class="s" x="344" y="164">midpoints · FY catch-up math</text>
           <text class="s" x="344" y="180">seasonal shares · deterministic</text>
@@ -143,19 +144,73 @@
       </figure>
 
       <h3>The five stages</h3>
-      <ol>
-        <li><strong>Retrieve.</strong> Deterministic selection from the frozen corpus: the newest results-flavoured filings (8-Ks, trading updates, annual/quarterly reports) per company, ordered by date. No embeddings — filenames and frontmatter already carry date, type and period, and <code>rg</code> covers targeted search.</li>
-        <li><strong>Extract.</strong> An LLM transcribes, one document at a time: reported values, prior-year comparatives, guidance ranges and pre-announcements for the three challenge metrics — each with a verbatim quote. A fact survives only if the quote exists in the document <em>and</em> the number appears in the quote (unit-aware: $41.8bn ≈ 41,765 USDm). Everything else is logged as rejected.</li>
-        <li><strong>Estimate — three independent routes.</strong>
-          <ul>
-            <li><em>Guidance-anchored</em>: pure arithmetic on extracted guidance — midpoints, full-year "catch-up" math (implied remaining-quarter growth given already-reported quarters), historical seasonal shares.</li>
-            <li><em>Statistical</em>: prior-year base × median YoY growth (additive in points for percent metrics). Contains no model call at all.</li>
-            <li><em>LLM analyst</em>: five to eight independent samples, run in parallel. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value. Where a walk-forward-validated guidance bias exists, it is also stated to the model as a plain-language backtest finding ("this company beat guidance-based expectations by ~2.8% over 9 past periods") for it to weigh when sizing adjustments — narrative evidence only; the arithmetic correction is applied once, deterministically, in stage 4.</li>
-          </ul>
-        </li>
-        <li><strong>Combine.</strong> First a <em>guidance bias correction</em>. Where our own backtest found that a company's reported figure systematically differs from its guidance-anchored estimate, that route's value is corrected by the backtested median signed error — multiplicative for money and EPS (<code>raw × (1 + b)</code>), additive in points for percent metrics — <em>before</em> anything is combined, so it can change which route wins the median rather than merely shifting the result. A measured bias is not on its own a reason to correct: the correction is applied only where walk-forward replay (estimating the bias from earlier periods only) beat the raw estimate on median error <em>and</em> on at least half the periods tested, and it is capped at ±6% for money/EPS and ±1.5pp for percent metrics so a small sample cannot produce a large adjustment. In the final calibration only two of seven company/metric pairs qualified — ADI revenue (+2.8%, walk-forward median error 99.8 → 30.0, 100% of periods improved) and ADI adjusted EPS (+6.0%, sitting on the cap, 0.130 → 0.040, 71% improved). The other five showed a bias but no evidence that correcting for it helps, so they are left alone. Then the weighted median across routes — weights set by the backtest where it can prove they help, and refused where it cannot: the grid search beat the hand-set priors only for percentage metrics, so money and EPS deliberately fall back to those priors rather than adopt a fit that scored no better than noise — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>. β is 0.6 when the guidance route contributed and 0.4 when it abstained — we deviate less from the benchmark when our strongest evidence route had nothing to say. An anchor too far from the evidence-built ensemble is refused outright rather than blended.</li>
-        <li><strong>Validate, then write.</strong> Deterministic gates (units and magnitudes vs history, cross-metric consistency such as HD comp-sales vs net-sales growth and Hays fee-to-profit conversion, sample disagreement) decide; an LLM red-team pass advises but cannot block. Any deterministic failure stops the workbook writer.</li>
+      <ol class="tight">
+        <li><strong>Retrieve</strong> — newest results filings per company, picked by date and type. No embeddings; filenames carry the dates, which is what makes time-travel possible.</li>
+        <li><strong>Extract</strong> — a model copies out figures one document at a time, each with a verbatim quote. <em>Gate:</em> the quote must exist in the document and the number must exist in the quote.</li>
+        <li><strong>Estimate</strong> — three independent routes (below). Each abstains rather than guess.</li>
+        <li><strong>Combine</strong> — validated bias correction, then weighted median, then a shrink toward gated public consensus.</li>
+        <li><strong>Validate</strong> — deterministic gates block the workbook. The LLM reviewer only advises.</li>
       </ol>
+
+      <h3>One number, end to end</h3>
+      <figure>
+        <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lineage of the Home Depot net sales forecast" style="width:100%;height:auto">
+          <style>
+            .lb { fill:#fff; stroke:#d0d5dd; stroke-width:1.5; }
+            .lg { fill:#eef4ff; stroke:#155eef; }
+            .lc { fill:#ecfdf3; stroke:#067647; }
+            .lt { font: 600 13px Inter, sans-serif; fill:#101828; }
+            .ls { font: 11.5px Inter, sans-serif; fill:#667085; }
+            .ln { font: 700 15px Inter, sans-serif; fill:#101828; }
+            .la { stroke:#667085; stroke-width:1.4; fill:none; marker-end:url(#arr); }
+          </style>
+          <rect class="lb" x="10" y="14" width="250" height="70" rx="9"/>
+          <text class="lt" x="24" y="36">Quoted evidence</text>
+          <text class="ls" x="24" y="55">“Total sales growth of approximately</text>
+          <text class="ls" x="24" y="71">2.5% to 4.5%” — Q1 8-K, 19 May 2026</text>
+
+          <rect class="lb lg" x="10" y="108" width="250" height="86" rx="9"/>
+          <text class="lt" x="24" y="130">Guidance arithmetic</text>
+          <text class="ls" x="24" y="149">FY implied 170,447 − Q1 reported</text>
+          <text class="ls" x="24" y="165">41,765, spread on prior-year shape</text>
+          <text class="ln" x="24" y="186">46,675</text>
+
+          <rect class="lb lg" x="10" y="214" width="120" height="72" rx="9"/>
+          <text class="lt" x="22" y="236">Statistical</text>
+          <text class="ls" x="22" y="253">+3.8% median</text>
+          <text class="ln" x="22" y="275">47,000</text>
+
+          <rect class="lb lg" x="140" y="214" width="120" height="72" rx="9"/>
+          <text class="lt" x="152" y="236">LLM analyst</text>
+          <text class="ls" x="152" y="253">median of 5</text>
+          <text class="ln" x="152" y="275">46,862</text>
+
+          <rect class="lb" x="330" y="120" width="210" height="86" rx="9"/>
+          <text class="lt" x="344" y="142">Weighted median</text>
+          <text class="ls" x="344" y="161">guidance .5 · analyst .3</text>
+          <text class="ls" x="344" y="177">statistical .2</text>
+          <text class="ln" x="344" y="198">46,675</text>
+
+          <rect class="lb lc" x="600" y="34" width="270" height="72" rx="9"/>
+          <text class="lt" x="614" y="56">Consensus anchor (gated)</text>
+          <text class="ls" x="614" y="74">47,325 — 8 corroborating sources,</text>
+          <text class="ls" x="614" y="90">none dated after today</text>
+
+          <rect class="lb" x="600" y="140" width="270" height="96" rx="9"/>
+          <text class="lt" x="614" y="162">Shrink toward consensus</text>
+          <text class="ls" x="614" y="181">47,325 + 0.6 × (46,675 − 47,325)</text>
+          <text class="ls" x="614" y="197">β = 0.6 because guidance contributed</text>
+          <text class="ln" x="614" y="222">46,935  → workbook</text>
+
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#667085"/></marker></defs>
+          <path class="la" d="M135,84 L135,108"/>
+          <path class="la" d="M262,151 L330,155"/>
+          <path class="la" d="M262,240 C300,240 310,190 330,180"/>
+          <path class="la" d="M540,163 L600,180"/>
+          <path class="la" d="M735,106 L735,140"/>
+        </svg>
+        <figcaption>Home Depot net sales, from the real run. Every arrow is arithmetic in code; no step asks a model for the answer. The same trail is written to <code>runs/&lt;id&gt;/HD/audit.md</code> for all twelve numbers.</figcaption>
+      </figure>
     </section>
 
     <section>
@@ -172,37 +227,63 @@
     <section>
       <h2>What the backtest measured</h2>
       <p>The corpus is frozen and dated, so the same pipeline can run "as of" the day before each past earnings report and be scored against the actual that later filings reveal. We report the <em>floor-relative miss</em> (our miss ÷ scoring floor, capped at 5.0) — the score we would receive if Wall Street were perfect, an upper bound on the real score.</p>
-      <p>We backtested <strong>85 metric-level forecasts</strong> — up to 10 reporting periods per company. Mean floor-relative miss per route:</p>
-      <table>
-        <tr><th>Route</th><th class="num">n</th><th class="num">Mean floor-relative miss</th><th>Reading</th></tr>
-        <tr><td>Guidance arithmetic</td><td class="num">40</td><td class="num"><span class="ok">3.79</span></td><td>Best where it applies; abstains on 45 of 85, because Deere gives no usable quarterly guidance</td></tr>
-        <tr><td>LLM analyst</td><td class="num">85</td><td class="num">3.92</td><td>Always available, so it carries the metrics no deterministic route can reach</td></tr>
-        <tr><td>Statistical (no LLM)</td><td class="num">60</td><td class="num">4.38</td><td>Honest baseline; the only route that survives on Hays EPS</td></tr>
-      </table>
+      <figure>
+        <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Backtest results and correction gate" style="width:100%;height:auto">
+          <style>
+            .ax { stroke:#d0d5dd; stroke-width:1; }
+            .bt { font: 600 13px Inter, sans-serif; fill:#101828; }
+            .bs { font: 11.5px Inter, sans-serif; fill:#667085; }
+            .bn { font: 700 13px Inter, sans-serif; fill:#101828; }
+          </style>
+          <text class="bt" x="0" y="16">Mean floor-relative miss by route — 85 forecasts, 10 periods per company (lower is better)</text>
+          <line class="ax" x1="150" y1="30" x2="150" y2="130"/>
+          <rect x="150" y="38" width="303" height="22" fill="#067647" rx="3"/>
+          <text class="bs" x="0" y="54">Guidance arithmetic</text><text class="bn" x="463" y="54">3.79</text><text class="bs" x="500" y="54">n=40, abstains on 45</text>
+          <rect x="150" y="70" width="314" height="22" fill="#155eef" rx="3"/>
+          <text class="bs" x="0" y="86">LLM analyst</text><text class="bn" x="474" y="86">3.92</text><text class="bs" x="512" y="86">n=85, always available</text>
+          <rect x="150" y="102" width="350" height="22" fill="#98a2b3" rx="3"/>
+          <text class="bs" x="0" y="118">Statistical (no LLM)</text><text class="bn" x="510" y="118">4.38</text><text class="bs" x="548" y="118">n=60, honest baseline</text>
 
-      <h3>Corrections must earn their place</h3>
-      <p>Finding that a company's guidance has been systematically optimistic is not a reason to correct for it — the pattern may be noise. Every candidate is replayed chronologically, estimating the bias from earlier periods only, and applied only if it reduced walk-forward median error and improved a majority of periods. <strong>Two of seven candidates passed:</strong></p>
-      <table>
-        <tr><th>Company / metric</th><th class="num">n</th><th>Outcome</th></tr>
-        <tr><td>ADI revenue</td><td class="num">9</td><td><span class="ok">Applied</span> — walk-forward error 99.8 → 30.0, <strong>100%</strong> of periods improved. ADI consistently beats its own revenue guide.</td></tr>
-        <tr><td>ADI adjusted EPS</td><td class="num">10</td><td><span class="ok">Applied</span> — 0.13 → 0.04, 71% improved.</td></tr>
-        <tr><td>HD comparable sales</td><td class="num">8</td><td>Withheld — passed on 6 periods, <em>failed</em> once tested on 8. See below.</td></tr>
-        <tr><td>HD net sales, HD adjusted EPS</td><td class="num">4–5</td><td>Withheld — too few walk-forward tests</td></tr>
-        <tr><td>Hays net fees, operating profit</td><td class="num">2</td><td>Withheld — annual metric, no walk-forward tests possible</td></tr>
-      </table>
-      <p>The HD comparable-sales row is the one we would point a judge at. On six periods the correction looked good and pushed our forecast down to 0.27%. Extending to ten periods, it stopped clearing the gate, and the forecast returned to 1.13% — near the level company guidance implies. The gate removed a correction we had already shipped once. That is the entire argument for having it.</p>
-      <p>The five withheld candidates are in <code>cache/calibration.json</code> with their measured bias and the reason it was not used. A bias we can see but cannot validate is reported, not applied.</p>
-      <p>One correctness fix the backtest forced: bias was measured relative to the <em>actual</em> but applied multiplicatively to the <em>estimate</em>, which systematically under-corrects. Signed error is now measured in the space the correction acts in.</p>
+          <text class="bt" x="0" y="170">Bias corrections: 7 candidates measured → 2 survived walk-forward validation</text>
+          <g>
+            <rect x="0" y="182" width="118" height="26" rx="4" fill="#ecfdf3" stroke="#067647"/>
+            <text class="bs" x="10" y="199" fill="#067647">ADI revenue ✓</text>
+            <rect x="126" y="182" width="118" height="26" rx="4" fill="#ecfdf3" stroke="#067647"/>
+            <text class="bs" x="136" y="199" fill="#067647">ADI adj EPS ✓</text>
+            <rect x="252" y="182" width="132" height="26" rx="4" fill="#fff7d6" stroke="#b45309"/>
+            <text class="bs" x="262" y="199" fill="#b45309">HD comp sales ✗</text>
+            <rect x="392" y="182" width="126" height="26" rx="4" fill="#f8fafc" stroke="#d0d5dd"/>
+            <text class="bs" x="402" y="199">HD net sales ✗</text>
+            <rect x="526" y="182" width="118" height="26" rx="4" fill="#f8fafc" stroke="#d0d5dd"/>
+            <text class="bs" x="536" y="199">HD adj EPS ✗</text>
+            <rect x="652" y="182" width="118" height="26" rx="4" fill="#f8fafc" stroke="#d0d5dd"/>
+            <text class="bs" x="662" y="199">Hays × 2 ✗</text>
+          </g>
+        </svg>
+        <figcaption>A measured bias is not a reason to correct. Each candidate is replayed chronologically, estimating the bias from earlier periods only, and applied only if it beat the raw estimate on median error <em>and</em> on most periods.</figcaption>
+      </figure>
+
+      <div class="card">
+        <p><strong>The one to ask us about.</strong> The HD comparable-sales correction passed on six periods and we shipped a forecast of <strong>0.27%</strong>. Extended to ten periods it stopped clearing the gate, and the number returned to <strong>1.13%</strong> — near what guidance implies. The gate removed a correction we had already shipped. That is the whole argument for having one.</p>
+      </div>
 
       <h3>How much would the numbers move if we had chosen differently?</h3>
-      <p>We ran the complete pipeline three times, swapping the model in the analyst role each time, and compared all twelve submitted figures:</p>
-      <table>
-        <tr><th>Spread across three models</th><th class="num">Metrics</th></tr>
-        <tr><td>Identical to the digit</td><td class="num">7 of 12</td></tr>
-        <tr><td>Under 1%</td><td class="num">9 of 12</td></tr>
-        <tr><td>Largest single move (Deere segment profit)</td><td class="num">4.2%</td></tr>
-      </table>
-      <p>Median spread across the twelve metrics is <strong>0.1%</strong>. That is the constrained-role design showing up as a measurement: where the guidance route has evidence to work with, swapping the model changes nothing at all, because the model is not the thing deciding. Every metric that does move belongs to Deere — the one company with no usable quarterly guidance, where the deterministic routes abstain and the analyst necessarily carries more weight. Our least-anchored company is also our least stable one, which is exactly the honest shape for this to have.</p>
+      <figure>
+        <svg viewBox="0 0 900 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sensitivity to analyst model choice" style="width:100%;height:auto">
+          <style>.st { font: 600 13px Inter, sans-serif; fill:#101828; } .ss { font: 11.5px Inter, sans-serif; fill:#667085; }</style>
+          <text class="st" x="0" y="14">Same pipeline, three different models in the analyst role — spread across all 12 submitted numbers</text>
+          <g>
+            <rect x="0" y="28" width="437" height="30" fill="#067647" rx="4"/>
+            <text class="st" x="12" y="48" fill="#fff">7 of 12 identical to the digit</text>
+            <rect x="443" y="28" width="125" height="30" fill="#155eef" rx="4"/>
+            <text class="st" x="455" y="48" fill="#fff">2 under 1%</text>
+            <rect x="574" y="28" width="326" height="30" fill="#b45309" rx="4"/>
+            <text class="st" x="586" y="48" fill="#fff">3 move 2–4% — all Deere</text>
+          </g>
+          <text class="ss" x="0" y="80">Median spread 0.1%. Every metric that moves belongs to the one company with no usable quarterly guidance.</text>
+        </svg>
+        <figcaption>Where the deterministic routes have evidence, swapping the model changes nothing — because the model is not the thing deciding.</figcaption>
+      </figure>
 
       <p>Caveat, stated plainly: for quarters reported before the models' training cutoffs the LLM-analyst route may have seen the actuals; quarters reported in 2026 are the cleanest window, and the two deterministic routes are contamination-free by construction.</p>
     </section>
@@ -211,12 +292,12 @@
       <h2>Important design choices</h2>
       <ul>
         <li><strong>LLMs transcribe and propose; arithmetic decides.</strong> Rejected alternative: "ask a strong model for the number with good context". It is unfalsifiable, unauditable, and its errors are invisible until the company reports.</li>
-        <li><strong>Per-document extraction with caching.</strong> A fact depends only on its document, so the fact table time-slices for free — that is what makes the backtest nearly free and the final run fast and resumable.</li>
+        <li><strong>Per-document extraction, cached.</strong> A fact depends only on its document, so the fact table time-slices for free — which is what makes the backtest cheap enough to run at all.</li>
         <li><strong>No vector database.</strong> Rejected: embeddings over 1,139 files. The corpus is small, dated and structured; recency-plus-type selection and <code>rg</code> are transparent and reproducible.</li>
         <li><strong>Estimators abstain instead of guessing.</strong> Deere gives no quarterly EPS guidance — the guidance route abstains there and the median leans on the other routes, visibly in the audit trail.</li>
-        <li><strong>Rejected: one autonomous agent per company.</strong> We built that too, as a baseline — spawn a sandboxed coding agent per company, have it research and return a schema-checked forecast. It works, and its twelve numbers land close to ours. But the schema can only check <em>shape</em> (units present, bear ≤ value ≤ bull, evidence IDs resolve); it cannot check that a cited number appears in the cited document, because the agent authors both the number and the evidence list. Its instruction to "state an arithmetic formula" is a request, not a constraint. We kept the constrained-role design because its guarantees are enforced rather than requested — and because a fresh agent per run cannot be re-run to the same answer.</li>
-        <li><strong>External evidence is gated like internal evidence.</strong> A consensus anchor must be corroborated by two independent sources, dated no later than today, on the right basis, and not equal to a period the company has already reported. Uncorroborated numbers are recorded but never used.</li>
-        <li><strong>The Street sometimes quotes a different metric.</strong> Six sources agree Deere's consensus "revenue" is about 11.1bn. Our metric is <em>worldwide net sales and revenues</em>; theirs is equipment-operations net sales. The Q2 FY2026 8-K states both — 13,369 total against 11,778 equipment, a 0.878 ratio — so converted, the Street figure implies about 12,630 on our basis and <em>corroborates</em> our forecast instead of contradicting it. Anchoring on it raw would have pulled us roughly 1,800 low. The mismatch is declared in <code>agent/config.py</code> with that arithmetic attached.</li>
+        <li><strong>Rejected: an autonomous agent per company.</strong> A schema can check shape — units present, bear ≤ value ≤ bull, evidence IDs resolve — but not that a cited number appears in the cited document, because the agent authors both the number and the evidence list. "Show your arithmetic" is a request; ours is a constraint.</li>
+        <li><strong>External evidence is gated like internal evidence.</strong> A consensus anchor needs two independent sources, dated no later than today, on the right basis, and not equal to an already-reported period. Uncorroborated numbers are recorded, never used.</li>
+        <li><strong>The Street sometimes quotes a different metric.</strong> Six sources put Deere consensus "revenue" near 11.1bn. Ours is <em>worldwide net sales and revenues</em>; theirs is equipment operations. The Q2 filing states both — 13,369 against 11,778, a 0.878 ratio — so converted it implies ~12,630 and <em>corroborates</em> our forecast. Anchoring raw would have pulled us ~1,800 low.</li>
         <li><strong>Sample disagreement as a signal.</strong> Independent analyst samples answer the same prompt; a large spread flags the metric in validation. Planned as cross-provider Claude-vs-GPT, but only one provider's key was available on the day, so the spread is between independent samples of one model — and that model turns out to be highly self-consistent, which makes this check weaker than intended. Declared rather than dressed up.</li>
       </ul>
     </section>
@@ -243,15 +324,12 @@
         <li>We tried to answer "is a bigger model a better analyst?" from the backtest. A first comparison favoured the cheap model, but at 31–25 on 56 rows that is p≈0.24 — indistinguishable from a coin toss, and we had initially reported it as a finding. It is not one. The cheap model is retained because it is cheaper and no worse, not because it was shown to be better.</li>
         <li>Deere's segment metric (PP&amp;A operating profit) has the thinnest guidance signal; we lean on seasonality and the analyst route there, and its answers varied the most between runs.</li>
       </ul>
-      <h3>What actually went wrong today (and what it changed)</h3>
-      <ul>
-        <li>Our first extraction system prompt said the model must "never compute" — so it refused to convert $41.8bn to USD millions and returned <em>zero facts</em>. Mechanical unit conversion is now explicitly permitted; inventing numbers is not.</li>
-        <li>An early bug sent the extraction <em>instructions without the document</em> — the model correctly returned <code>[]</code>. The cache key now hashes the full prompt so a prompt change can never serve stale results.</li>
-        <li>A newer 8-K's "an <em>increase</em> of $1.8 billion" was recorded as the quarter's level and, being newest, beat the correct 45,277 in the series. Fix: majority-vote clustering across every document that restates a figure — the truth appears many times, an extraction slip once.</li>
-        <li>The grounding gate rejected true facts for surprising reasons: Hays writes "pre -exceptional" with an OCR space, "£4 3.5m" with digits split, and tables get reconstructed rather than quoted. We added normalisation plus a fallback that accepts a fact only if all its numbers co-occur next to the metric's name in the document.</li>
-        <li>The red-team reviewer originally chose its own "blocking" severity and blocked ADI over a 0.2-in-6,784 rounding difference; it now only reports <code>unit_error</code> true/false, and only unit errors block.</li>
-        <li>We planned cross-provider ensembling (Claude vs GPT); only an OpenAI key was available on the day, so the disagreement check runs between independent samples of a single model — which turned out to be highly self-consistent, so the check is weaker than designed.</li>
-        <li><code>rg</code>'s parallel file walk returned evidence in a different order on each run, which changed analyst prompts and made Deere's numbers wobble between runs — search output is now deterministically sorted.</li>
+      <h3>What went wrong, and what it changed</h3>
+      <ul class="tight">
+        <li>A newer 8-K's "an <em>increase</em> of $1.8 billion" was stored as the quarter's level and, being newest, beat the correct 45,277. Fix: majority-vote across every document restating a figure — the truth appears many times, a slip appears once.</li>
+        <li>The red-team reviewer blocked ADI over a 0.2-in-6,784 rounding difference, then blocked a correct 0.75pp comps figure. It is now advisory; deterministic gates decide.</li>
+        <li><code>rg</code>'s parallel file walk returned evidence in a different order each run, which changed analyst prompts and made Deere wobble. Search output is now deterministically sorted.</li>
+        <li>We reported the cheap model as a measurably better analyst on a 31–25 head-to-head. That is p≈0.24 — a coin toss. It is retained for being cheaper and no worse, not better.</li>
       </ul>
     </section>
 
