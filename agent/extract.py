@@ -87,6 +87,9 @@ Rules:
   high 4.0 (never record the prior-year base as the guidance value).
 - Guidance stated as "X plus or minus Y" (e.g. "revenue of $3.0 billion,
   +/-$100 million"): record low = X-Y and high = X+Y in workbook units.
+- Guidance that a result will be "at the top of" a stated range: record value =
+  the TOP bound (e.g. "at the top of the £37.0-46.0m range" -> value 46.0);
+  "at the bottom of" -> the bottom bound.
 - Accounting negatives use parentheses: "(0.3)%" means -0.3.
 - Figures reported in thousands (e.g. "$2,880,348" thousands) must be converted
   to millions (2880.348) when the workbook unit is millions.
@@ -173,12 +176,18 @@ def _ground(fact: dict, text: str, metric) -> str | None:
         if not (direct or pm):
             return f"range {lo}..{hi} not present in quote (as bounds or mid±width)"
 
-    # attribution check: money metrics must mention the metric by name in the
-    # quote, otherwise a nearby number gets credited to the wrong metric
+    # attribution checks: money metrics must mention the metric by name, and
+    # adjusted/pre-exceptional metrics must show the qualifier — otherwise the
+    # GAAP row next to the adjusted row gets credited to the wrong metric
+    blob = _norm_ws(quote)
     if metric.kind == "money":
-        blob = _norm_ws(quote)
         if not any(_norm_ws(a) in blob for a in metric.aliases):
             return "quote does not mention the metric (attribution)"
+    label = metric.label.lower()
+    if label.startswith(("adjusted", "pre-exceptional")):
+        if not any(q in blob for q in ("adjust", "pre-exception", "pre exception",
+                                       "non-gaap", "non gaap")):
+            return "quote lacks adjusted/pre-exceptional qualifier (attribution)"
     return None
 
 

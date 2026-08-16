@@ -275,13 +275,17 @@ def _series_table(series: Series) -> str:
 
 def llm_analyst(company: Company, metric: Metric, series: Series,
                 gfacts: list[Fact], target: str, consensus: dict | None,
-                log: RunLog, samples_per_provider: int = 2) -> list[Estimate]:
+                log: RunLog, samples_per_provider: int = 2,
+                extra_evidence: str = "") -> list[Estimate]:
     providers = llm.available_providers()
     if not providers:
         return []
     gtxt = "\n".join(
         f'- [{f.fact_type} {f.period}, {f.doc_id}] "{f.quote}"'
         for f in gfacts if f.metric == metric.key)[:4000] or "  (none extracted)"
+    if extra_evidence:
+        gtxt += ("\n\nRecent outlook excerpts from the newest filings "
+                 "(verbatim, may cover other metrics):\n" + extra_evidence)
     ctxt = ""
     if consensus and consensus.get(metric.key):
         c = consensus[metric.key]

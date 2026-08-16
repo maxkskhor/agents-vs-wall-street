@@ -10,7 +10,7 @@ from dataclasses import dataclass, asdict, field
 
 from . import llm
 from .config import RUNS, Company
-from .corpus import results_docs
+from .corpus import results_docs, search
 from .consensus import fetch_consensus, load_consensus
 from .engine import combine
 from .estimators import Estimate, guidance, llm_analyst, statistical
@@ -62,6 +62,15 @@ def run_company(company: Company, log: RunLog, run_id: str,
     if not offline and asof is None:
         consensus = load_consensus(company) or fetch_consensus(company, log)
 
+    # raw outlook lines from the newest documents, handed to the analyst as
+    # extra cited evidence (catches guidance shapes extraction cannot type,
+    # e.g. Deere's per-segment sales-growth x margin outlook)
+    newest = docs[0].published
+    snippets = [f"[{d.doc_id}] {line}"
+                for d, _, line in search(company, r"outlook|forecast|guidance|we expect", asof=asof)
+                if (newest - d.published).days <= 120][:12]
+    extra_evidence = "\n".join(snippets)[:5000]
+
     finals: dict[str, float] = {}
     lineage: dict[str, dict] = {}
     for metric in company.metrics:
@@ -73,7 +82,8 @@ def run_company(company: Company, log: RunLog, run_id: str,
         if g:
             ests.append(g)
         ests.extend(llm_analyst(company, metric, series[metric.key], gfacts,
-                                target, consensus, log))
+                                target, consensus, log,
+                                extra_evidence=extra_evidence))
         log.log("estimate", f"{company.short}/{metric.key}: " + "; ".join(
             f"{e.method}={e.value:.4g}" for e in ests))
         cval = None
