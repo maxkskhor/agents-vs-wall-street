@@ -318,6 +318,7 @@
     <section>
       <h2>Known weaknesses</h2>
       <ul>
+        <li><strong>Our third route is partly redundant with our first.</strong> Where guidance exists, the LLM analyst mostly re-derives it — on five of seven such metrics the two land within 0.4% of each other, because the model's adjustment is usually "apply the guidance midpoint", which the guidance route already computes deterministically. It earns its weight only where guidance abstains: all three Deere metrics and Hays EPS. That is also exactly where our sensitivity test shows the numbers move.</li>
         <li>Extraction quality bounds everything: a guidance sentence the extractor misses is an estimate the ensemble never sees. The grounding gate stops hallucination, not omission.</li>
         <li>The consensus anchor trusts public websites found during the event; a stale or wrong consensus shifts the final number by up to β of the gap. The snapshot is cited and timestamped so judges can inspect it.</li>
         <li>Backtest samples are still small (10 reporting periods per company at most) and partially contaminated for the LLM route on pre-2026 quarters (declared above). Deeper history also spans structural breaks — Home Depot acquired SRS and GMS inside the window — so more data is not uniformly better data.</li>
