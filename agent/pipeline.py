@@ -59,8 +59,9 @@ def run_company(company: Company, log: RunLog, run_id: str,
                      f"{len(gfacts)} guidance/preannounce")
 
     consensus = None
-    if not offline and asof is None:
-        consensus = load_consensus(company) or fetch_consensus(company, log, series)
+    if asof is None:
+        consensus = load_consensus(company) or fetch_consensus(
+            company, log, series, offline=offline)
 
     # raw outlook lines from the newest documents, handed to the analyst as
     # extra cited evidence (catches guidance shapes extraction cannot type,
