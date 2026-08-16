@@ -90,7 +90,7 @@ def run_company(company: Company, log: RunLog, run_id: str,
             ests.append(g)
         # no guidance route -> the analyst carries more weight, so buy
         # stability with a larger sample count there
-        n_samples = 2 if g else 4
+        n_samples = 5 if g else 8
         ests.extend(llm_analyst(company, metric, series[metric.key], gfacts,
                                 target, consensus, log,
                                 samples_per_provider=n_samples,

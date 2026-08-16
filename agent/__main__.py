@@ -34,15 +34,28 @@ def cmd_run(args) -> int:
     asof = dt.date.fromisoformat(args.asof) if args.asof else None
     log.log("start", f"run {run_id} companies={[c.short for c in _companies(args)]} "
                      f"offline={args.offline} asof={asof or 'latest'}")
+    from concurrent.futures import ThreadPoolExecutor
+
+    companies = _companies(args)
     failures = []
-    for company in _companies(args):
+
+    def one(company):
         try:
             result = run_company(company, log, run_id, offline=args.offline, asof=asof)
             log.log("done", f"{company.short}: " + ", ".join(
                 f"{m.label}={result.final[m.label]}" for m in company.metrics))
+            return None
         except Exception as e:  # noqa: BLE001 - keep other companies running
             log.log("error", f"{company.short}: {type(e).__name__}: {e}")
-            failures.append(company.short)
+            return company.short
+
+    # companies are fully independent; the run log is timestamped so an
+    # interleaved log still reconstructs each company's sequence
+    if args.sequential or len(companies) == 1:
+        failures = [f for f in (one(c) for c in companies) if f]
+    else:
+        with ThreadPoolExecutor(max_workers=len(companies)) as pool:
+            failures = [f for f in pool.map(one, companies) if f]
     if failures:
         log.log("end", f"FAILED for {failures}")
         return 1
@@ -87,6 +100,8 @@ def main() -> int:
     p.add_argument("--offline", action="store_true",
                    help="skip the live consensus lookup")
     p.add_argument("--asof", help="pretend today is this date (backtest plumbing)")
+    p.add_argument("--sequential", action="store_true",
+                   help="run companies one at a time (default: in parallel)")
     p.set_defaults(func=cmd_run)
 
     p = sub.add_parser("backtest", help="time-travel evaluation on past quarters")

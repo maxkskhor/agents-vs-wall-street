@@ -38,13 +38,13 @@
       <p>Agent name: <strong>Glasshouse</strong></p>
       <p>Team: <strong>Team MYS — Max Khor, Yash Rai, Swareena Gurung</strong></p>
       <p>Build style and harness: <strong>A constrained-role pipeline, not an agent loop</strong> — no planner, no autonomous tool use, no multi-agent debate. The program calls models only for bounded, single-document jobs; all composition and arithmetic is ordinary code, and model output that fails a gate is discarded rather than negotiated with.</p>
-      <p>Models: <strong>Two OpenAI models in fixed roles</strong> — a cheap one for high-volume document transcription (A/B-checked against the stronger model on sample documents: identical output), and a stronger one for the analyst, red-team and consensus search. Exact model IDs are recorded in the entry form.</p>
+      <p>Models: <strong>One cheap OpenAI model in every role</strong> — transcription, analyst, red-team and consensus search. We tested a stronger model in the analyst role against the backtest and it scored worse, so it is not used. Exact model IDs are recorded in the entry form.</p>
 
     </div>
 
     <section>
       <h2>How it works</h2>
-      <p>One command — <code>.venv/bin/python -m agent run --all</code> — runs four companies through the same five stages. Every stage writes a JSON artifact under <code>runs/&lt;run-id&gt;/</code>, so each submitted cell can be traced offline from evidence to number.</p>
+      <p>One command — <code>.venv/bin/python -m agent run --all</code> — runs the four companies in parallel through the same five stages, finishing in about 25 seconds. Every stage writes a JSON artifact under <code>runs/&lt;run-id&gt;/</code>, so each submitted cell can be traced offline from evidence to number.</p>
 
       <figure>
         <svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Glasshouse pipeline diagram" style="width:100%;height:auto">
@@ -108,7 +108,7 @@
           <text class="t" x="634" y="356">5 · Validation gates</text>
           <text class="s" x="634" y="374">units · magnitude vs history</text>
           <text class="s" x="634" y="390">cross-metric consistency</text>
-          <text class="s" x="634" y="406">red-team pass — fails block</text>
+          <text class="s" x="634" y="406">block on fail; red-team advises</text>
 
           <rect class="box" x="620" y="470" width="180" height="64" rx="10"/>
           <text class="t" x="634" y="496">4 workbooks + audit</text>
@@ -148,7 +148,7 @@
           <ul>
             <li><em>Guidance-anchored</em>: pure arithmetic on extracted guidance — midpoints, full-year "catch-up" math (implied remaining-quarter growth given already-reported quarters), historical seasonal shares.</li>
             <li><em>Statistical</em>: prior-year base × median YoY growth (additive in points for percent metrics). Contains no model call at all.</li>
-            <li><em>LLM analyst</em>: independent gpt-5.1 samples. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value.</li>
+            <li><em>LLM analyst</em>: five to eight independent samples, run in parallel. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value.</li>
           </ul>
         </li>
         <li><strong>Combine.</strong> Weighted median across routes — weights chosen by the backtest, not by us — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>, β = 0.6.</li>
@@ -170,20 +170,28 @@
     <section>
       <h2>What the backtest measured</h2>
       <p>The corpus is frozen and dated, so the same pipeline can run "as of" the day before each past earnings report and be scored against the actual that later filings reveal. We report the <em>floor-relative miss</em> (our miss ÷ scoring floor, capped at 5.0) — the score we would receive if Wall Street were perfect, an upper bound on the real score.</p>
-      <p>We backtested 14 past reporting events (40 metric-level forecasts) across the four companies — every quarter reported since mid-2025 plus two Hays fiscal years. Mean floor-relative miss per route:</p>
+      <p>We backtested 59 metric-level forecasts across the four companies — every reporting event since mid-2024 that the corpus can score. Mean floor-relative miss per route:</p>
       <table>
         <tr><th>Route</th><th class="num">n</th><th class="num">Mean floor-relative miss</th><th>Reading</th></tr>
-        <tr><td>Guidance arithmetic</td><td class="num">23</td><td class="num"><span class="ok">3.42</span></td><td>Best where it applies; abstains on 17/40 (Deere gives no usable quarterly guidance)</td></tr>
-        <tr><td>LLM analyst</td><td class="num">40</td><td class="num">3.94</td><td>Always available; strongest on percent metrics</td></tr>
-        <tr><td>Statistical (no LLM)</td><td class="num">39</td><td class="num">4.25</td><td>Honest baseline; beats the others on ~a quarter of rows</td></tr>
+        <tr><td>LLM analyst</td><td class="num">59</td><td class="num"><span class="ok">3.55</span></td><td>Always available; best overall, and best on percent metrics</td></tr>
+        <tr><td>Guidance arithmetic</td><td class="num">30</td><td class="num">3.71</td><td>Strong where it applies; abstains on 29/59 (Deere gives no usable quarterly guidance)</td></tr>
+        <tr><td>Statistical (no LLM)</td><td class="num">52</td><td class="num">4.39</td><td>Honest baseline, and the only route that survives on Hays EPS</td></tr>
       </table>
-      <p>Findings the final forecasts actually use (full table in <code>research/backtest-report.md</code>):</p>
-      <ul>
-        <li><strong>ADI beats its own guidance midpoint every quarter</strong> in the window (revenue ~+3.5% on average; adjusted EPS beat all four quarters). The engine applies this as a capped correction to the guidance route, and the fetched public consensus sits exactly at the midpoint — this is where we deliberately deviate from Wall Street.</li>
-        <li><strong>HD over-promised FY2025 comps by ~1.25pp</strong> on average, so the grid search de-weighted guidance for percent metrics (0 → we shrink to 0.25 given n=8).</li>
-        <li><strong>The Hays H1 + pre-announced-H2 build-up scored 0.18–0.19</strong> on net fees — our single best route anywhere, and the July trading update's "top of the £37.0–46.0m range" statement anchors operating profit.</li>
-        <li><strong>The EPS weight grid over-fitted</strong> (n=14 in the capped-score regime, its own backtest score 4.2) — the engine detects that and falls back to priors rather than trusting it. This rule exists because the over-fit produced a visibly wrong Hays EPS in a dry run and the red-team gate caught it.</li>
-      </ul>
+      <p>We also used the backtest to settle a question we would otherwise have guessed at: <strong>is a bigger model a better analyst?</strong> Running the identical backtest with a stronger model in the analyst role scored <em>worse</em> — 3.99 against 3.55, losing the head-to-head 25–31. The cheap model stayed.</p>
+
+      <h3>Corrections must earn their place</h3>
+      <p>Finding that a company's guidance has been systematically optimistic is not a reason to correct for it — the pattern may be noise. Every candidate correction is replayed chronologically, estimating the bias from earlier periods only, and is applied only if it reduced walk-forward median error and improved a majority of periods. <strong>Two of seven candidates passed:</strong></p>
+      <table>
+        <tr><th>Company / metric</th><th class="num">n</th><th>Outcome</th></tr>
+        <tr><td>HD comparable sales</td><td class="num">6</td><td><span class="ok">Applied</span> — walk-forward error 1.45 → 1.02pp, 67% of periods improved. Home Depot's comp guidance runs ~0.9pp optimistic.</td></tr>
+        <tr><td>ADI adjusted EPS</td><td class="num">6</td><td><span class="ok">Applied</span> — 0.17 → 0.04, 67% improved. ADI beats its own guide midpoint consistently.</td></tr>
+        <tr><td>ADI revenue, HD net sales</td><td class="num">5</td><td>Withheld — only 2 walk-forward tests, need 3</td></tr>
+        <tr><td>HD adjusted EPS</td><td class="num">4</td><td>Withheld — 1 test</td></tr>
+        <tr><td>Hays net fees, operating profit</td><td class="num">2</td><td>Withheld — annual metric, no walk-forward tests available</td></tr>
+      </table>
+      <p>The withheld five are visible in <code>cache/calibration.json</code> with the measured bias and the reason it was not used. A bias we can see but cannot validate is reported, not applied.</p>
+      <p>One correctness fix the backtest forced: bias was originally measured relative to the <em>actual</em> but applied multiplicatively to the <em>estimate</em>, which systematically under-corrects. Signed error is now measured in the space the correction acts in — relative to the estimate for money and EPS, in percentage points for percent metrics, where a relative error is meaningless for a series that crosses zero.</p>
+
       <p>Caveat, stated plainly: for quarters reported before the models' training cutoffs the LLM-analyst route may have seen the actuals; quarters reported in 2026 are the cleanest window, and the two deterministic routes are contamination-free by construction.</p>
     </section>
 
@@ -196,7 +204,7 @@
         <li><strong>Estimators abstain instead of guessing.</strong> Deere gives no quarterly EPS guidance — the guidance route abstains there and the median leans on the other routes, visibly in the audit trail.</li>
         <li><strong>Rejected: one autonomous agent per company.</strong> We built that too, as a baseline — spawn a sandboxed coding agent per company, have it research and return a schema-checked forecast. It works, and its twelve numbers land close to ours. But the schema can only check <em>shape</em> (units present, bear ≤ value ≤ bull, evidence IDs resolve); it cannot check that a cited number appears in the cited document, because the agent authors both the number and the evidence list. Its instruction to "state an arithmetic formula" is a request, not a constraint. We kept the constrained-role design because its guarantees are enforced rather than requested — and because a fresh agent per run cannot be re-run to the same answer.</li>
         <li><strong>External evidence is gated like internal evidence.</strong> A consensus anchor must be corroborated by two independent sources, dated no later than today, on the right basis, and not equal to a period the company has already reported. Uncorroborated numbers are recorded but never used.</li>
-        <li><strong>Sample disagreement as a signal.</strong> Independent analyst samples answer the same prompt; a large spread between them flags the metric in validation. (Planned as cross-provider Claude-vs-GPT; on the day only an OpenAI key was available, so the spread is between independent gpt-5.1 samples — declared honestly here.)</li>
+        <li><strong>Sample disagreement as a signal.</strong> Independent analyst samples answer the same prompt; a large spread flags the metric in validation. Planned as cross-provider Claude-vs-GPT, but only one provider's key was available on the day, so the spread is between independent samples of one model — and that model turns out to be highly self-consistent, which makes this check weaker than intended. Declared rather than dressed up.</li>
       </ul>
     </section>
 

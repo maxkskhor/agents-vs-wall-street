@@ -49,15 +49,24 @@ def default_model(provider: str) -> str:
     load_env()
     if provider == "anthropic":
         return os.environ.get("ANTHROPIC_MODEL") or "claude-sonnet-5"
-    return os.environ.get("OPENAI_MODEL") or "gpt-5.1"
+    return os.environ.get("OPENAI_MODEL") or "gpt-5.6-luna"
 
 
 def extract_model(provider: str) -> str:
-    """Cheaper model for high-volume transcription; A/B-checked against the
-    default model on sample docs with identical output."""
+    """High-volume document transcription. Same model as the default: A/B-run
+    against the alternative on sample documents produced identical facts."""
     load_env()
     if provider == "openai":
-        return os.environ.get("EXTRACT_MODEL") or "gpt-5.6-luna"
+        return os.environ.get("EXTRACT_MODEL") or default_model(provider)
+    return default_model(provider)
+
+
+def analyst_model(provider: str) -> str:
+    """The judgement-heavy role. Separately configurable so the backtest can
+    decide whether a stronger model actually earns its cost here."""
+    load_env()
+    if provider == "openai":
+        return os.environ.get("ANALYST_MODEL") or default_model(provider)
     return default_model(provider)
 
 

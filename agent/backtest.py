@@ -29,6 +29,8 @@ from .extract import build_fact_table, guidance_facts, reported_series
 from .runlog import RunLog, new_run_id
 
 BACKTEST_DOCS = 26
+MIN_BIAS_OBS = 3      # observations before a bias is even estimated
+MIN_WF_TESTS = 3      # walk-forward tests before a correction can be recommended
 
 
 def _floor(kind: str, actual: float) -> float:
@@ -156,19 +158,90 @@ def _calibrate(rows: list[dict]) -> dict:
     return out
 
 
+def _signed_error(actual: float, estimate: float, kind: str) -> float:
+    """Signed error measured in the space the correction is applied in.
+
+    Corrections are multiplicative for money/EPS (`raw * (1 + bias)`), so the
+    bias must be relative to the ESTIMATE; dividing by the actual — as this
+    did originally — systematically under-corrects. Percentage metrics are
+    additive and use a plain percentage-point difference, because a relative
+    error is meaningless for a metric that crosses zero, like comparable sales.
+    """
+    if kind == "percent":
+        return actual - estimate
+    return (actual - estimate) / max(abs(estimate), 1e-9)
+
+
+def _cap(bias: float, kind: str) -> float:
+    """Small samples must not be allowed to produce large adjustments."""
+    return max(-1.5, min(1.5, bias)) if kind == "percent" else max(-0.06, min(0.06, bias))
+
+
 def _guidance_bias(rows: list[dict]) -> dict:
-    """Mean signed error of the guidance estimator per company: how much the
-    company's guidance-anchored number under/over-shoots actuals."""
-    out: dict[str, dict] = {}
+    """Per company/metric bias of the guidance route, walk-forward validated.
+
+    A bias existing is not a reason to correct for it. A correction is only
+    recommended when, replaying chronologically and estimating the bias from
+    ONLY earlier periods, the corrected forecast actually beat the raw one —
+    on median error and on a majority of the periods tested.
+    """
+    groups: dict[str, list[dict]] = {}
     for r in rows:
-        v = r["methods"].get("guidance")
-        if v is None:
-            continue
-        key = f'{r["company"]}/{r["metric"]}'
-        rel = ((r["actual"] - v) / abs(r["actual"])) if r["kind"] != "percent" else (r["actual"] - v)
-        out.setdefault(key, []).append(rel)
-    return {k: {"mean_signed": round(statistics.mean(v), 4), "n": len(v)}
-            for k, v in out.items() if len(v) >= 2}
+        if r["methods"].get("guidance") is not None:
+            groups.setdefault(f'{r["company"]}/{r["metric"]}', []).append(r)
+
+    out: dict[str, dict] = {}
+    for key, rs in groups.items():
+        rs = sorted(rs, key=lambda r: r["target"])
+        kind = rs[0]["kind"]
+        errs = [_signed_error(r["actual"], r["methods"]["guidance"], kind) for r in rs]
+        record = {
+            "n": len(rs),
+            "median_signed": round(statistics.median(errs), 4),
+            "median_abs": round(statistics.median([abs(e) for e in errs]), 4),
+            "p80_abs": round(sorted(abs(e) for e in errs)[int(0.8 * (len(errs) - 1))], 4),
+            "pct_actual_above": round(100 * sum(1 for e in errs if e > 0) / len(errs)),
+            "correction_recommended": False,
+            "reason": "",
+        }
+
+        raw_errs, corr_errs, improved, tests = [], [], 0, 0
+        for i in range(1, len(rs)):
+            prior = errs[:i]
+            if len(prior) < MIN_BIAS_OBS:
+                continue
+            b = _cap(statistics.median(prior), kind)
+            r = rs[i]
+            est = r["methods"]["guidance"]
+            corrected = est + b if kind == "percent" else est * (1 + b)
+            raw_e, corr_e = abs(est - r["actual"]), abs(corrected - r["actual"])
+            raw_errs.append(raw_e)
+            corr_errs.append(corr_e)
+            tests += 1
+            improved += corr_e < raw_e
+        record["walk_forward_tests"] = tests
+        if tests:
+            record["wf_raw_median_abs"] = round(statistics.median(raw_errs), 4)
+            record["wf_corrected_median_abs"] = round(statistics.median(corr_errs), 4)
+            record["pct_periods_improved"] = round(100 * improved / tests)
+
+        if tests < MIN_WF_TESTS:
+            record["reason"] = (f"insufficient walk-forward evidence "
+                                f"({tests} tests, need {MIN_WF_TESTS})")
+        elif record["wf_corrected_median_abs"] >= record["wf_raw_median_abs"]:
+            record["reason"] = "correction did not reduce walk-forward error"
+        elif record["pct_periods_improved"] < 50:
+            record["reason"] = (f"only {record['pct_periods_improved']}% of periods "
+                                f"improved (need >=50%)")
+        else:
+            record["correction_recommended"] = True
+            record["mean_signed"] = _cap(statistics.median(errs), kind)
+            record["reason"] = (
+                f"walk-forward median error {record['wf_raw_median_abs']} -> "
+                f"{record['wf_corrected_median_abs']}, "
+                f"{record['pct_periods_improved']}% of periods improved")
+        out[key] = record
+    return out
 
 
 def _write_report(rows: list[dict], weights: dict, bias: dict) -> None:
