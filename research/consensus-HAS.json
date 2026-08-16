@@ -1,0 +1,19 @@
+{
+ "fetched_at": "2026-08-16T11:57:24.128028+00:00",
+ "period": "FY2026",
+ "net_fees": {
+  "value": 902.4,
+  "source": "Hays plc \u2013 Analysts\u2019 Consensus",
+  "as_of": "2026-08-11"
+ },
+ "preex_eps": {
+  "value": 1.13,
+  "source": "Hays plc \u2013 Analysts\u2019 Consensus",
+  "as_of": "2026-08-11"
+ },
+ "preex_op": {
+  "value": 45.3,
+  "source": "Hays plc \u2013 Analysts\u2019 Consensus",
+  "as_of": "2026-08-11"
+ }
+}

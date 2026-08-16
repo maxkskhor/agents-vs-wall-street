@@ -1,0 +1,9 @@
+{
+ "fetched_at": "2026-08-16T11:45:22.439637+00:00",
+ "period": "FY2026Q2",
+ "adj_eps": {
+  "value": 4.87,
+  "source": "ChartMill (consensus EPS for next earnings)",
+  "as_of": "2026-08-02"
+ }
+}

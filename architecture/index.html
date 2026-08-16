@@ -3,71 +3,243 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agent architecture — Team MYR</title>
+  <title>Glasshouse — Team MYS architecture</title>
   <style>
-    :root { color-scheme: light; --ink:#101828; --muted:#667085; --line:#d0d5dd; --blue:#155eef; --paper:#fff; --wash:#f8fafc; }
+    :root { color-scheme: light; --ink:#101828; --muted:#667085; --line:#d0d5dd; --blue:#155eef; --paper:#fff; --wash:#f8fafc; --gold:#b45309; --green:#067647; }
     * { box-sizing: border-box; }
     body { margin: 0; color: var(--ink); background: var(--wash); font: 16px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    main { width: min(920px, calc(100% - 32px)); margin: 40px auto; padding: clamp(24px, 6vw, 64px); background: var(--paper); border: 1px solid var(--line); border-radius: 20px; }
-    h1 { margin: 0 0 8px; font-size: clamp(40px, 8vw, 72px); line-height: .98; letter-spacing: -.05em; }
+    main { width: min(940px, calc(100% - 32px)); margin: 40px auto; padding: clamp(24px, 6vw, 64px); background: var(--paper); border: 1px solid var(--line); border-radius: 20px; }
+    h1 { margin: 0 0 8px; font-size: clamp(40px, 8vw, 64px); line-height: .98; letter-spacing: -.05em; }
     h2 { margin: 48px 0 12px; font-size: 24px; letter-spacing: -.02em; }
-    p, li { max-width: 72ch; }
+    h3 { margin: 24px 0 8px; font-size: 17px; }
+    p, li { max-width: 76ch; }
     .eyebrow { color: var(--blue); font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
     .lede { color: var(--muted); font-size: 20px; }
     .card { margin-top: 24px; padding: 20px; background: var(--wash); border: 1px solid var(--line); border-radius: 12px; }
-    code { padding: 2px 6px; border-radius: 5px; background: #eef4ff; }
+    code { padding: 2px 6px; border-radius: 5px; background: #eef4ff; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 12px 0; }
+    th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+    th { background: var(--wash); }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .rule { color: var(--gold); font-weight: 700; }
+    .ok { color: var(--green); font-weight: 700; }
+    figure { margin: 24px 0; }
+    figcaption { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .fill-me { background: #fff7d6; border: 1px dashed var(--gold); padding: 8px 12px; border-radius: 8px; }
   </style>
 </head>
 <body>
   <main>
     <p class="eyebrow">Agents vs Wall Street</p>
-    <h1>Team MYR</h1>
-    <p class="lede">In one sentence, explain what your agent does and what makes the approach worth understanding.</p>
+    <h1>Glasshouse</h1>
+    <p class="lede">A forecasting agent built on one rule: <strong>the language model is never allowed to say a forecast number.</strong> Models transcribe cited evidence and propose assumptions; deterministic arithmetic computes all twelve figures; a time-travel backtest — not taste — chooses how the estimates are combined.</p>
 
     <div class="card">
-      <p>Agent name: <strong>add agent name</strong></p>
-      <p>Team: <strong>Yash Rai, Max Khor, Swareena Gurung</strong></p>
-      <p>Build style and harness: <strong>add headless agent, coding harness or hybrid setup</strong></p>
-      <p>Models: <strong>add the primary models</strong></p>
+      <p>Agent name: <strong>Glasshouse</strong></p>
+      <p>Team: <strong>Team MYS — Max Khor, Yash Rai, Swareena Gurung</strong></p>
+      <p>Build style and harness: <strong>Hybrid — custom Python pipeline written during the event with Claude Code; no agent framework</strong></p>
+      <p>Models: <strong>gpt-5.6-luna (high-volume fact extraction, A/B-checked against gpt-5.1) and gpt-5.1 (analyst estimator, red-team, consensus web search)</strong></p>
+
     </div>
 
     <section>
       <h2>How it works</h2>
-      <p>Explain the path from a company ticker to the three forecasts. Name the main stages, models, tools and data sources. A simple diagram is welcome.</p>
+      <p>One command — <code>.venv/bin/python -m agent run --all</code> — runs four companies through the same five stages. Every stage writes a JSON artifact under <code>runs/&lt;run-id&gt;/</code>, so each submitted cell can be traced offline from evidence to number.</p>
+
+      <figure>
+        <svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Glasshouse pipeline diagram" style="width:100%;height:auto">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#667085"/>
+            </marker>
+          </defs>
+          <style>
+            .box { fill:#fff; stroke:#d0d5dd; stroke-width:1.5; rx:10; }
+            .stage { fill:#eef4ff; stroke:#155eef; }
+            .gate { fill:#fff7d6; stroke:#b45309; }
+            .side { fill:#ecfdf3; stroke:#067647; }
+            .t { font: 600 14px Inter, sans-serif; fill:#101828; }
+            .s { font: 12px Inter, sans-serif; fill:#667085; }
+            .flow { stroke:#667085; stroke-width:1.5; fill:none; marker-end:url(#arr); }
+          </style>
+
+          <rect class="box" x="20" y="20" width="200" height="64" rx="10"/>
+          <text class="t" x="34" y="46">Frozen corpus</text>
+          <text class="s" x="34" y="66">1,139 filings · transcripts · slides</text>
+
+          <rect class="box stage" x="20" y="120" width="200" height="64" rx="10"/>
+          <text class="t" x="34" y="146">1 · Retrieve</text>
+          <text class="s" x="34" y="166">newest results docs, by date/type</text>
+
+          <rect class="box stage" x="20" y="220" width="200" height="76" rx="10"/>
+          <text class="t" x="34" y="246">2 · Extract (LLM)</text>
+          <text class="s" x="34" y="264">reported values · guidance ranges</text>
+          <text class="s" x="34" y="280">pre-announcements, per document</text>
+
+          <rect class="box gate" x="20" y="330" width="200" height="64" rx="10"/>
+          <text class="t" x="34" y="356">Quote-grounding gate</text>
+          <text class="s" x="34" y="376">number must appear in its quote</text>
+
+          <rect class="box" x="20" y="430" width="200" height="64" rx="10"/>
+          <text class="t" x="34" y="456">facts.json</text>
+          <text class="s" x="34" y="476">value · period · doc · verbatim quote</text>
+
+          <rect class="box stage" x="330" y="120" width="180" height="88" rx="10"/>
+          <text class="t" x="344" y="146">3a · Guidance</text>
+          <text class="s" x="344" y="164">midpoints · FY catch-up math</text>
+          <text class="s" x="344" y="180">seasonal shares · deterministic</text>
+
+          <rect class="box stage" x="330" y="236" width="180" height="88" rx="10"/>
+          <text class="t" x="344" y="262">3b · Statistical</text>
+          <text class="s" x="344" y="280">prior-year base × median YoY</text>
+          <text class="s" x="344" y="296">no LLM anywhere</text>
+
+          <rect class="box stage" x="330" y="352" width="180" height="88" rx="10"/>
+          <text class="t" x="344" y="378">3c · LLM analyst ×N</text>
+          <text class="s" x="344" y="396">cited base + itemised deltas;</text>
+          <text class="s" x="344" y="412">final recomputed by engine</text>
+
+          <rect class="box stage" x="620" y="200" width="180" height="88" rx="10"/>
+          <text class="t" x="634" y="226">4 · Combine</text>
+          <text class="s" x="634" y="244">weighted median; weights from</text>
+          <text class="s" x="634" y="260">backtest; consensus shrink</text>
+
+          <rect class="box gate" x="620" y="330" width="180" height="98" rx="10"/>
+          <text class="t" x="634" y="356">5 · Validation gates</text>
+          <text class="s" x="634" y="374">units · magnitude vs history</text>
+          <text class="s" x="634" y="390">cross-metric consistency</text>
+          <text class="s" x="634" y="406">red-team pass — fails block</text>
+
+          <rect class="box" x="620" y="470" width="180" height="64" rx="10"/>
+          <text class="t" x="634" y="496">4 workbooks + audit</text>
+          <text class="s" x="634" y="516">audit.md: evidence → number</text>
+
+          <rect class="box side" x="330" y="470" width="230" height="64" rx="10"/>
+          <text class="t" x="344" y="496">Time-travel backtest</text>
+          <text class="s" x="344" y="516">same pipeline, as-of past dates</text>
+
+          <rect class="box side" x="620" y="80" width="180" height="64" rx="10"/>
+          <text class="t" x="634" y="106">Consensus anchor</text>
+          <text class="s" x="634" y="126">live web, cited, optional</text>
+
+          <path class="flow" d="M120,84 L120,120"/>
+          <path class="flow" d="M120,184 L120,220"/>
+          <path class="flow" d="M120,296 L120,330"/>
+          <path class="flow" d="M120,394 L120,430"/>
+          <path class="flow" d="M220,462 C280,462 300,180 330,166"/>
+          <path class="flow" d="M220,462 C280,462 300,290 330,280"/>
+          <path class="flow" d="M220,462 C280,462 300,400 330,396"/>
+          <path class="flow" d="M510,164 C570,164 580,225 620,235"/>
+          <path class="flow" d="M510,280 C570,280 580,250 620,248"/>
+          <path class="flow" d="M510,396 C570,396 580,270 620,260"/>
+          <path class="flow" d="M710,144 L710,200"/>
+          <path class="flow" d="M710,288 L710,330"/>
+          <path class="flow" d="M710,428 L710,470"/>
+          <path class="flow" d="M560,500 C590,500 600,300 620,270" stroke-dasharray="5 4"/>
+        </svg>
+        <figcaption>Solid arrows: the final run. Dashed: the backtest feeds calibrated ensemble weights into stage 4. Yellow boxes are gates that can reject work; green are supporting harnesses.</figcaption>
+      </figure>
+
+      <h3>The five stages</h3>
+      <ol>
+        <li><strong>Retrieve.</strong> Deterministic selection from the frozen corpus: the newest results-flavoured filings (8-Ks, trading updates, annual/quarterly reports) per company, ordered by date. No embeddings — filenames and frontmatter already carry date, type and period, and <code>rg</code> covers targeted search.</li>
+        <li><strong>Extract.</strong> An LLM transcribes, one document at a time: reported values, prior-year comparatives, guidance ranges and pre-announcements for the three challenge metrics — each with a verbatim quote. A fact survives only if the quote exists in the document <em>and</em> the number appears in the quote (unit-aware: $41.8bn ≈ 41,765 USDm). Everything else is logged as rejected.</li>
+        <li><strong>Estimate — three independent routes.</strong>
+          <ul>
+            <li><em>Guidance-anchored</em>: pure arithmetic on extracted guidance — midpoints, full-year "catch-up" math (implied remaining-quarter growth given already-reported quarters), historical seasonal shares.</li>
+            <li><em>Statistical</em>: prior-year base × median YoY growth (additive in points for percent metrics). Contains no model call at all.</li>
+            <li><em>LLM analyst</em>: independent gpt-5.1 samples. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value.</li>
+          </ul>
+        </li>
+        <li><strong>Combine.</strong> Weighted median across routes — weights chosen by the backtest, not by us — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>, β = 0.6.</li>
+        <li><strong>Validate, then write.</strong> Deterministic gates (units and magnitudes vs history, cross-metric consistency such as HD comp-sales vs net-sales growth and Hays fee-to-profit conversion, cross-provider disagreement) plus an LLM red-team pass that can block only on unit/scale errors. Any failure stops the workbook writer.</li>
+      </ol>
     </section>
 
     <section>
       <h2>Research and financial reasoning</h2>
-      <p>Explain how the agent finds information, interprets the requested metrics and units, deals with conflicting evidence and turns the research into a forecast.</p>
+      <p>The scoring rule shaped the design. Accuracy is judged <em>relative to Wall Street</em>: <code>|our miss| / max(WS miss, floor)</code>, capped at 5.0. Three consequences:</p>
+      <ul>
+        <li><strong>All four fiscal periods have already ended.</strong> We are predicting reported numbers for completed periods, so the freshest signals dominate: the latest guidance, and pre-announcements. Hays' 10 July trading update effectively pre-announces FY2026 net fees — the extractor treats it as a first-class <em>pre-announcement</em> fact that outranks older guidance.</li>
+        <li><strong>Median beats mean.</strong> Under absolute-error scoring the optimal point forecast is the median of our belief distribution — hence weighted <em>medians</em>, never averages, everywhere in the engine.</li>
+        <li><strong>Consensus is the benchmark, so know where it is.</strong> A cited, timestamped snapshot of public consensus (fetched by the models' web-search tools, cached to <code>research/</code>) anchors the final number; the ensemble moves us away from consensus only where extracted evidence pushes. If the network fails, the run proceeds un-anchored — the anchor is an input, not a dependency.</li>
+      </ul>
+      <p>Conflicting evidence is resolved structurally rather than by vibes: later documents win for restatements; pre-announcements outrank guidance; adjusted-basis quotes are required for adjusted metrics; and quarterly figures are reconciled against full-year guidance through the catch-up arithmetic.</p>
+    </section>
+
+    <section>
+      <h2>What the backtest measured</h2>
+      <p>The corpus is frozen and dated, so the same pipeline can run "as of" the day before each past earnings report and be scored against the actual that later filings reveal. We report the <em>floor-relative miss</em> (our miss ÷ scoring floor, capped at 5.0) — the score we would receive if Wall Street were perfect, an upper bound on the real score.</p>
+      <p>We backtested 14 past reporting events (40 metric-level forecasts) across the four companies — every quarter reported since mid-2025 plus two Hays fiscal years. Mean floor-relative miss per route:</p>
+      <table>
+        <tr><th>Route</th><th class="num">n</th><th class="num">Mean floor-relative miss</th><th>Reading</th></tr>
+        <tr><td>Guidance arithmetic</td><td class="num">23</td><td class="num"><span class="ok">3.42</span></td><td>Best where it applies; abstains on 17/40 (Deere gives no usable quarterly guidance)</td></tr>
+        <tr><td>LLM analyst</td><td class="num">40</td><td class="num">3.94</td><td>Always available; strongest on percent metrics</td></tr>
+        <tr><td>Statistical (no LLM)</td><td class="num">39</td><td class="num">4.25</td><td>Honest baseline; beats the others on ~a quarter of rows</td></tr>
+      </table>
+      <p>Findings the final forecasts actually use (full table in <code>research/backtest-report.md</code>):</p>
+      <ul>
+        <li><strong>ADI beats its own guidance midpoint every quarter</strong> in the window (revenue ~+3.5% on average; adjusted EPS beat all four quarters). The engine applies this as a capped correction to the guidance route, and the fetched public consensus sits exactly at the midpoint — this is where we deliberately deviate from Wall Street.</li>
+        <li><strong>HD over-promised FY2025 comps by ~1.25pp</strong> on average, so the grid search de-weighted guidance for percent metrics (0 → we shrink to 0.25 given n=8).</li>
+        <li><strong>The Hays H1 + pre-announced-H2 build-up scored 0.18–0.19</strong> on net fees — our single best route anywhere, and the July trading update's "top of the £37.0–46.0m range" statement anchors operating profit.</li>
+        <li><strong>The EPS weight grid over-fitted</strong> (n=14 in the capped-score regime, its own backtest score 4.2) — the engine detects that and falls back to priors rather than trusting it. This rule exists because the over-fit produced a visibly wrong Hays EPS in a dry run and the red-team gate caught it.</li>
+      </ul>
+      <p>Caveat, stated plainly: for quarters reported before the models' training cutoffs the LLM-analyst route may have seen the actuals; quarters reported in 2026 are the cleanest window, and the two deterministic routes are contamination-free by construction.</p>
     </section>
 
     <section>
       <h2>Important design choices</h2>
-      <p>Describe the decisions that most affected autonomy, quality, runtime or cost. Include the alternatives you rejected and why.</p>
+      <ul>
+        <li><strong>LLMs transcribe and propose; arithmetic decides.</strong> Rejected alternative: "ask a strong model for the number with good context". It is unfalsifiable, unauditable, and its errors are invisible until the company reports.</li>
+        <li><strong>Per-document extraction with caching.</strong> A fact depends only on its document, so the fact table time-slices for free — that is what makes the backtest nearly free and the final run fast and resumable.</li>
+        <li><strong>No vector database.</strong> Rejected: embeddings over 1,139 files. The corpus is small, dated and structured; recency-plus-type selection and <code>rg</code> are transparent and reproducible.</li>
+        <li><strong>Estimators abstain instead of guessing.</strong> Deere gives no quarterly EPS guidance — the guidance route abstains there and the median leans on the other routes, visibly in the audit trail.</li>
+        <li><strong>Sample disagreement as a signal.</strong> Independent analyst samples answer the same prompt; a large spread between them flags the metric in validation. (Planned as cross-provider Claude-vs-GPT; on the day only an OpenAI key was available, so the spread is between independent gpt-5.1 samples — declared honestly here.)</li>
+      </ul>
     </section>
 
     <section>
       <h2>Checks and tests</h2>
-      <p>Show how the system catches missing information, bad units, implausible values, malformed workbooks and failed model calls. Explain what you tested and what happened.</p>
-    </section>
-
-    <section>
-      <h2>Reproducing the run</h2>
-      <p>State what someone needs to install or configure, the command they run and any remaining human input. Explain how the system accepts the company and metric specification.</p>
+      <ul>
+        <li>Quote-grounding gate on every extracted fact (number must appear in its verbatim quote; quote must appear in the document).</li>
+        <li>Unit traps handled explicitly: Hays EPS in <em>pence</em>, percentages as points (0.6 not 0.006), USDm magnitudes; the red-team pass may block only on unit/scale errors.</li>
+        <li>Magnitude bands vs prior-year values; absolute sanity bands (e.g. ADI gross margin 55–80%); conversion-ratio checks (Hays operating profit ÷ net fees; Deere PP&amp;A profit ÷ total revenue).</li>
+        <li>Cross-metric consistency: HD net-sales growth vs comp sales within the new-stores/FX wedge.</li>
+        <li>12 offline unit tests cover period math, estimator arithmetic, grounding, combination and the workbook writer: <code>.venv/bin/python -m unittest discover -s tests</code>.</li>
+        <li>A failed validation <em>blocks the workbook</em>; the run log records every check with its outcome.</li>
+      </ul>
     </section>
 
     <section>
       <h2>Known weaknesses</h2>
-      <p>Be specific about where the agent still needs human help, where it may fail and what you would improve next.</p>
+      <ul>
+        <li>Extraction quality bounds everything: a guidance sentence the extractor misses is an estimate the ensemble never sees. The grounding gate stops hallucination, not omission.</li>
+        <li>The consensus anchor trusts public websites found during the event; a stale or wrong consensus shifts the final number by up to β of the gap. The snapshot is cited and timestamped so judges can inspect it.</li>
+        <li>Backtest sample sizes are small (≈4 quarters × 3 metrics per company) and partially contaminated for the LLM route (declared above).</li>
+        <li>Deere's segment metric (PP&amp;A operating profit) has the thinnest guidance signal; we lean on seasonality and the analyst route there, and its answers varied the most between runs.</li>
+      </ul>
+      <h3>What actually went wrong today (and what it changed)</h3>
+      <ul>
+        <li>Our first extraction system prompt said the model must "never compute" — so it refused to convert $41.8bn to USD millions and returned <em>zero facts</em>. Mechanical unit conversion is now explicitly permitted; inventing numbers is not.</li>
+        <li>An early bug sent the extraction <em>instructions without the document</em> — the model correctly returned <code>[]</code>. The cache key now hashes the full prompt so a prompt change can never serve stale results.</li>
+        <li>A newer 8-K's "an <em>increase</em> of $1.8 billion" was recorded as the quarter's level and, being newest, beat the correct 45,277 in the series. Fix: majority-vote clustering across every document that restates a figure — the truth appears many times, an extraction slip once.</li>
+        <li>The grounding gate rejected true facts for surprising reasons: Hays writes "pre -exceptional" with an OCR space, "£4 3.5m" with digits split, and tables get reconstructed rather than quoted. We added normalisation plus a fallback that accepts a fact only if all its numbers co-occur next to the metric's name in the document.</li>
+        <li>The red-team reviewer originally chose its own "blocking" severity and blocked ADI over a 0.2-in-6,784 rounding difference; it now only reports <code>unit_error</code> true/false, and only unit errors block.</li>
+        <li>We planned cross-provider ensembling (Claude vs GPT); only an OpenAI key was available on the day, so the disagreement check runs between independent gpt-5.1 samples instead.</li>
+        <li><code>rg</code>'s parallel file walk returned evidence in a different order on each run, which changed analyst prompts and made Deere's numbers wobble between runs — search output is now deterministically sorted.</li>
+      </ul>
     </section>
 
     <section>
-      <h2>How to reproduce the final run</h2>
+      <h2>Reproducing the final run</h2>
+      <p>Requires Python 3.12, <code>uv</code>, Node (for the supplied checkers) and two API keys in <code>.env</code> (see <code>.env.example</code>).</p>
       <div class="card">
-        <p>Final commit: <code>add commit hash</code></p>
-        <p>Final command: <code>add command</code></p>
-        <p>Expected output: four completed workbooks in <code>submission/</code>.</p>
+        <p><code>uv venv .venv &amp;&amp; uv pip install --python .venv/bin/python -r requirements.txt</code></p>
+        <p>Final commit: <code><span class="fill-me">ADD COMMIT HASH</span></code></p>
+        <p>Final command: <code>.venv/bin/python -m agent run --all</code></p>
+        <p>Expected output: four completed workbooks in <code>submission/</code>, a timestamped log in <code>logs/</code>, and per-company <code>audit.md</code> trails under <code>runs/</code>.</p>
       </div>
+      <p>The company and metric specification is read from <code>challenge/companies.json</code>; nothing about the four companies is hard-coded except fiscal-calendar conventions and validation sanity bands, which are declared in <code>agent/config.py</code>.</p>
     </section>
   </main>
 </body>

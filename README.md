@@ -1,4 +1,55 @@
-# Agents vs Wall Street
+# Agents vs Wall Street — team Glasshouse
+
+Our entry lives in [`agent/`](agent/): a glass-box forecasting pipeline where
+LLMs only transcribe cited evidence and propose assumptions, and deterministic
+arithmetic computes every submitted number. See [Our agent](#our-agent) below
+for setup and commands; the original challenge brief follows.
+
+## Our agent
+
+```bash
+# one-time setup
+uv venv .venv && uv pip install --python .venv/bin/python -r requirements.txt
+cp .env.example .env   # then fill in ANTHROPIC_API_KEY and OPENAI_API_KEY
+
+# smoke-test API keys
+.venv/bin/python -m agent smoke
+
+# fetch public consensus anchors (optional, cached to research/)
+.venv/bin/python -m agent consensus --all
+
+# time-travel backtest on past quarters -> cache/calibration.json + research/backtest-report.md
+.venv/bin/python -m agent backtest
+
+# FINAL COMMAND: research, forecast, validate and write all four workbooks
+.venv/bin/python -m agent run --all
+
+# tests (no API keys needed)
+.venv/bin/python -m unittest discover -s tests
+
+# official submission checker
+npm run check:submission
+```
+
+Each run writes timestamped logs to `logs/` and per-company artifacts
+(`facts.json`, `decision.json`, `validation.json`, `audit.md`) to
+`runs/<run-id>/<CO>/`, so every workbook cell can be traced back to quoted
+evidence. `--offline` skips the live consensus lookup; `--company HD` runs one
+company.
+
+### Final-run checklist (17:15)
+
+1. `git add -A && git commit` — record the final commit hash in `entry.json`.
+2. `.venv/bin/python -m agent consensus --all` — refresh the public consensus snapshot.
+3. `.venv/bin/python -m agent run --all` — the clear run; log lands in `logs/`.
+4. Read each `runs/<run-id>/<CO>/audit.md`; check validation tables are all PASS.
+5. `npm run check:submission`.
+6. From 17:30, upload the four workbooks manually to OpenStocks, and submit
+   `entry.json` + `architecture/index.html` through the private form.
+
+---
+
+# The challenge
 
 Agents vs Wall Street is a one-day hackathon presented by Primer, OpenStocks, AI Tinkerers and OpenAI. Around 50 people will build 20–25 forecasting agents, working alone or in teams of up to four.
 

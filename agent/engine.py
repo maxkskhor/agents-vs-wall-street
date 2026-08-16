@@ -1,0 +1,125 @@
+"""Deterministic combination of estimator outputs into the 12 final numbers.
+
+Method estimates are combined with a weighted median (robust to one bad
+estimator), then optionally shrunk toward the public consensus anchor. The
+whole decision — inputs, weights, formula, intermediate values — is returned
+as lineage so the audit trail can show evidence -> assumptions -> number.
+"""
+
+from __future__ import annotations
+
+import json
+import statistics
+
+from .config import CACHE, Company, Metric
+from .estimators import Estimate
+
+DEFAULT_WEIGHTS = {"guidance": 0.5, "llm_analyst": 0.3, "statistical": 0.2}
+CONSENSUS_BETA = 0.6   # final = consensus + beta * (ensemble - consensus)
+
+
+def load_calibration() -> dict:
+    p = CACHE / "calibration.json"
+    if p.exists():
+        return json.loads(p.read_text())
+    return {}
+
+
+def weighted_median(pairs: list[tuple[float, float]]) -> float:
+    """pairs: (value, weight)"""
+    pairs = sorted(pairs)
+    total = sum(w for _, w in pairs)
+    acc = 0.0
+    for v, w in pairs:
+        acc += w
+        if acc >= total / 2:
+            return v
+    return pairs[-1][0]
+
+
+def _round(metric: Metric, v: float) -> float:
+    if metric.kind == "money":
+        return float(round(v))
+    return round(v, 2)
+
+
+def combine(company: Company, metric: Metric, estimates: list[Estimate],
+            consensus_value: float | None) -> tuple[float, dict]:
+    cal = load_calibration()
+    weights = dict(DEFAULT_WEIGHTS)
+    grid = cal.get("weights", {}).get(metric.kind, {})
+    # a grid whose own backtest score is ~capped found nothing better than
+    # noise — keep the priors in that case (bit us on EPS: n=14, score 4.2)
+    if grid and grid.get("backtest_score", 5.0) <= 4.0:
+        # backtest samples are small (n<=18), so shrink the grid-searched
+        # weights halfway toward the priors instead of trusting them outright
+        for m in weights:
+            weights[m] = round(0.5 * weights[m] + 0.5 * grid.get(m, weights[m]), 3)
+
+    # empirical guidance bias: e.g. ADI has beaten its revenue-guide midpoint
+    # by ~3.5% on average — correct the guidance estimate by the backtested
+    # mean signed error when it is measured on 3+ quarters, capped for safety
+    bias_all = cal.get("guidance_bias", {})
+    bias = bias_all.get(f"{company.short}/{metric.key}")
+    bias_applied = None
+    if bias and bias.get("n", 0) >= 3:
+        b = bias["mean_signed"]
+        if metric.kind == "percent":
+            b = max(-1.5, min(1.5, b))
+            if abs(b) >= 0.5:
+                bias_applied = b
+        else:
+            b = max(-0.04, min(0.04, b))
+            if abs(b) >= 0.01:
+                bias_applied = b
+    if bias_applied is not None:
+        for e in estimates:
+            if e.method == "guidance":
+                before = e.value
+                e.value = (e.value + bias_applied if metric.kind == "percent"
+                           else e.value * (1 + bias_applied))
+                e.inputs["bias_correction"] = {
+                    "before": before, "mean_signed": bias["mean_signed"],
+                    "applied": bias_applied, "n": bias["n"],
+                    "why": "backtested mean signed error of guidance-anchored "
+                           "estimates vs actuals for this company/metric"}
+
+    by_method: dict[str, float] = {}
+    lineage: dict = {"methods": {}, "weights": weights}
+    analyst_samples = [e for e in estimates if e.method == "llm_analyst"]
+    if analyst_samples:
+        med = statistics.median(e.value for e in analyst_samples)
+        spread = (max(e.value for e in analyst_samples)
+                  - min(e.value for e in analyst_samples))
+        by_method["llm_analyst"] = med
+        lineage["methods"]["llm_analyst"] = {
+            "value": med, "n_samples": len(analyst_samples), "spread": spread,
+            "samples": [{**e.inputs, "value": e.value} for e in analyst_samples]}
+    for e in estimates:
+        if e.method in ("statistical", "guidance"):
+            by_method[e.method] = e.value
+            # "value" last: estimator inputs may carry their own raw "value"
+            lineage["methods"][e.method] = {**e.inputs, "value": e.value}
+
+    if not by_method:
+        raise RuntimeError(f"{company.short}/{metric.key}: every estimator abstained")
+
+    pairs = [(v, weights.get(m, 0.1)) for m, v in by_method.items()]
+    ensemble = weighted_median(pairs)
+    lineage["ensemble"] = {"value": ensemble,
+                           "formula": "weighted median of method values"}
+
+    final = ensemble
+    if consensus_value is not None:
+        # deviate less from the benchmark when our strongest evidence route
+        # (guidance/pre-announcement arithmetic) had nothing to say
+        beta = CONSENSUS_BETA if "guidance" in by_method else 0.4
+        final = consensus_value + beta * (ensemble - consensus_value)
+        lineage["consensus_blend"] = {
+            "consensus": consensus_value, "beta": beta,
+            "formula": f"consensus + {beta} x (ensemble - consensus)",
+            "value": final}
+
+    final = _round(metric, final)
+    lineage["final"] = final
+    return final, lineage
