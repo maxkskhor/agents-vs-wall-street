@@ -14,8 +14,15 @@ import statistics
 from .config import CACHE, Company, Metric
 from .estimators import Estimate
 
-DEFAULT_WEIGHTS = {"guidance": 0.5, "llm_analyst": 0.3, "statistical": 0.2}
+# "derived" outranks even guidance: it is a structural identity (EPS is
+# arithmetically downstream of the profit line), not an opinion. Where it
+# applies, the statistical and analyst routes are the weak ones — on Hays EPS
+# they returned 0.33-0.76 against a truth near 1.0.
+DEFAULT_WEIGHTS = {"derived": 0.6, "guidance": 0.5, "llm_analyst": 0.3,
+                   "statistical": 0.2}
 CONSENSUS_BETA = 0.6   # final = consensus + beta * (ensemble - consensus)
+CONSENSUS_MAX_GAP = 0.18      # relative; beyond this the anchor is not applied
+CONSENSUS_MAX_GAP_PP = 3.0    # percentage points, for percent metrics
 
 
 def load_calibration() -> dict:
@@ -96,7 +103,7 @@ def combine(company: Company, metric: Metric, estimates: list[Estimate],
             "value": med, "n_samples": len(analyst_samples), "spread": spread,
             "samples": [{**e.inputs, "value": e.value} for e in analyst_samples]}
     for e in estimates:
-        if e.method in ("statistical", "guidance"):
+        if e.method in ("statistical", "guidance", "derived"):
             by_method[e.method] = e.value
             # "value" last: estimator inputs may carry their own raw "value"
             lineage["methods"][e.method] = {**e.inputs, "value": e.value}
@@ -108,6 +115,23 @@ def combine(company: Company, metric: Metric, estimates: list[Estimate],
     ensemble = weighted_median(pairs)
     lineage["ensemble"] = {"value": ensemble,
                            "formula": "weighted median of method values"}
+
+    # A consensus far from our evidence-built ensemble usually means the
+    # providers are quoting a DIFFERENT metric definition, not that we are
+    # wrong: Deere's Street "revenue" is equipment-operations only, ~1.8bn
+    # below "worldwide net sales and revenues". Shrinking toward a mismatched
+    # definition is worse than not anchoring, so refuse and flag it.
+    if consensus_value is not None:
+        gap = (abs(consensus_value - ensemble) if metric.kind == "percent"
+               else abs(consensus_value - ensemble) / max(abs(ensemble), 1e-9))
+        limit = CONSENSUS_MAX_GAP_PP if metric.kind == "percent" else CONSENSUS_MAX_GAP
+        if gap > limit:
+            lineage["consensus_rejected"] = {
+                "consensus": consensus_value, "ensemble": ensemble, "gap": gap,
+                "limit": limit,
+                "why": "consensus too far from evidence-built ensemble — likely a "
+                       "different metric definition; anchor not applied"}
+            consensus_value = None
 
     final = ensemble
     if consensus_value is not None:

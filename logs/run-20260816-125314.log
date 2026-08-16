@@ -1,0 +1,95 @@
+2026-08-16T12:53:14Z [start] run 20260816-125314 companies=['HD', 'ADI', 'HAS', 'DE'] offline=False asof=latest
+2026-08-16T12:53:14Z [retrieve] HD: 16 results docs (2026-05-19 back to 2025-03-20)
+2026-08-16T12:53:14Z [facts] HD: 118 grounded facts (5 rejected by grounding), series sizes ['net_sales:13', 'adj_eps:13', 'comp_sales:13'], 20 guidance/preannounce
+2026-08-16T12:53:20Z [estimate] HD/net_sales: statistical=4.7e+04; guidance=4.668e+04; llm_analyst=4.751e+04; llm_analyst=4.735e+04
+2026-08-16T12:53:20Z [combine] HD/net_sales: final=47399.0
+2026-08-16T12:53:26Z [estimate] HD/adj_eps: statistical=4.57; guidance=4.858; llm_analyst=4.73; llm_analyst=4.73
+2026-08-16T12:53:26Z [combine] HD/adj_eps: final=4.73
+2026-08-16T12:53:26Z [estimate] HD/comp_sales: statistical=2.2; guidance=1.133; llm_analyst=1; llm_analyst=0.5
+2026-08-16T12:53:26Z [combine] HD/comp_sales: final=0.75
+2026-08-16T12:53:28Z [validate] HD [PASS] net_sales: value present: final=47399.0
+2026-08-16T12:53:28Z [validate] HD [PASS] net_sales: magnitude vs prior year: 47399.0 vs prior-year 45277.0 (ratio 1.05, band 0.65-1.45)
+2026-08-16T12:53:28Z [validate] HD [PASS] net_sales: analyst-sample agreement: cross-provider spread 162 (0.3% of final)
+2026-08-16T12:53:28Z [validate] HD [PASS] adj_eps: value present: final=4.73
+2026-08-16T12:53:28Z [validate] HD [PASS] adj_eps: magnitude vs prior year: 4.73 vs prior-year 4.68 (ratio 1.01, band 0.4-1.75)
+2026-08-16T12:53:28Z [validate] HD [PASS] adj_eps: analyst-sample agreement: cross-provider spread 0 (0.0% of final)
+2026-08-16T12:53:28Z [validate] HD [PASS] comp_sales: value present: final=0.75
+2026-08-16T12:53:28Z [validate] HD [PASS] comp_sales: plausibility vs prior year: 0.75pp vs prior-year 1.0pp (max delta 6.0pp)
+2026-08-16T12:53:28Z [validate] HD [WARN] comp_sales: analyst-sample agreement: cross-provider spread 0.5 (66.7% of final)
+2026-08-16T12:53:28Z [validate] HD [PASS] HD: net sales growth vs comp sales: sales growth 4.7pp vs comps 0.8pp (gap covers new stores/FX/53rd week; limit 8pp)
+2026-08-16T12:53:28Z [validate] HD [PASS] red-team: net_sales forecast 47399.0 is in USDm, consistent with historical repo: net_sales forecast 47399.0 is in USDm, consistent with historical reporting (USDm) and magnitude is plausible vs FY2025Q2 45277.0 and FY2026Q1 41765.0.
+2026-08-16T12:53:28Z [validate] HD [PASS] red-team: adj_eps forecast 4.73 is in USD per share, consistent with historical : adj_eps forecast 4.73 is in USD per share, consistent with historical EPS units and magnitude fits between FY2025Q2 4.68 and reasonable YoY growth.
+2026-08-16T12:53:28Z [validate] HD [PASS] red-team: comp_sales forecast 0.75 is in %, consistent with history where values: comp_sales forecast 0.75 is in %, consistent with history where values like 0.4 and 1.0 represent percentage points; magnitude is reasonable and not a fractional vs percentage mis-scale.
+2026-08-16T12:53:28Z [workbook] HD: wrote /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/HD-FY2026Q2.xlsx
+2026-08-16T12:53:28Z [done] HD: Net sales=47399.0, Adjusted diluted EPS=4.73, Comparable sales, total company=0.75
+2026-08-16T12:53:28Z [retrieve] ADI: 16 results docs (2026-05-20 back to 2024-11-26)
+2026-08-16T12:53:28Z [facts] ADI: 130 grounded facts (39 rejected by grounding), series sizes ['revenue:17', 'adj_eps:17', 'adj_gross_margin:17'], 15 guidance/preannounce
+2026-08-16T12:53:32Z [estimate] ADI/revenue: statistical=3691; guidance=3900; llm_analyst=3910; llm_analyst=3914
+2026-08-16T12:53:32Z [combine] ADI/revenue: final=3911.0
+2026-08-16T12:53:37Z [estimate] ADI/adj_eps: statistical=2.934; guidance=3.3; llm_analyst=3.33; llm_analyst=3.32
+2026-08-16T12:53:37Z [combine] ADI/adj_eps: final=3.32
+2026-08-16T12:53:37Z [estimate] ADI/adj_gross_margin: statistical=71.35; llm_analyst=73.4; llm_analyst=73.4; llm_analyst=73.4; llm_analyst=73.5
+2026-08-16T12:53:37Z [combine] ADI/adj_gross_margin: final=73.4
+2026-08-16T12:53:39Z [validate] ADI [PASS] revenue: value present: final=3911.0
+2026-08-16T12:53:39Z [validate] ADI [PASS] revenue: magnitude vs prior year: 3911.0 vs prior-year 2880.348 (ratio 1.36, band 0.65-1.45)
+2026-08-16T12:53:39Z [validate] ADI [PASS] revenue: analyst-sample agreement: cross-provider spread 4 (0.1% of final)
+2026-08-16T12:53:39Z [validate] ADI [PASS] adj_eps: value present: final=3.32
+2026-08-16T12:53:39Z [validate] ADI [PASS] adj_eps: magnitude vs prior year: 3.32 vs prior-year 2.05 (ratio 1.62, band 0.4-1.75)
+2026-08-16T12:53:39Z [validate] ADI [PASS] adj_eps: analyst-sample agreement: cross-provider spread 0.01 (0.3% of final)
+2026-08-16T12:53:39Z [validate] ADI [PASS] adj_gross_margin: value present: final=73.4
+2026-08-16T12:53:39Z [validate] ADI [PASS] adj_gross_margin: plausibility vs prior year: 73.4pp vs prior-year 69.2pp (max delta 6.0pp)
+2026-08-16T12:53:39Z [validate] ADI [PASS] adj_gross_margin: analyst-sample agreement: cross-provider spread 0.1 (0.1% of final)
+2026-08-16T12:53:39Z [validate] ADI [PASS] ADI: gross margin absolute range: adjusted gross margin 73.4% must be a percentage level (55-80)
+2026-08-16T12:53:39Z [validate] ADI [PASS] red-team: Revenue forecast 3911.0 is in USDm, consistent with historical figures: Revenue forecast 3911.0 is in USDm, consistent with historical figures in USDm. Magnitude is plausible versus FY2026Q2 3623.465 and FY2026H1 6783.728, so no unit or scale error detected.
+2026-08-16T12:53:39Z [validate] ADI [PASS] red-team: Adjusted diluted EPS forecast 3.32 is in USD/share, matching the unit : Adjusted diluted EPS forecast 3.32 is in USD/share, matching the unit of the historical EPS values. Level is reasonable relative to FY2026Q2 3.09; no sign of cents-vs-dollars or per-100-shares confusion.
+2026-08-16T12:53:39Z [validate] ADI [PASS] red-team: Adjusted gross margin forecast 73.4 is expressed in %, consistent with: Adjusted gross margin forecast 73.4 is expressed in %, consistent with historical margins given around 69–73%. No evidence of fraction-vs-percentage mis-scaling (e.g., 0.734 vs 73.4).
+2026-08-16T12:53:39Z [workbook] ADI: wrote /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/ADI-FY2026Q3.xlsx
+2026-08-16T12:53:39Z [done] ADI: Revenue=3911.0, Adjusted diluted EPS=3.32, Adjusted gross margin=73.4
+2026-08-16T12:53:39Z [retrieve] HAS: 16 results docs (2026-07-10 back to 2024-04-16)
+2026-08-16T12:53:39Z [facts] HAS: 114 grounded facts (29 rejected by grounding), series sizes ['net_fees:6', 'preex_eps:6', 'preex_op:6'], 42 guidance/preannounce
+2026-08-16T12:53:47Z [estimate] HAS/net_fees: statistical=842.8; guidance=901.1; llm_analyst=886.4; llm_analyst=895.1
+2026-08-16T12:53:47Z [combine] HAS/net_fees: final=895.0
+2026-08-16T12:53:57Z [estimate] HAS/preex_eps: statistical=0.5202; llm_analyst=0.89; llm_analyst=1.01; llm_analyst=1.04; llm_analyst=0.88
+2026-08-16T12:53:57Z [combine] HAS/preex_eps: final=0.95
+2026-08-16T12:54:03Z [estimate] HAS/preex_op: statistical=22.06; guidance=46; llm_analyst=45.5; llm_analyst=40
+2026-08-16T12:54:03Z [combine] HAS/preex_op: final=43.0
+2026-08-16T12:54:06Z [validate] HAS [PASS] net_fees: value present: final=895.0
+2026-08-16T12:54:06Z [validate] HAS [PASS] net_fees: magnitude vs prior year: 895.0 vs prior-year 972.4 (ratio 0.92, band 0.65-1.45)
+2026-08-16T12:54:06Z [validate] HAS [PASS] net_fees: analyst-sample agreement: cross-provider spread 8.7 (1.0% of final)
+2026-08-16T12:54:06Z [validate] HAS [PASS] preex_eps: value present: final=0.95
+2026-08-16T12:54:06Z [validate] HAS [PASS] preex_eps: magnitude vs prior year: 0.95 vs prior-year 1.31 (ratio 0.73, band 0.4-1.75)
+2026-08-16T12:54:06Z [validate] HAS [WARN] preex_eps: analyst-sample agreement: cross-provider spread 0.16 (16.8% of final)
+2026-08-16T12:54:06Z [validate] HAS [PASS] preex_op: value present: final=43.0
+2026-08-16T12:54:06Z [validate] HAS [PASS] preex_op: magnitude vs prior year: 43.0 vs prior-year 45.6 (ratio 0.94, band 0.3-2.5)
+2026-08-16T12:54:06Z [validate] HAS [PASS] preex_op: analyst-sample agreement: cross-provider spread 5.5 (12.8% of final)
+2026-08-16T12:54:06Z [validate] HAS [PASS] HAS: preex_op/net_fees conversion ratio: ratio 0.048, history-derived band 0.022-0.228
+2026-08-16T12:54:06Z [validate] HAS [PASS] red-team: Net fees forecast 895.0 is in GBPm, consistent with historical figures: Net fees forecast 895.0 is in GBPm, consistent with historical figures in GBPm; no unit or scale problem evident.
+2026-08-16T12:54:06Z [validate] HAS [FAIL] red-team: Pre-exceptional basic EPS forecast 0.95 is implausibly low if units ar: Pre-exceptional basic EPS forecast 0.95 is implausibly low if units are GBp. Given recent EPS of 1.31 GBp (FY2025) and 0.46 GBp for FY2026H1, a full-year 0.95 would imply a halving vs FY2025H1 run-rate; the more likely intended value is 9.5 GBp (or similar), suggesting a misplaced decimal / pence-vs-tenths-of-a-penny unit error in the forecast.
+2026-08-16T12:54:06Z [validate] HAS [PASS] red-team: Pre-exceptional operating profit forecast 43.0 is in GBPm, reasonably : Pre-exceptional operating profit forecast 43.0 is in GBPm, reasonably consistent with the FY2025 level of 45.6 GBPm and FY2026H1 of 20.1 GBPm; no unit or scale issue detected.
+2026-08-16T12:54:06Z [error] HAS: RuntimeError: HAS: validation FAILED — workbook not written. See /Users/maxkhor/workarea/projects/agents-vs-wall-street/runs/20260816-125314/HAS/audit.md
+2026-08-16T12:54:06Z [retrieve] DE: 16 results docs (2026-05-28 back to 2025-02-13)
+2026-08-16T12:54:06Z [facts] DE: 124 grounded facts (60 rejected by grounding), series sizes ['net_sales_rev:15', 'eps:15', 'ppa_op:11'], 0 guidance/preannounce
+2026-08-16T12:54:19Z [estimate] DE/net_sales_rev: statistical=1.298e+04; llm_analyst=1.194e+04; llm_analyst=1.214e+04; llm_analyst=1.2e+04; llm_analyst=1.084e+04
+2026-08-16T12:54:19Z [combine] DE/net_sales_rev: final=11295.0
+2026-08-16T12:54:28Z [analyst] DE/eps openai#2: openai: response was not valid JSON: Expecting value: line 1 column 395 (char 394)
+{"base": {"period": "FY2025Q3", "value": 4.75, "why": "Closest year-ago quarter with similar seasonal pattern and post-peak cycle earnings profile"}, "adjustments": [{"delta": -0.25, "reason": "Trim for slightly softer run-rate implied by FY2026H1 vs FY2025H1 EPS (8.97 vs 9.82) suggesting modest year-on-year pressure into FY2026Q3", "evidence": "FY2025H1: 9.82 vs FY2026H1: 8.97"}, {"delta": +0.20, "reason": "Partially offset H1 softness as FY2026Q2 EPS (6.55) outperformed both FY2025Q2 (6.64, ne
+2026-08-16T12:54:31Z [estimate] DE/eps: statistical=3.853; llm_analyst=4.64; llm_analyst=4.74; llm_analyst=4.74
+2026-08-16T12:54:31Z [combine] DE/eps: final=4.74
+2026-08-16T12:54:31Z [estimate] DE/ppa_op: statistical=289.5; llm_analyst=330; llm_analyst=490; llm_analyst=460; llm_analyst=340
+2026-08-16T12:54:31Z [combine] DE/ppa_op: final=400.0
+2026-08-16T12:54:33Z [validate] DE [PASS] net_sales_rev: value present: final=11295.0
+2026-08-16T12:54:33Z [validate] DE [PASS] net_sales_rev: magnitude vs prior year: 11295.0 vs prior-year 12018.0 (ratio 0.94, band 0.65-1.45)
+2026-08-16T12:54:33Z [validate] DE [PASS] net_sales_rev: analyst-sample agreement: cross-provider spread 1.3e+03 (11.5% of final)
+2026-08-16T12:54:33Z [validate] DE [PASS] eps: value present: final=4.74
+2026-08-16T12:54:33Z [validate] DE [PASS] eps: magnitude vs prior year: 4.74 vs prior-year 4.75 (ratio 1.00, band 0.4-1.75)
+2026-08-16T12:54:33Z [validate] DE [PASS] eps: analyst-sample agreement: cross-provider spread 0.1 (2.1% of final)
+2026-08-16T12:54:33Z [validate] DE [PASS] ppa_op: value present: final=400.0
+2026-08-16T12:54:33Z [validate] DE [PASS] ppa_op: magnitude vs prior year: 400.0 vs prior-year 580.0 (ratio 0.69, band 0.3-2.5)
+2026-08-16T12:54:33Z [validate] DE [WARN] ppa_op: analyst-sample agreement: cross-provider spread 160 (40.0% of final)
+2026-08-16T12:54:33Z [validate] DE [PASS] DE: ppa_op/net_sales_rev conversion ratio: ratio 0.035, history-derived band 0.007-0.147
+2026-08-16T12:54:33Z [validate] DE [PASS] red-team: net_sales_rev forecast 11295.0 uses required USDm scale and is within : net_sales_rev forecast 11295.0 uses required USDm scale and is within a plausible magnitude vs recent quarters and H1; no unit or scale error detected.
+2026-08-16T12:54:33Z [validate] DE [PASS] red-team: eps forecast 4.74 is expressed in USD per share consistent with histor: eps forecast 4.74 is expressed in USD per share consistent with history; magnitude is plausible relative to recent EPS, so no unit/percentage mismatch detected.
+2026-08-16T12:54:33Z [validate] DE [PASS] red-team: ppa_op forecast 400.0 is in USDm, matching required units and historic: ppa_op forecast 400.0 is in USDm, matching required units and historical scale; no billions-vs-millions or similar unit issue evident.
+2026-08-16T12:54:33Z [workbook] DE: wrote /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/DE-FY2026Q3.xlsx
+2026-08-16T12:54:33Z [done] DE: Worldwide net sales and revenues=11295.0, Diluted EPS (GAAP)=4.74, Production & Precision Ag operating profit=400.0
+2026-08-16T12:54:33Z [end] FAILED for ['HAS']

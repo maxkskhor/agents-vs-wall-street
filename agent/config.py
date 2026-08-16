@@ -30,6 +30,10 @@ class Metric:
     key: str            # short machine key, e.g. "net_sales"
     kind: str           # "money" | "eps" | "percent"
     aliases: list[str] = field(default_factory=list)  # phrases used in filings
+    definition: str = ""   # disambiguation for external consensus lookups
+    consensus_usable: bool = True   # False when the Street quotes another basis
+    consensus_note: str = ""
+    derive_from: str = ""   # metric key this one can be derived from by ratio
 
 
 @dataclass
@@ -69,18 +73,35 @@ _METRIC_EXTRAS: dict[tuple[str, str], dict] = {
         aliases=["adjusted gross margin", "gross margin"]),
     ("HAS", "Net fees"): dict(
         key="net_fees", kind="money",
-        aliases=["net fees", "Group net fees"]),
+        aliases=["net fees", "Group net fees"],
+        definition="Group net fees (gross profit), not turnover/revenue."),
     ("HAS", "Pre-exceptional basic EPS"): dict(
         key="preex_eps", kind="eps",
         aliases=["basic earnings per share (pre-exceptional", "pre-exceptional basic EPS",
-                 "basic EPS (pre-exceptional"]),
+                 "basic EPS (pre-exceptional"],
+        derive_from="preex_op"),
     ("HAS", "Pre-exceptional operating profit"): dict(
         key="preex_op", kind="money",
         aliases=["pre-exceptional operating profit", "operating profit (pre-exceptional",
                  "operating profit before exceptional"]),
     ("DE", "Worldwide net sales and revenues"): dict(
         key="net_sales_rev", kind="money",
-        aliases=["worldwide net sales and revenues", "net sales and revenues"]),
+        aliases=["worldwide net sales and revenues", "net sales and revenues"],
+        definition=("TOTAL worldwide net sales AND revenues, i.e. equipment "
+                    "operations net sales PLUS financial services and other "
+                    "revenue. Many providers quote equipment-operations net "
+                    "sales alone, which is roughly 1.5-2.0bn lower per quarter "
+                    "— that is NOT this metric. Only report a figure you can "
+                    "confirm is the total-company measure."),
+        consensus_usable=False,
+        consensus_note=(
+            "Street 'revenue' for Deere is equipment-operations net sales, a "
+            "different measure from this metric. Verified in the Q2 FY2026 8-K: "
+            "Net Sales and Revenues $13,369m vs Net Sales (Equipment Operations) "
+            "$11,778m (ratio 0.881; 0.875 in Q2 FY2025). Not used as an anchor. "
+            "Converted at that ratio the fetched 11,090 implies ~12,630 on this "
+            "metric's basis, which corroborates rather than contradicts our "
+            "forecast.")),
     ("DE", "Diluted EPS (GAAP)"): dict(
         key="eps", kind="eps",
         aliases=["per diluted share", "diluted EPS", "net income per share"]),

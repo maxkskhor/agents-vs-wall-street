@@ -37,8 +37,8 @@
     <div class="card">
       <p>Agent name: <strong>Glasshouse</strong></p>
       <p>Team: <strong>Team MYS — Max Khor, Yash Rai, Swareena Gurung</strong></p>
-      <p>Build style and harness: <strong>Hybrid — custom Python pipeline written during the event with Claude Code; no agent framework</strong></p>
-      <p>Models: <strong>gpt-5.6-luna (high-volume fact extraction, A/B-checked against gpt-5.1) and gpt-5.1 (analyst estimator, red-team, consensus web search)</strong></p>
+      <p>Build style and harness: <strong>A constrained-role pipeline, not an agent loop</strong> — no planner, no autonomous tool use, no multi-agent debate. The program calls models only for bounded, single-document jobs; all composition and arithmetic is ordinary code, and model output that fails a gate is discarded rather than negotiated with.</p>
+      <p>Models: <strong>Two OpenAI models in fixed roles</strong> — a cheap one for high-volume document transcription (A/B-checked against the stronger model on sample documents: identical output), and a stronger one for the analyst, red-team and consensus search. Exact model IDs are recorded in the entry form.</p>
 
     </div>
 
@@ -194,6 +194,8 @@
         <li><strong>Per-document extraction with caching.</strong> A fact depends only on its document, so the fact table time-slices for free — that is what makes the backtest nearly free and the final run fast and resumable.</li>
         <li><strong>No vector database.</strong> Rejected: embeddings over 1,139 files. The corpus is small, dated and structured; recency-plus-type selection and <code>rg</code> are transparent and reproducible.</li>
         <li><strong>Estimators abstain instead of guessing.</strong> Deere gives no quarterly EPS guidance — the guidance route abstains there and the median leans on the other routes, visibly in the audit trail.</li>
+        <li><strong>Rejected: one autonomous agent per company.</strong> We built that too, as a baseline — spawn a sandboxed coding agent per company, have it research and return a schema-checked forecast. It works, and its twelve numbers land close to ours. But the schema can only check <em>shape</em> (units present, bear ≤ value ≤ bull, evidence IDs resolve); it cannot check that a cited number appears in the cited document, because the agent authors both the number and the evidence list. Its instruction to "state an arithmetic formula" is a request, not a constraint. We kept the constrained-role design because its guarantees are enforced rather than requested — and because a fresh agent per run cannot be re-run to the same answer.</li>
+        <li><strong>External evidence is gated like internal evidence.</strong> A consensus anchor must be corroborated by two independent sources, dated no later than today, on the right basis, and not equal to a period the company has already reported. Uncorroborated numbers are recorded but never used.</li>
         <li><strong>Sample disagreement as a signal.</strong> Independent analyst samples answer the same prompt; a large spread between them flags the metric in validation. (Planned as cross-provider Claude-vs-GPT; on the day only an OpenAI key was available, so the spread is between independent gpt-5.1 samples — declared honestly here.)</li>
       </ul>
     </section>
@@ -206,6 +208,7 @@
         <li>Magnitude bands vs prior-year values; absolute sanity bands (e.g. ADI gross margin 55–80%); conversion-ratio checks (Hays operating profit ÷ net fees; Deere PP&amp;A profit ÷ total revenue).</li>
         <li>Cross-metric consistency: HD net-sales growth vs comp sales within the new-stores/FX wedge.</li>
         <li>12 offline unit tests cover period math, estimator arithmetic, grounding, combination and the workbook writer: <code>.venv/bin/python -m unittest discover -s tests</code>.</li>
+        <li>Consensus-anchor gate: rejects future-dated figures (post-release leakage), company guidance sold as Street consensus, full-year figures quoted against a quarterly target, and values equal to an already-reported period; then requires two corroborating sources and takes their median. It earned its place — an early run anchored Home Depot adjusted EPS on a lone 4.87 that four independent providers contradicted at 4.62–4.73, and it had already moved our submitted number.</li>
         <li>A failed validation <em>blocks the workbook</em>; the run log records every check with its outcome.</li>
       </ul>
     </section>

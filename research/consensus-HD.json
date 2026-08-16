@@ -1,9 +1,150 @@
 {
- "fetched_at": "2026-08-16T11:45:22.439637+00:00",
+ "fetched_at": "2026-08-16T12:57:18.042561+00:00",
  "period": "FY2026Q2",
+ "gated_on_date": "2026-08-16",
+ "net_sales": {
+  "value": 47300.0,
+  "sources": [
+   {
+    "source": "ChartMill",
+    "value": 48700,
+    "basis": "quarterly GAAP (consensus revenue estimate; sales vs revenue not explicitly distinguished)",
+    "as_of": "2026-08-02",
+    "url": "https://www.chartmill.com/stock/quote/HD/analyst-ratings"
+   },
+   {
+    "source": "Kiplinger (using Wall Street consensus cited in preview article)",
+    "value": 47200,
+    "basis": "quarterly GAAP (revenue; described as expected Q2 revenue)",
+    "as_of": "2026-08-15",
+    "url": "https://www.kiplinger.com/investing/stocks/17494/next-week-earnings-calendar-stocks"
+   },
+   {
+    "source": "Investing.com",
+    "value": 47300,
+    "basis": "quarterly GAAP (revenue forecast for upcoming quarter)",
+    "as_of": "2026-07-27",
+    "url": "https://www.investing.com/equities/home-depot-earnings"
+   },
+   {
+    "source": "Investing.com (HDUS duplicate listing)",
+    "value": 47300,
+    "basis": "quarterly GAAP (revenue forecast for upcoming quarter)",
+    "as_of": "2026-06-19",
+    "url": "https://www.investing.com/equities/home-depot-earnings?cid=1199613"
+   },
+   {
+    "source": "Kiplinger earnings preview (summarizing Wall St. expectations)",
+    "value": 47200,
+    "basis": "quarterly GAAP (revenue / net sales consensus for Q2 FY2026)",
+    "as_of": "2026-08-14",
+    "url": "https://www.kiplinger.com/investing/stocks/17494/next-week-earnings-calendar-stocks"
+   },
+   {
+    "source": "Zacks consensus via Yahoo Finance article (Zacks Equity Research note on HD)",
+    "value": 47500,
+    "basis": "quarterly GAAP (revenue / net sales consensus for Q2 FY2026)",
+    "as_of": "2026-08-02",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/home-depot-hd-dips-more-214503926.html"
+   }
+  ],
+  "rejected": [],
+  "corroboration": 6,
+  "usable": true,
+  "why": "median of agreeing sources"
+ },
  "adj_eps": {
-  "value": 4.87,
-  "source": "ChartMill (consensus EPS for next earnings)",
-  "as_of": "2026-08-02"
+  "value": 4.71,
+  "sources": [
+   {
+    "source": "Zacks Equity Research report",
+    "value": 4.71,
+    "basis": "quarterly adjusted (Zacks EPS consensus for current quarter)",
+    "as_of": "2026-06-11",
+    "url": "https://stage.zacks.com/stock/research/HD/company-reports?icid=SITE_SECTION-SUB_SECTION-quote_nav_tracking-zcom-left_subnav_quote_navbar-company_reports"
+   },
+   {
+    "source": "Zacks preview note (TradingView-hosted Zacks article)",
+    "value": 4.55,
+    "basis": "quarterly adjusted (described as earnings estimates per share vs prior-year Q2 EPS)",
+    "as_of": "2026-06-15",
+    "url": "https://www.tradingview.com/news/zacks%3A46e153b7d094b%3A0-should-investors-buy-home-depot-s-hd-stock-as-q2-earnings-approach/"
+   },
+   {
+    "source": "ChartMill",
+    "value": 4.87,
+    "basis": "quarterly adjusted (consensus EPS estimate for next earnings)",
+    "as_of": "2026-08-02",
+    "url": "https://www.chartmill.com/stock/quote/HD/analyst-ratings"
+   },
+   {
+    "source": "Kiplinger (using Wall Street consensus cited in preview article)",
+    "value": 4.73,
+    "basis": "quarterly adjusted (Q2 earnings per share expectation)",
+    "as_of": "2026-08-15",
+    "url": "https://www.kiplinger.com/investing/stocks/17494/next-week-earnings-calendar-stocks"
+   },
+   {
+    "source": "Barchart",
+    "value": 4.71,
+    "basis": "quarterly adjusted (consensus EPS estimate for current quarter)",
+    "as_of": "2026-08-02",
+    "url": "https://www.barchart.com/stocks/quotes/HD/earnings-estimates"
+   },
+   {
+    "source": "Drillr",
+    "value": 4.71,
+    "basis": "quarterly adjusted (consensus EPS estimate for next earnings)",
+    "as_of": "2026-06-19",
+    "url": "https://drillr.ai/company/HD/earnings"
+   },
+   {
+    "source": "Investing.com",
+    "value": 4.73,
+    "basis": "quarterly adjusted (EPS forecast for upcoming quarter)",
+    "as_of": "2026-07-27",
+    "url": "https://www.investing.com/equities/home-depot-earnings"
+   },
+   {
+    "source": "Investing.com (HDUS duplicate listing)",
+    "value": 4.73,
+    "basis": "quarterly adjusted (EPS forecast for upcoming quarter)",
+    "as_of": "2026-06-19",
+    "url": "https://www.investing.com/equities/home-depot-earnings?cid=1199613"
+   },
+   {
+    "source": "Kiplinger earnings preview (summarizing Wall St. expectations)",
+    "value": 4.73,
+    "basis": "quarterly adjusted EPS consensus for Q2 FY2026",
+    "as_of": "2026-08-14",
+    "url": "https://www.kiplinger.com/investing/stocks/17494/next-week-earnings-calendar-stocks"
+   },
+   {
+    "source": "Zacks consensus via Yahoo Finance article (Zacks Equity Research note on HD)",
+    "value": 4.71,
+    "basis": "quarterly adjusted EPS consensus for Q2 FY2026",
+    "as_of": "2026-08-02",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/home-depot-hd-dips-more-214503926.html"
+   },
+   {
+    "source": "AlphaQuery earnings history (average estimated EPS for upcoming quarter)",
+    "value": 4.71,
+    "basis": "quarterly GAAP/adjusted EPS consensus for Q2 FY2026 (provider does not specify adjustment)",
+    "as_of": "2026-08-02",
+    "url": "https://www.alphaquery.com/stock/HD/earnings-history"
+   }
+  ],
+  "rejected": [],
+  "corroboration": 11,
+  "usable": true,
+  "why": "median of agreeing sources"
+ },
+ "comp_sales": {
+  "value": null,
+  "sources": [],
+  "rejected": [],
+  "corroboration": 0,
+  "usable": false,
+  "why": "not used: fewer than two independent sources agreed"
  }
 }

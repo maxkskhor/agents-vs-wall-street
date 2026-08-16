@@ -260,6 +260,35 @@ def _fy_catchup_percent(series: Series, target: str, level_mid: float) -> dict |
             "reported_quarters": reported}
 
 
+# ------------------------------------------------------------ derived ratio
+
+def derived(metric: Metric, all_series: dict[str, Series], finals: dict[str, float],
+            target: str) -> Estimate | None:
+    """Derive one metric from another already-forecast metric using the most
+    recent observed ratio between them (declared via Metric.derive_from).
+
+    Hays' pre-exceptional EPS is operating profit after fixed interest and tax,
+    so the ratio drifts as profit falls — the newest observation is the honest
+    one, not the median of a decade.
+    """
+    src = metric.derive_from
+    if not src or src not in finals:
+        return None
+    num, den = all_series.get(metric.key, {}), all_series.get(src, {})
+    shared = sorted(set(num) & set(den))
+    if not shared:
+        return None
+    ref = shared[-1]
+    if not den[ref]:
+        return None
+    ratio = num[ref] / den[ref]
+    return Estimate(metric.key, "derived", ratio * finals[src], {
+        "formula": (f"forecast {src} {finals[src]} x most-recent {metric.key}/{src} "
+                    f"ratio {ratio:.5f} (from {ref}: {num[ref]} / {den[ref]})"),
+        "ratio_period": ref, "ratio": ratio, "source_metric": src,
+        "source_forecast": finals[src]})
+
+
 # --------------------------------------------------------------- llm analyst
 
 def _backtest_bias_note(company: Company, metric: Metric) -> str:
@@ -311,11 +340,11 @@ def llm_analyst(company: Company, metric: Metric, series: Series,
     bias = _backtest_bias_note(company, metric)
     if bias:
         gtxt += "\n\n" + bias
+    # Deliberately NOT shown the consensus anchor: it is applied once,
+    # deterministically, in the engine. Feeding it here too double-counted it
+    # and let a mis-defined anchor drag the analyst samples with it, which
+    # defeated the gate that is supposed to catch exactly that.
     ctxt = ""
-    if consensus and consensus.get(metric.key):
-        c = consensus[metric.key]
-        ctxt = (f"\nPublic analyst consensus (from live web research, may be stale): "
-                f"{c.get('value')} {metric.units} (source: {c.get('source')})")
     base_prompt = f"""Company: {company.name} ({company.ticker}). {company.fiscal_note}
 
 Forecast target: {metric.label} ({metric.units}) for {target}.

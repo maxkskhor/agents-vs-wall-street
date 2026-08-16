@@ -31,20 +31,20 @@ per-company `audit.md` (evidence → assumptions → number) plus a timestamped 
 Current dry-run forecasts (will change slightly on the final 17:15 run after a
 consensus refresh):
 
-| Company | Metric | Forecast | Public consensus (cited) |
+| Company | Metric | Forecast | Consensus anchor (gated) |
 |---|---|---:|---:|
-| HD | Net sales (USDm) | 47,000 | — |
-| HD | Adjusted diluted EPS | 4.80 | 4.87 |
-| HD | Comparable sales | 0.75% | — |
-| ADI | Revenue (USDm) | 3,978 | 3,900 (= guide midpoint) |
-| ADI | Adjusted diluted EPS | 3.33 | — |
-| ADI | Adjusted gross margin | 73.4% | — |
-| HAS | Net fees (GBPm) | 896 | 902.4 |
-| HAS | Pre-exceptional basic EPS | 1.08p | 1.13p |
-| HAS | Pre-exceptional operating profit | 44.0 | 45.3 |
-| DE | Worldwide net sales and revenues | 12,668 | — (web search finds none) |
-| DE | Diluted EPS (GAAP) | 4.25 | — |
-| DE | PP&A operating profit | 400 | — |
+| HD | Net sales (USDm) | 47,120 | 47,300 (6 sources) |
+| HD | Adjusted diluted EPS | 4.70 | 4.71 (11 sources) |
+| HD | Comparable sales | 0.75% | none exists publicly |
+| ADI | Revenue (USDm) | 3,931 | 3,920 (5 sources) |
+| ADI | Adjusted diluted EPS | 3.33 | 3.33 (7 sources) |
+| ADI | Adjusted gross margin | 73.4% | none found |
+| HAS | Net fees (GBPm) | 892 | 902.3 (company-compiled) |
+| HAS | Pre-exceptional basic EPS | 1.06p | 1.09p (company-compiled) |
+| HAS | Pre-exceptional operating profit | 44.0 | 44.35 (company-compiled) |
+| DE | Worldwide net sales and revenues | 12,668 | rejected — wrong basis (see below) |
+| DE | Diluted EPS (GAAP) | 4.60 | 4.83 (13 sources) |
+| DE | PP&A operating profit | 400 | none found |
 
 Reruns are now bit-identical (deterministic evidence ordering + full prompt
 caching). DE runs un-anchored: if anyone finds credible DE Q3 FY2026 consensus

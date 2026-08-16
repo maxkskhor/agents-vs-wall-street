@@ -156,9 +156,13 @@ Proposed final forecasts: {finals}
 List objections.""", max_tokens=1200)
         objections = resp.get("objections", [])
         for o in objections:
-            is_unit = bool(o.get("unit_error"))
+            # advisory only. It earned a real catch (an over-fitted Hays EPS)
+            # but also blocked correct values — flagging 0.75pp comparable
+            # sales as a possible fraction/percent mix-up when it matched the
+            # history exactly. Deterministic gates decide; the model advises.
             rep.add(f"red-team: {o.get('issue', '?')[:70]}",
-                    not is_unit, str(o.get("issue")), warn_only=not is_unit)
+                    not bool(o.get("unit_error")), str(o.get("issue")),
+                    warn_only=True)
         if not objections:
             rep.add("red-team review", True, f"no objections ({provider})")
     except llm.LLMError as e:

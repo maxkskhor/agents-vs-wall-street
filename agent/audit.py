@@ -25,6 +25,10 @@ def write_audit(company: Company, target: str, finals: dict[str, float],
     for key, lin in lineage.items():
         m = by_key[key]
         w(f"\n## {m.label} ({m.units}) = {lin['final']}\n")
+        if "consensus_rejected" in lin:
+            cr = lin["consensus_rejected"]
+            w(f"- **Consensus anchor REJECTED**: {cr['consensus']} vs our ensemble "
+              f"{cr['ensemble']:.4g} (gap {cr['gap']:.1%} > limit) — {cr['why']}")
         if "consensus_blend" in lin:
             cb = lin["consensus_blend"]
             w(f"- **Final** = {cb['formula']} = {cb['consensus']} + "

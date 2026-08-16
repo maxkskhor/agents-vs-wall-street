@@ -11,9 +11,9 @@ from dataclasses import dataclass, asdict, field
 from . import llm
 from .config import RUNS, Company
 from .corpus import results_docs, search
-from .consensus import fetch_consensus, load_consensus
+from .consensus import anchor_for, fetch_consensus, load_consensus
 from .engine import combine
-from .estimators import Estimate, guidance, llm_analyst, statistical
+from .estimators import Estimate, derived, guidance, llm_analyst, statistical
 from .extract import build_fact_table, guidance_facts, reported_series
 from .audit import write_audit
 from .runlog import RunLog
@@ -60,7 +60,7 @@ def run_company(company: Company, log: RunLog, run_id: str,
 
     consensus = None
     if not offline and asof is None:
-        consensus = load_consensus(company) or fetch_consensus(company, log)
+        consensus = load_consensus(company) or fetch_consensus(company, log, series)
 
     # raw outlook lines from the newest documents, handed to the analyst as
     # extra cited evidence (catches guidance shapes extraction cannot type,
@@ -73,8 +73,15 @@ def run_company(company: Company, log: RunLog, run_id: str,
 
     finals: dict[str, float] = {}
     lineage: dict[str, dict] = {}
-    for metric in company.metrics:
+    # EPS metrics may be derived from an already-forecast profit metric, so
+    # order the work by dependency rather than by workbook row
+    ordered = sorted(company.metrics,
+                     key=lambda m: (bool(m.derive_from), m.kind == "eps"))
+    for metric in ordered:
         ests: list[Estimate] = []
+        d = derived(metric, series, finals, target)
+        if d:
+            ests.append(d)
         s = statistical(metric, series[metric.key], target)
         if s:
             ests.append(s)
@@ -90,9 +97,7 @@ def run_company(company: Company, log: RunLog, run_id: str,
                                 extra_evidence=extra_evidence))
         log.log("estimate", f"{company.short}/{metric.key}: " + "; ".join(
             f"{e.method}={e.value:.4g}" for e in ests))
-        cval = None
-        if consensus and consensus.get(metric.key):
-            cval = float(consensus[metric.key]["value"])
+        cval = anchor_for(consensus, metric.key, metric)
         finals[metric.key], lineage[metric.key] = combine(company, metric, ests, cval)
         log.log("combine", f"{company.short}/{metric.key}: final={finals[metric.key]}")
 

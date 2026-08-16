@@ -1,4 +1,164 @@
 {
- "fetched_at": "2026-08-16T12:18:52.901780+00:00",
- "period": "FY2026Q3"
+ "fetched_at": "2026-08-16T12:58:24.934301+00:00",
+ "period": "FY2026Q3",
+ "gated_on_date": "2026-08-16",
+ "net_sales_rev": {
+  "value": 11090.0,
+  "sources": [
+   {
+    "source": "ChartMill (analyst consensus)",
+    "value": 11090,
+    "basis": "quarterly GAAP (total company revenue, labeled as revenue estimate)",
+    "as_of": "2026-07-28",
+    "url": "https://www.chartmill.com/stock/quote/DE/analyst-ratings"
+   },
+   {
+    "source": "Benzinga earnings page",
+    "value": 10780,
+    "basis": "quarterly GAAP (total company revenue, labeled as quarterly revenue estimate)",
+    "as_of": "2026-07-18",
+    "url": "https://www.benzinga.com/quote/DE/earnings"
+   },
+   {
+    "source": "ChartMill",
+    "value": 11090,
+    "basis": "quarterly adjusted (consensus revenue, assumed total company)",
+    "as_of": "2026-07-31",
+    "url": "https://www.chartmill.com/stock/quote/DE/analyst-ratings"
+   },
+   {
+    "source": "FXEmpire",
+    "value": 11090,
+    "basis": "quarterly adjusted (consensus revenue, assumed total company)",
+    "as_of": "2026-07-31",
+    "url": "https://www.fxempire.com/stocks/deere/earnings"
+   },
+   {
+    "source": "Zacks",
+    "value": 11430,
+    "basis": "quarterly adjusted (consensus sales estimate; label does not explicitly confirm \u2018worldwide net sales and revenues\u2019)",
+    "as_of": "2026-06-15",
+    "url": "https://www.zacks.com/stock/quote/DE/detailed-estimates"
+   },
+   {
+    "source": "FXEmpire (citing multi-analyst consensus)",
+    "value": 11090,
+    "basis": "quarterly adjusted (consensus revenue estimate; definition of revenue mix not disclosed, so may not equal \u2018worldwide net sales and revenues\u2019)",
+    "as_of": "2026-08-09",
+    "url": "https://www.fxempire.com/stocks/deere/earnings"
+   }
+  ],
+  "rejected": [],
+  "corroboration": 6,
+  "usable": true,
+  "why": "median of agreeing sources"
+ },
+ "eps": {
+  "value": 4.83,
+  "sources": [
+   {
+    "source": "Barchart earnings-estimates page",
+    "value": 4.86,
+    "basis": "quarterly adjusted (diluted EPS before non\u2011recurring items)",
+    "as_of": "2026-07-28",
+    "url": "https://www.barchart.com/stocks/quotes/de/earnings-estimates"
+   },
+   {
+    "source": "ChartMill (analyst consensus)",
+    "value": 4.84,
+    "basis": "quarterly GAAP (consensus EPS estimate for next earnings)",
+    "as_of": "2026-07-28",
+    "url": "https://www.chartmill.com/stock/quote/DE/analyst-ratings"
+   },
+   {
+    "source": "TipRanks earnings page",
+    "value": 4.74,
+    "basis": "quarterly GAAP (EPS forecast for fiscal quarter 2026 Q3)",
+    "as_of": "2026-07-30",
+    "url": "https://www.tipranks.com/stocks/de/earnings"
+   },
+   {
+    "source": "Benzinga earnings page",
+    "value": 4.73,
+    "basis": "quarterly GAAP (analyst EPS estimate shown for upcoming report)",
+    "as_of": "2026-07-18",
+    "url": "https://www.benzinga.com/quote/DE/earnings"
+   },
+   {
+    "source": "MarketBeat",
+    "value": 4.75,
+    "basis": "quarterly adjusted consensus EPS (labelled estimate)",
+    "as_of": "2026-08-02",
+    "url": "https://www.marketbeat.com/stocks/NYSE/DE/earnings/"
+   },
+   {
+    "source": "TipRanks",
+    "value": 4.74,
+    "basis": "quarterly adjusted consensus EPS forecast",
+    "as_of": "2026-07-31",
+    "url": "https://www.tipranks.com/stocks/de/earnings"
+   },
+   {
+    "source": "BusinessQuant",
+    "value": 4.97,
+    "basis": "quarterly adjusted consensus EPS",
+    "as_of": "2026-07-20",
+    "url": "https://businessquant.com/stocks/de/estimates"
+   },
+   {
+    "source": "Barchart",
+    "value": 4.62,
+    "basis": "quarterly adjusted consensus EPS (current quarter)",
+    "as_of": "2026-08-02",
+    "url": "https://www.barchart.com/stocks/quotes/de/earnings-estimates"
+   },
+   {
+    "source": "ChartMill",
+    "value": 4.84,
+    "basis": "quarterly adjusted consensus EPS (next earnings)",
+    "as_of": "2026-07-31",
+    "url": "https://www.chartmill.com/stock/quote/DE/analyst-ratings"
+   },
+   {
+    "source": "FXEmpire",
+    "value": 4.83,
+    "basis": "quarterly adjusted consensus EPS",
+    "as_of": "2026-08-01",
+    "url": "https://www.fxempire.com/stocks/deere/earnings"
+   },
+   {
+    "source": "Zacks",
+    "value": 5.81,
+    "basis": "quarterly adjusted (consensus EPS estimate; Zacks does not state that this is GAAP)",
+    "as_of": "2026-06-15",
+    "url": "https://www.zacks.com/stock/quote/DE/detailed-estimates"
+   },
+   {
+    "source": "FXEmpire (citing 24-analyst consensus)",
+    "value": 4.83,
+    "basis": "quarterly adjusted (consensus EPS forecast)",
+    "as_of": "2026-08-09",
+    "url": "https://www.fxempire.com/stocks/deere/earnings"
+   },
+   {
+    "source": "Finanzen.net",
+    "value": 4.7136,
+    "basis": "quarterly adjusted (EPS estimate; GAAP vs non-GAAP not specified)",
+    "as_of": "2026-08-02",
+    "url": "https://www.finanzen.net/termine/deere"
+   }
+  ],
+  "rejected": [],
+  "corroboration": 13,
+  "usable": true,
+  "why": "median of agreeing sources"
+ },
+ "ppa_op": {
+  "value": null,
+  "sources": [],
+  "rejected": [],
+  "corroboration": 0,
+  "usable": false,
+  "why": "not used: fewer than two independent sources agreed"
+ }
 }
