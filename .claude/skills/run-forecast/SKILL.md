@@ -68,8 +68,8 @@ and you want that reflected — a stale cache short-circuits both the live
 fetch and the offline-corpus transcription (`load_consensus(company) or
 fetch_consensus(...)` in `agent/pipeline.py`).
 
-Before running, check `.env` actually has non-empty `ANTHROPIC_API_KEY` and
-`OPENAI_API_KEY` — `smoke` will fail fast and clearly if not, so run it first
+Before running, check `.env` actually has non-empty `ANTHROPIC_API_KEY` or
+`OPENAI_API_KEY` -either one should be present— `smoke` will fail fast and clearly if not, so run it first
 rather than jumping straight to a full `run --all`.
 
 **If `OPENAI_API_KEY` (or `ANTHROPIC_API_KEY`) turns out to be missing**, stop
