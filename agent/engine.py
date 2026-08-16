@@ -94,11 +94,12 @@ def combine(company: Company, metric: Metric, estimates: list[Estimate],
         by_method["llm_analyst"] = med
         lineage["methods"]["llm_analyst"] = {
             "value": med, "n_samples": len(analyst_samples), "spread": spread,
-            "samples": [{"value": e.value, **e.inputs} for e in analyst_samples]}
+            "samples": [{**e.inputs, "value": e.value} for e in analyst_samples]}
     for e in estimates:
         if e.method in ("statistical", "guidance"):
             by_method[e.method] = e.value
-            lineage["methods"][e.method] = {"value": e.value, **e.inputs}
+            # "value" last: estimator inputs may carry their own raw "value"
+            lineage["methods"][e.method] = {**e.inputs, "value": e.value}
 
     if not by_method:
         raise RuntimeError(f"{company.short}/{metric.key}: every estimator abstained")

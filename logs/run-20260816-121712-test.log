@@ -1,0 +1,40 @@
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: value present: final=46.7
+2026-08-16T12:17:12Z [validate] HD [FAIL] net_sales: magnitude vs prior year: 46.7 vs prior-year 45300 (ratio 0.00, band 0.65-1.45)
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: value present: final=4.7
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: magnitude vs prior year: 4.7 vs prior-year 4.67 (ratio 1.01, band 0.4-1.75)
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: value present: final=1.2
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: plausibility vs prior year: 1.2pp vs prior-year 0.8pp (max delta 6.0pp)
+2026-08-16T12:17:12Z [validate] HD [FAIL] HD: net sales growth vs comp sales: sales growth -99.9pp vs comps 1.2pp (gap covers new stores/FX/53rd week; limit 8pp)
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: value present: final=54400
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: magnitude vs prior year: 54400 vs prior-year 45300 (ratio 1.20, band 0.65-1.45)
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: value present: final=4.7
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: magnitude vs prior year: 4.7 vs prior-year 4.67 (ratio 1.01, band 0.4-1.75)
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: value present: final=-1.0
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: plausibility vs prior year: -1.0pp vs prior-year 0.8pp (max delta 6.0pp)
+2026-08-16T12:17:12Z [validate] HD [FAIL] HD: net sales growth vs comp sales: sales growth 20.1pp vs comps -1.0pp (gap covers new stores/FX/53rd week; limit 8pp)
+2026-08-16T12:17:12Z [validate] HAS [PASS] net_fees: value present: final=1000
+2026-08-16T12:17:12Z [validate] HAS [PASS] net_fees: magnitude vs prior year: 1000 vs prior-year 1050 (ratio 0.95, band 0.65-1.45)
+2026-08-16T12:17:12Z [validate] HAS [PASS] preex_eps: value present: final=6.0
+2026-08-16T12:17:12Z [validate] HAS [PASS] preex_eps: magnitude vs prior year: 6.0 vs prior-year 6.4 (ratio 0.94, band 0.4-1.75)
+2026-08-16T12:17:12Z [validate] HAS [PASS] preex_op: value present: final=600
+2026-08-16T12:17:12Z [validate] HAS [FAIL] preex_op: magnitude vs prior year: 600 vs prior-year 105 (ratio 5.71, band 0.3-2.5)
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: value present: final=46700
+2026-08-16T12:17:12Z [validate] HD [FAIL] net_sales: prior-year base exists: no reported FY2025Q2 value in fact table
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: value present: final=4.7
+2026-08-16T12:17:12Z [validate] HD [FAIL] adj_eps: prior-year base exists: no reported FY2025Q2 value in fact table
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: value present: final=1.2
+2026-08-16T12:17:12Z [validate] HD [FAIL] comp_sales: prior-year base exists: no reported FY2025Q2 value in fact table
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: value present: final=46700
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: magnitude vs prior year: 46700 vs prior-year 45300 (ratio 1.03, band 0.65-1.45)
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: value present: final=4.7
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: magnitude vs prior year: 4.7 vs prior-year 4.67 (ratio 1.01, band 0.4-1.75)
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: value present: final=9.0
+2026-08-16T12:17:12Z [validate] HD [FAIL] comp_sales: plausibility vs prior year: 9.0pp vs prior-year 0.8pp (max delta 6.0pp)
+2026-08-16T12:17:12Z [validate] HD [PASS] HD: net sales growth vs comp sales: sales growth 3.1pp vs comps 9.0pp (gap covers new stores/FX/53rd week; limit 8pp)
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: value present: final=46700
+2026-08-16T12:17:12Z [validate] HD [PASS] net_sales: magnitude vs prior year: 46700 vs prior-year 45300 (ratio 1.03, band 0.65-1.45)
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: value present: final=4.7
+2026-08-16T12:17:12Z [validate] HD [PASS] adj_eps: magnitude vs prior year: 4.7 vs prior-year 4.67 (ratio 1.01, band 0.4-1.75)
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: value present: final=1.2
+2026-08-16T12:17:12Z [validate] HD [PASS] comp_sales: plausibility vs prior year: 1.2pp vs prior-year 0.8pp (max delta 6.0pp)
+2026-08-16T12:17:12Z [validate] HD [PASS] HD: net sales growth vs comp sales: sales growth 3.1pp vs comps 1.2pp (gap covers new stores/FX/53rd week; limit 8pp)
