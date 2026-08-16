@@ -81,8 +81,12 @@ def run_company(company: Company, log: RunLog, run_id: str,
         g = guidance(metric, series[metric.key], gfacts, target)
         if g:
             ests.append(g)
+        # no guidance route -> the analyst carries more weight, so buy
+        # stability with a larger sample count there
+        n_samples = 2 if g else 4
         ests.extend(llm_analyst(company, metric, series[metric.key], gfacts,
                                 target, consensus, log,
+                                samples_per_provider=n_samples,
                                 extra_evidence=extra_evidence))
         log.log("estimate", f"{company.short}/{metric.key}: " + "; ".join(
             f"{e.method}={e.value:.4g}" for e in ests))

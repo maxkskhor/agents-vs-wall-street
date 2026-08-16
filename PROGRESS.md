@@ -16,16 +16,21 @@ consensus refresh):
 |---|---|---:|---:|
 | HD | Net sales (USDm) | 47,000 | — |
 | HD | Adjusted diluted EPS | 4.80 | 4.87 |
-| HD | Comparable sales | 0.85% | — |
+| HD | Comparable sales | 0.75% | — |
 | ADI | Revenue (USDm) | 3,978 | 3,900 (= guide midpoint) |
 | ADI | Adjusted diluted EPS | 3.33 | — |
 | ADI | Adjusted gross margin | 73.4% | — |
-| HAS | Net fees (GBPm) | 893 | 902.4 |
-| HAS | Pre-exceptional basic EPS | 1.12p | 1.13p |
-| HAS | Pre-exceptional operating profit | 43.0 | 45.3 |
-| DE | Worldwide net sales and revenues | 12,818 | — (retrying fetch) |
-| DE | Diluted EPS (GAAP) | 4.35 | — |
-| DE | PP&A operating profit | 500 | — |
+| HAS | Net fees (GBPm) | 896 | 902.4 |
+| HAS | Pre-exceptional basic EPS | 1.08p | 1.13p |
+| HAS | Pre-exceptional operating profit | 44.0 | 45.3 |
+| DE | Worldwide net sales and revenues | 12,668 | — (web search finds none) |
+| DE | Diluted EPS (GAAP) | 4.25 | — |
+| DE | PP&A operating profit | 400 | — |
+
+Reruns are now bit-identical (deterministic evidence ordering + full prompt
+caching). DE runs un-anchored: if anyone finds credible DE Q3 FY2026 consensus
+numbers, put them in `research/consensus-DE.json` (copy the HAS file's shape)
+and note it under humanInput in entry.json.
 
 ## How it works (one paragraph)
 
