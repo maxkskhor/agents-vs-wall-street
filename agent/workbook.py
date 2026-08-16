@@ -48,7 +48,10 @@ def write_workbook(company: Company, values: dict[str, float],
         if metric.label not in values:
             raise WorkbookError(f"{company.output_file}: no value supplied for {metric.label!r}")
         v = float(values[metric.label])
-        cell.value = round(v, 2)
+        # money to the unit; EPS and percent keep 4dp — rounding Hays'
+        # pence EPS to 2dp can cost most of a score point against the
+        # 0.5%-of-actual floor
+        cell.value = round(v) if metric.kind == "money" else round(v, 4)
 
     out_dir.mkdir(exist_ok=True)
     out = out_dir / company.output_file
