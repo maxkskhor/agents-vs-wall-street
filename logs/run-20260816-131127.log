@@ -1,0 +1,14 @@
+2026-08-16T13:11:27Z [start] run 20260816-131127 companies=['HD', 'ADI', 'HAS', 'DE'] offline=False asof=latest
+2026-08-16T13:11:27Z [retrieve] HD: 16 results docs (2026-05-19 back to 2025-03-20)
+2026-08-16T13:11:27Z [retrieve] HAS: 16 results docs (2026-07-10 back to 2024-04-16)
+2026-08-16T13:11:27Z [retrieve] ADI: 16 results docs (2026-05-20 back to 2024-11-26)
+2026-08-16T13:11:27Z [retrieve] DE: 16 results docs (2026-05-28 back to 2025-02-13)
+2026-08-16T13:11:27Z [facts] HAS: 114 grounded facts (29 rejected by grounding), series sizes ['net_fees:6', 'preex_eps:6', 'preex_op:6'], 42 guidance/preannounce
+2026-08-16T13:11:27Z [facts] HD: 118 grounded facts (5 rejected by grounding), series sizes ['net_sales:13', 'adj_eps:13', 'comp_sales:13'], 20 guidance/preannounce
+2026-08-16T13:11:27Z [facts] ADI: 130 grounded facts (39 rejected by grounding), series sizes ['revenue:17', 'adj_eps:17', 'adj_gross_margin:17'], 15 guidance/preannounce
+2026-08-16T13:11:27Z [facts] DE: 124 grounded facts (60 rejected by grounding), series sizes ['net_sales_rev:15', 'eps:15', 'ppa_op:11'], 0 guidance/preannounce
+2026-08-16T13:11:27Z [error] HAS: AttributeError: module 'agent.llm' has no attribute 'analyst_model'
+2026-08-16T13:11:27Z [error] ADI: AttributeError: module 'agent.llm' has no attribute 'analyst_model'
+2026-08-16T13:11:27Z [error] DE: AttributeError: module 'agent.llm' has no attribute 'analyst_model'
+2026-08-16T13:11:27Z [error] HD: AttributeError: module 'agent.llm' has no attribute 'analyst_model'
+2026-08-16T13:11:27Z [end] FAILED for ['HD', 'ADI', 'HAS', 'DE']

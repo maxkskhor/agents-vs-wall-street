@@ -68,28 +68,20 @@ def combine(company: Company, metric: Metric, estimates: list[Estimate],
     # mean signed error when it is measured on 3+ quarters, capped for safety
     bias_all = cal.get("guidance_bias", {})
     bias = bias_all.get(f"{company.short}/{metric.key}")
-    bias_applied = None
-    if bias and bias.get("n", 0) >= 3:
+    # only corrections that passed walk-forward validation in the backtest are
+    # applied; an observed bias alone is not evidence that correcting helps
+    if bias and bias.get("correction_recommended") and "mean_signed" in bias:
         b = bias["mean_signed"]
-        if metric.kind == "percent":
-            b = max(-1.5, min(1.5, b))
-            if abs(b) >= 0.5:
-                bias_applied = b
-        else:
-            b = max(-0.04, min(0.04, b))
-            if abs(b) >= 0.01:
-                bias_applied = b
-    if bias_applied is not None:
         for e in estimates:
             if e.method == "guidance":
                 before = e.value
-                e.value = (e.value + bias_applied if metric.kind == "percent"
-                           else e.value * (1 + bias_applied))
+                e.value = (e.value + b if metric.kind == "percent"
+                           else e.value * (1 + b))
                 e.inputs["bias_correction"] = {
-                    "before": before, "mean_signed": bias["mean_signed"],
-                    "applied": bias_applied, "n": bias["n"],
-                    "why": "backtested mean signed error of guidance-anchored "
-                           "estimates vs actuals for this company/metric"}
+                    "before": before, "applied": b, "n": bias["n"],
+                    "walk_forward": bias.get("reason"),
+                    "why": "walk-forward-validated bias of the guidance route "
+                           "for this company/metric"}
 
     by_method: dict[str, float] = {}
     lineage: dict = {"methods": {}, "weights": weights}

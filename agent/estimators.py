@@ -10,6 +10,7 @@ rather than guess when their inputs are missing.
 from __future__ import annotations
 
 import statistics
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
 from . import llm, periods
@@ -301,7 +302,8 @@ def _backtest_bias_note(company: Company, metric: Metric) -> str:
         return ""
     bias = _json.loads(p.read_text()).get("guidance_bias", {}).get(
         f"{company.short}/{metric.key}")
-    if not bias or bias.get("n", 0) < 3:
+    # only a walk-forward-validated bias is worth telling the analyst about
+    if not bias or not bias.get("correction_recommended") or "mean_signed" not in bias:
         return ""
     b = bias["mean_signed"]
     unit = "percentage points" if metric.kind == "percent" else "relative"
@@ -366,28 +368,32 @@ Propose:
  "confidence": "low"|"medium"|"high"}}
 Use at most 4 adjustments. Base MUST equal one of the history values above."""
 
-    out: list[Estimate] = []
-    for provider in providers:
-        for k in range(samples_per_provider):
-            try:
-                resp = llm.chat_json(
-                    provider, _ANALYST_SYSTEM,
-                    base_prompt + f"\n(sample {k + 1}; think independently)",
-                    temperature=0.5, max_tokens=2000)
-                base_v = float(resp["base"]["value"])
-                # the proposed base must be a real historical value
-                if not any(abs(base_v - v) <= max(abs(v) * 0.002, 0.005)
-                           for v in series.values()):
-                    log.log("analyst", f"{company.short}/{metric.key} {provider}#{k}: "
-                                       f"base {base_v} not in history — rejected")
-                    continue
-                deltas = [float(a["delta"]) for a in resp.get("adjustments", [])]
-                value = base_v + sum(deltas)
-                out.append(Estimate(metric.key, "llm_analyst", value, {
-                    "provider": provider, "sample": k,
-                    "base": resp["base"], "adjustments": resp.get("adjustments", []),
-                    "confidence": resp.get("confidence"),
-                    "formula": f"base {base_v} + adjustments {deltas}"}))
-            except (llm.LLMError, KeyError, TypeError, ValueError) as e:
-                log.log("analyst", f"{company.short}/{metric.key} {provider}#{k}: {e}")
+    def one(job) -> Estimate | None:
+        provider, k = job
+        try:
+            resp = llm.chat_json(
+                provider, _ANALYST_SYSTEM,
+                base_prompt + f"\n(sample {k + 1}; think independently)",
+                temperature=0.5, max_tokens=2000,
+                model=llm.analyst_model(provider))
+            base_v = float(resp["base"]["value"])
+            if not any(abs(base_v - v) <= max(abs(v) * 0.002, 0.005)
+                       for v in series.values()):
+                log.log("analyst", f"{company.short}/{metric.key} {provider}#{k}: "
+                                   f"base {base_v} not in history — rejected")
+                return None
+            deltas = [float(a["delta"]) for a in resp.get("adjustments", [])]
+            return Estimate(metric.key, "llm_analyst", base_v + sum(deltas), {
+                "provider": provider, "sample": k,
+                "base": resp["base"], "adjustments": resp.get("adjustments", []),
+                "confidence": resp.get("confidence"),
+                "model": llm.analyst_model(provider),
+                "formula": f"base {base_v} + adjustments {deltas}"})
+        except (llm.LLMError, KeyError, TypeError, ValueError) as e:
+            log.log("analyst", f"{company.short}/{metric.key} {provider}#{k}: {e}")
+            return None
+
+    jobs = [(p, k) for p in providers for k in range(samples_per_provider)]
+    with ThreadPoolExecutor(max_workers=min(8, len(jobs))) as pool:
+        out = [e for e in pool.map(one, jobs) if e is not None]
     return out

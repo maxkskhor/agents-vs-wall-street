@@ -33,23 +33,51 @@ consensus refresh):
 
 | Company | Metric | Forecast | Consensus anchor (gated) |
 |---|---|---:|---:|
-| HD | Net sales (USDm) | 47,120 | 47,300 (6 sources) |
-| HD | Adjusted diluted EPS | 4.70 | 4.71 (11 sources) |
-| HD | Comparable sales | 0.75% | none exists publicly |
-| ADI | Revenue (USDm) | 3,931 | 3,920 (5 sources) |
-| ADI | Adjusted diluted EPS | 3.33 | 3.33 (7 sources) |
-| ADI | Adjusted gross margin | 73.4% | none found |
-| HAS | Net fees (GBPm) | 892 | 902.3 (company-compiled) |
-| HAS | Pre-exceptional basic EPS | 1.06p | 1.09p (company-compiled) |
-| HAS | Pre-exceptional operating profit | 44.0 | 44.35 (company-compiled) |
-| DE | Worldwide net sales and revenues | 12,668 | rejected — wrong basis (see below) |
-| DE | Diluted EPS (GAAP) | 4.60 | 4.83 (13 sources) |
-| DE | PP&A operating profit | 400 | none found |
+| HD | Net sales (USDm) | 47,037 | 47,300 (6 sources) |
+| HD | Adjusted diluted EPS | 4.63 | 4.71 (11 sources) |
+| HD | Comparable sales | 0.27% | none exists publicly |
+| ADI | Revenue (USDm) | 3,908 | 3,920 (5 sources) |
+| ADI | Adjusted diluted EPS | 3.43 | 3.33 (7 sources) |
+| ADI | Adjusted gross margin | 73.15% | none found |
+| HAS | Net fees (GBPm) | 900 | 902.3 (company-compiled) |
+| HAS | Pre-exceptional basic EPS | 1.07p | 1.09p (company-compiled) |
+| HAS | Pre-exceptional operating profit | 45.0 | 44.35 (company-compiled) |
+| DE | Worldwide net sales and revenues | 12,980 | rejected, wrong basis (see below) |
+| DE | Diluted EPS (GAAP) | 4.69 | 4.83 (13 sources) |
+| DE | PP&A operating profit | 330 | none found |
 
-Reruns are now bit-identical (deterministic evidence ordering + full prompt
-caching). DE runs un-anchored: if anyone finds credible DE Q3 FY2026 consensus
-numbers, put them in `research/consensus-DE.json` (copy the HAS file's shape)
-and note it under humanInput in entry.json.
+A full run takes ~25 seconds (four companies in parallel, analyst samples in
+parallel) and reruns are bit-identical.
+
+## What changed since the first PR
+
+- **Consensus is gated like any other evidence.** Multiple pooled search
+  passes, each source kept separate with date and URL; reject future-dated
+  figures, company guidance posing as Street consensus, full-year figures
+  against a quarterly target, and values equal to an already-reported period;
+  then require two corroborating sources and take the median.
+  *Why:* an early run anchored HD adjusted EPS on a lone 4.87 that four
+  independent providers contradict at 4.62-4.73. It had already moved our
+  submitted number. Verified independently before changing anything.
+- **Deere's Street "revenue" is a different metric.** ~11.1bn is
+  equipment-operations net sales; ours is total worldwide net sales AND
+  revenues. Confirmed in the Q2 FY2026 8-K: 13,369 total vs 11,778 equipment
+  (ratio 0.878). Converted, the Street figure implies ~12,630 — which
+  corroborates our forecast instead of contradicting it. Declared unusable as
+  an anchor, with that evidence in config.
+- **Bias corrections must now pass a walk-forward test** (thanks to the PM
+  strategy note). 2 of 7 candidates passed; the other 5 are reported with the
+  measured bias and the reason they were withheld.
+- **Bias denominator bug fixed**: measured against the actual but applied
+  against the estimate, which systematically under-corrected.
+- **Analyst model chosen by measurement, not vibes**: the cheap model beat the
+  stronger one on the backtest (3.55 vs 3.99 mean floor-relative miss,
+  31-25 head-to-head). Everything now runs on the cheap model.
+- **Red-team demoted to advisory** — it blocked a correct 0.75pp comps figure.
+  Deterministic gates still block.
+- **New deterministic route**: Hays EPS is derived from forecast operating
+  profit via the most recent observed ratio. Its analyst samples were
+  returning 0.33-0.76 against a truth near 1.05.
 
 ## How it works (one paragraph)
 
