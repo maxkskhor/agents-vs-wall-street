@@ -99,10 +99,11 @@
           <text class="s" x="344" y="396">cited base + itemised deltas;</text>
           <text class="s" x="344" y="412">final recomputed by engine</text>
 
-          <rect class="box stage" x="620" y="200" width="180" height="88" rx="10"/>
-          <text class="t" x="634" y="226">4 · Combine</text>
-          <text class="s" x="634" y="244">weighted median; weights from</text>
-          <text class="s" x="634" y="260">backtest; consensus shrink</text>
+          <rect class="box stage" x="620" y="184" width="180" height="104" rx="10"/>
+          <text class="t" x="634" y="210">4 · Combine</text>
+          <text class="s" x="634" y="228">bias-correct guidance route;</text>
+          <text class="s" x="634" y="244">weighted median, backtest</text>
+          <text class="s" x="634" y="260">weights; consensus shrink</text>
 
           <rect class="box gate" x="620" y="330" width="180" height="98" rx="10"/>
           <text class="t" x="634" y="356">5 · Validation gates</text>
@@ -132,12 +133,13 @@
           <path class="flow" d="M510,164 C570,164 580,225 620,235"/>
           <path class="flow" d="M510,280 C570,280 580,250 620,248"/>
           <path class="flow" d="M510,396 C570,396 580,270 620,260"/>
-          <path class="flow" d="M710,144 L710,200"/>
+          <path class="flow" d="M710,144 L710,184"/>
           <path class="flow" d="M710,288 L710,330"/>
           <path class="flow" d="M710,428 L710,470"/>
-          <path class="flow" d="M560,500 C590,500 600,300 620,270" stroke-dasharray="5 4"/>
+          <path class="flow" d="M560,500 C590,500 600,300 620,264" stroke-dasharray="5 4"/>
+          <path class="flow" d="M400,470 L400,440" stroke-dasharray="5 4"/>
         </svg>
-        <figcaption>Solid arrows: the final run. Dashed: the backtest feeds calibrated ensemble weights into stage 4. Yellow boxes are gates that can reject work; green are supporting harnesses.</figcaption>
+        <figcaption>Solid arrows: the final run. Dashed: the backtest feeds calibration back into the pipeline — ensemble weights and the validated guidance bias correction into stage 4, and the same bias finding into stage 3c as narrative evidence for the analyst. Yellow boxes are gates that can reject work; green are supporting harnesses.</figcaption>
       </figure>
 
       <h3>The five stages</h3>
@@ -148,10 +150,10 @@
           <ul>
             <li><em>Guidance-anchored</em>: pure arithmetic on extracted guidance — midpoints, full-year "catch-up" math (implied remaining-quarter growth given already-reported quarters), historical seasonal shares.</li>
             <li><em>Statistical</em>: prior-year base × median YoY growth (additive in points for percent metrics). Contains no model call at all.</li>
-            <li><em>LLM analyst</em>: five to eight independent samples, run in parallel. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value.</li>
+            <li><em>LLM analyst</em>: five to eight independent samples, run in parallel. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value. Where a walk-forward-validated guidance bias exists, it is also stated to the model as a plain-language backtest finding ("this company beat guidance-based expectations by ~2.8% over 9 past periods") for it to weigh when sizing adjustments — narrative evidence only; the arithmetic correction is applied once, deterministically, in stage 4.</li>
           </ul>
         </li>
-        <li><strong>Combine.</strong> Weighted median across routes — weights chosen by the backtest, not by us — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>. β is 0.6 when the guidance route contributed and 0.4 when it abstained — we deviate less from the benchmark when our strongest evidence route had nothing to say. An anchor too far from the evidence-built ensemble is refused outright rather than blended.</li>
+        <li><strong>Combine.</strong> First a <em>guidance bias correction</em>. Where our own backtest found that a company's reported figure systematically differs from its guidance-anchored estimate, that route's value is corrected by the backtested median signed error — multiplicative for money and EPS (<code>raw × (1 + b)</code>), additive in points for percent metrics — <em>before</em> anything is combined, so it can change which route wins the median rather than merely shifting the result. A measured bias is not on its own a reason to correct: the correction is applied only where walk-forward replay (estimating the bias from earlier periods only) beat the raw estimate on median error <em>and</em> on at least half the periods tested, and it is capped at ±6% for money/EPS and ±1.5pp for percent metrics so a small sample cannot produce a large adjustment. In the final calibration only two of seven company/metric pairs qualified — ADI revenue (+2.8%, walk-forward median error 99.8 → 30.0, 100% of periods improved) and ADI adjusted EPS (+6.0%, sitting on the cap, 0.130 → 0.040, 71% improved). The other five showed a bias but no evidence that correcting for it helps, so they are left alone. Then the weighted median across routes — weights chosen by the backtest, not by us — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>. β is 0.6 when the guidance route contributed and 0.4 when it abstained — we deviate less from the benchmark when our strongest evidence route had nothing to say. An anchor too far from the evidence-built ensemble is refused outright rather than blended.</li>
         <li><strong>Validate, then write.</strong> Deterministic gates (units and magnitudes vs history, cross-metric consistency such as HD comp-sales vs net-sales growth and Hays fee-to-profit conversion, sample disagreement) decide; an LLM red-team pass advises but cannot block. Any deterministic failure stops the workbook writer.</li>
       </ol>
     </section>
