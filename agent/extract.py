@@ -21,7 +21,7 @@ from .config import CACHE, Company
 from .corpus import Doc
 from .runlog import RunLog
 
-PROMPT_VERSION = "v7"
+PROMPT_VERSION = "v8"
 
 MAX_DOC_CHARS = 110_000
 
@@ -162,11 +162,37 @@ def _value_in_quote(value: float, quote: str, units: str = "") -> bool:
     return False
 
 
+def _fuzzy_in_doc(fact: dict, text: str, metric) -> bool:
+    """Fallback for reconstructed table rows and OCR-mangled sentences: every
+    number in the fact must appear within one 400-char window of the document
+    that also mentions the metric."""
+    t = _norm_ws(text)
+    nums = [fact.get(k) for k in ("value", "low", "high") if fact.get(k) is not None]
+    if not nums:
+        return False
+    positions = []
+    for a in metric.aliases:
+        start = 0
+        an = _norm_ws(a)
+        while True:
+            i = t.find(an, start)
+            if i == -1:
+                break
+            positions.append(i)
+            start = i + 1
+    for i in positions[:200]:
+        window = t[max(0, i - 80): i + 400]
+        if all(_value_in_quote(float(v), window, str(fact.get("units", "")))
+               for v in nums):
+            return True
+    return False
+
+
 def _ground(fact: dict, text: str, metric) -> str | None:
     """Return rejection reason or None if the fact is grounded."""
     quote = fact.get("quote") or ""
     units = str(fact.get("units", ""))
-    if not _quote_in_doc(quote, text):
+    if not _quote_in_doc(quote, text) and not _fuzzy_in_doc(fact, text, metric):
         return "quote not found in document"
 
     value, low, high = fact.get("value"), fact.get("low"), fact.get("high")
@@ -189,7 +215,7 @@ def _ground(fact: dict, text: str, metric) -> str | None:
     # adjusted/pre-exceptional metrics must show the qualifier — otherwise the
     # GAAP row next to the adjusted row gets credited to the wrong metric
     blob = _norm_ws(quote)
-    if metric.kind == "money":
+    if metric.kind == "money" and "growth" not in units.lower():
         if not any(_norm_ws(a) in blob for a in metric.aliases):
             return "quote does not mention the metric (attribution)"
     label = metric.label.lower()
@@ -295,6 +321,9 @@ def reported_series(company: Company, facts: list[Fact],
             continue
         if "growth" in f.units.lower():
             continue   # growth rates are guidance-shaped, never series levels
+        kind = {m.key: m.kind for m in company.metrics}[f.metric]
+        if kind == "percent" and not -100 <= f.value <= 100:
+            continue   # a dollar amount that leaked into a percent metric
         if asof is not None and dt.date.fromisoformat(f.published) > asof:
             continue
         blob = (f.units + " " + f.quote).lower()
