@@ -115,7 +115,21 @@ def run_backtest(company_short: str | None, quarters: int = 4,
     weights = _calibrate(rows)
     bias = _guidance_bias(rows)
     CACHE.mkdir(exist_ok=True)
-    (CACHE / f"calibration{tag}.json").write_text(json.dumps(
+    out_path = CACHE / f"calibration{tag}.json"
+    # a thinner backtest silently replacing a richer one changes submitted
+    # numbers with no warning; this happened once and moved a forecast
+    if out_path.exists():
+        try:
+            prev = json.loads(out_path.read_text()).get("n_rows", 0)
+        except (ValueError, OSError):
+            prev = 0
+        if prev > len(rows):
+            log.log("backtest", f"REFUSED to overwrite {out_path.name}: it holds "
+                                f"{prev} rows, this run produced {len(rows)}. "
+                                f"Re-run with more --quarters, or use --tag.")
+            _write_report(rows, weights, bias, tag + "-rejected")
+            return 1
+    out_path.write_text(json.dumps(
         {"weights": weights, "guidance_bias": bias,
          "generated": dt.datetime.now(dt.timezone.utc).isoformat(),
          "n_rows": len(rows)}, indent=1))
