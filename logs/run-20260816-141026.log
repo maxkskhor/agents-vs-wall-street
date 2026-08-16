@@ -1,0 +1,86 @@
+2026-08-16T14:10:31Z [extract] HD 2025-02-25__hd-us-20250225-q4-10k__132164.md: 0 facts, 0 rejected
+2026-08-16T14:10:40Z [extract] HD 2025-02-25__hd-us-20250225-q4-8k__101827.md: 13 facts, 0 rejected
+2026-08-16T14:10:42Z [extract] HD 2024-11-12__hd-us-20241112-q3-10q__101846.md: 4 facts, 0 rejected
+2026-08-16T14:10:44Z [extract] HD 2024-11-12__hd-us-20241112-q3-8k__101844.md: 11 facts, 0 rejected
+2026-08-16T14:10:45Z [extract] HD 2024-08-13__hd-us-20240813-q2-10q__101825.md: 8 facts, 0 rejected
+2026-08-16T14:10:46Z [extract] HD 2024-03-28__hd-us-20240328-fy-8k__101840.md: 0 facts, 0 rejected
+2026-08-16T14:10:48Z [extract] HD 2024-03-13__hd-us-20240313-fy-10k__778665.md: 0 facts, 0 rejected
+2026-08-16T14:10:50Z [extract] HD 2024-08-13__hd-us-20240813-q2-8k__101849.md: 10 facts, 0 rejected
+2026-08-16T14:10:51Z [extract] HD 2024-05-14__hd-us-20240514-q1-10q__101821.md: 7 facts, 0 rejected
+2026-08-16T14:10:54Z [extract] HD 2024-05-14__hd-us-20240514-q1-8k__101830.md: 5 facts, 0 rejected
+2026-08-16T14:10:54Z [backtest] HD: targets ['FY2026Q1', 'FY2025Q4', 'FY2025Q3', 'FY2025Q2']
+2026-08-16T14:10:58Z [backtest] HD FY2026Q1 net_sales: actual=41765.0 statistical=4.139e+04(miss 376) guidance=4.125e+04(miss 514) llm_analyst=4.125e+04(miss 514)
+2026-08-16T14:11:02Z [backtest] HD FY2026Q1 adj_eps: actual=3.43 statistical=3.488(miss 0.0578) guidance=3.631(miss 0.201) llm_analyst=3.63(miss 0.2)
+2026-08-16T14:11:08Z [backtest] HD FY2026Q1 comp_sales: actual=0.6 statistical=1.7(miss 1.1) guidance=1(miss 0.4) llm_analyst=1(miss 0.4)
+2026-08-16T14:11:15Z [backtest] HD FY2025Q4 net_sales: actual=38198.0 statistical=4.254e+04(miss 4.35e+03) guidance=3.781e+04(miss 384) llm_analyst=3.781e+04(miss 384)
+2026-08-16T14:11:19Z [backtest] HD FY2025Q4 adj_eps: actual=2.72 statistical=3.117(miss 0.397) guidance=2.507(miss 0.213) llm_analyst=2.5(miss 0.22)
+2026-08-16T14:11:25Z [backtest] HD FY2025Q4 comp_sales: actual=0.4 statistical=2.95(miss 2.55) guidance=3.1(miss 2.7) llm_analyst=3.1(miss 2.7)
+2026-08-16T14:11:34Z [backtest] HD FY2025Q3 net_sales: actual=41352.0 statistical=4.345e+04(miss 2.1e+03) guidance=3.968e+04(miss 1.68e+03) llm_analyst=3.968e+04(miss 1.68e+03)
+2026-08-16T14:11:39Z [backtest] HD FY2025Q3 adj_eps: actual=3.74 statistical=3.75(miss 0.00968) guidance=3.668(miss 0.0721) llm_analyst=3.67(miss 0.07)
+2026-08-16T14:11:45Z [backtest] HD FY2025Q3 comp_sales: actual=0.2 statistical=0.85(miss 0.65) guidance=1.65(miss 1.45) llm_analyst=1.3(miss 1.1)
+2026-08-16T14:11:50Z [backtest] HD FY2025Q2 net_sales: actual=45277.0 statistical=4.665e+04(miss 1.37e+03) guidance=4.354e+04(miss 1.74e+03) llm_analyst=4.438e+04(miss 893)
+2026-08-16T14:11:54Z [backtest] HD FY2025Q2 adj_eps: actual=4.68 statistical=4.623(miss 0.0574) guidance=4.591(miss 0.0886) llm_analyst=4.58(miss 0.1)
+2026-08-16T14:12:00Z [backtest] HD FY2025Q2 comp_sales: actual=1.0 statistical=-1.55(miss 2.55) guidance=1.433(miss 0.433) llm_analyst=1(miss 0)
+2026-08-16T14:12:08Z [extract] ADI 2024-08-21__adi-us-20240821-q3-10q__102682.md: 2 facts, 2 rejected
+2026-08-16T14:12:10Z [extract] ADI 2024-05-22__adi-us-20240522-q2-10q__102688.md: 4 facts, 4 rejected
+2026-08-16T14:12:19Z [extract] ADI 2024-05-22__adi-us-20240522-q2-8k__102675.md: 13 facts, 5 rejected
+2026-08-16T14:12:21Z [extract] ADI 2023-11-21__adi-us-20231121-q4-10k__102669.md: 0 facts, 0 rejected
+2026-08-16T14:12:22Z [extract] ADI 2024-02-21__adi-us-20240221-q1-10q__102660.md: 12 facts, 4 rejected
+2026-08-16T14:12:25Z [extract] ADI 2024-08-21__adi-us-20240821-q3-8k__102648.md: 17 facts, 4 rejected
+2026-08-16T14:12:28Z [extract] ADI 2024-02-21__adi-us-20240221-q1-8k__102673.md: 9 facts, 2 rejected
+2026-08-16T14:12:33Z [extract] ADI 2023-08-23__adi-us-20230823-q3-10q__102684.md: 2 facts, 6 rejected
+2026-08-16T14:12:34Z [extract] ADI 2023-11-21__adi-us-20231121-q4-8k__102653.md: 14 facts, 0 rejected
+2026-08-16T14:12:52Z [extract] ADI 2023-08-23__adi-us-20230823-q3-8k-2__488074.md: 11 facts, 11 rejected
+2026-08-16T14:12:52Z [backtest] ADI: targets ['FY2026Q2', 'FY2026Q1', 'FY2025Q4', 'FY2025Q3']
+2026-08-16T14:12:55Z [backtest] ADI FY2026Q2 revenue: actual=3623.465 statistical=3306(miss 317) guidance=3500(miss 123) llm_analyst=3500(miss 123)
+2026-08-16T14:12:59Z [backtest] ADI FY2026Q2 adj_eps: actual=3.09 statistical=2.474(miss 0.616) guidance=2.88(miss 0.21) llm_analyst=2.88(miss 0.21)
+2026-08-16T14:13:02Z [backtest] ADI FY2026Q2 adj_gross_margin: actual=73.0 statistical=71.55(miss 1.45) llm_analyst=70.3(miss 2.7)
+2026-08-16T14:13:07Z [backtest] ADI FY2026Q1 revenue: actual=3160.063 statistical=2991(miss 169) guidance=3100(miss 60.1) llm_analyst=3100(miss 60.1)
+2026-08-16T14:13:10Z [backtest] ADI FY2026Q1 adj_eps: actual=2.46 statistical=2.134(miss 0.326) guidance=2.29(miss 0.17) llm_analyst=2.29(miss 0.17)
+2026-08-16T14:13:15Z [backtest] ADI FY2026Q1 adj_gross_margin: actual=71.2 statistical=70.4(miss 0.8) llm_analyst=68.8(miss 2.4)
+2026-08-16T14:13:20Z [backtest] ADI FY2025Q4 revenue: actual=3076.117 statistical=2672(miss 404) guidance=3000(miss 76.1) llm_analyst=3000(miss 76.1)
+2026-08-16T14:13:22Z [backtest] ADI FY2025Q4 adj_eps: actual=2.26 statistical=1.87(miss 0.39) guidance=2.22(miss 0.04) llm_analyst=2.22(miss 0.04)
+2026-08-16T14:13:27Z [backtest] ADI FY2025Q4 adj_gross_margin: actual=69.8 statistical=68.45(miss 1.35) llm_analyst=68.2(miss 1.6)
+2026-08-16T14:13:31Z [backtest] ADI FY2025Q3 revenue: actual=2880.348 statistical=2155(miss 726) guidance=2750(miss 130) llm_analyst=2750(miss 130)
+2026-08-16T14:13:34Z [backtest] ADI FY2025Q3 adj_eps: actual=2.05 statistical=1.401(miss 0.649) guidance=1.92(miss 0.13) llm_analyst=1.92(miss 0.13)
+2026-08-16T14:13:37Z [backtest] ADI FY2025Q3 adj_gross_margin: actual=69.2 statistical=66.65(miss 2.55) llm_analyst=69.2(miss 0)
+2026-08-16T14:13:43Z [extract] HAS 2023-10-12__has-ln-20231012-q1-8k__119723.md: 2 facts, 0 rejected
+2026-08-16T14:13:45Z [extract] HAS 2024-01-09__has-ln-20240109-q2-8k__119739.md: 5 facts, 0 rejected
+2026-08-16T14:13:49Z [extract] HAS 2023-08-24__has-ln-20230824-h2-8k-2__671216.md: 0 facts, 6 rejected
+2026-08-16T14:13:53Z [extract] HAS 2024-02-22__has-ln-20240222-h1-8k__119744.md: 10 facts, 1 rejected
+2026-08-16T14:13:58Z [extract] HAS 2023-07-13__has-ln-20230713-q4-8k__119742.md: 4 facts, 2 rejected
+2026-08-16T14:14:00Z [extract] HAS 2023-04-14__has-ln-20230414-q3-8k__119726.md: 9 facts, 0 rejected
+2026-08-16T14:14:06Z [extract] HAS 2022-10-13__has-ln-20221013-q1-8k__119738.md: 3 facts, 0 rejected
+2026-08-16T14:14:07Z [extract] HAS 2023-08-24__has-ln-20230824-h2-8k__119735.md: 3 facts, 8 rejected
+2026-08-16T14:14:09Z [extract] HAS 2023-02-23__has-ln-20230223-h1-8k__119736.md: 3 facts, 8 rejected
+2026-08-16T14:14:09Z [extract] HAS 2023-01-17__has-ln-20230117-q2-8k__119748.md: 3 facts, 1 rejected
+2026-08-16T14:14:09Z [backtest] HAS: targets ['FY2025', 'FY2024']
+2026-08-16T14:14:16Z [backtest] HAS FY2025 net_fees: actual=972.4 statistical=1085(miss 113) guidance=973.3(miss 0.87) llm_analyst=978.6(miss 6.2)
+2026-08-16T14:14:20Z [backtest] HAS FY2025 preex_eps: actual=1.31 statistical=1.891(miss 0.581) llm_analyst=2.47(miss 1.16)
+2026-08-16T14:14:24Z [backtest] HAS FY2025 preex_op: actual=45.6 statistical=56.07(miss 10.5) guidance=45(miss 0.6) llm_analyst=45(miss 0.6)
+2026-08-16T14:14:31Z [backtest] HAS FY2024 net_fees: actual=1113.6 statistical=1409(miss 296) guidance=1117(miss 3.14) llm_analyst=1133(miss 19.2)
+2026-08-16T14:14:34Z [backtest] HAS FY2024 preex_eps: actual=4.03 statistical=8.59(miss 4.56) llm_analyst=4.95(miss 0.92)
+2026-08-16T14:14:39Z [backtest] HAS FY2024 preex_op: actual=105.1 statistical=197(miss 91.9) guidance=105(miss 0.1) llm_analyst=105(miss 0.1)
+2026-08-16T14:14:42Z [extract] DE 2024-11-21__de-us-20241121-q4-10k__105810.md: 0 facts, 0 rejected
+2026-08-16T14:14:50Z [extract] DE 2024-08-15__de-us-20240815-q3-8k__105836.md: 12 facts, 0 rejected
+2026-08-16T14:14:52Z [extract] DE 2024-05-16__de-us-20240516-q2-10q__105820.md: 8 facts, 4 rejected
+2026-08-16T14:14:55Z [extract] DE 2024-08-15__de-us-20240815-q3-10q__105828.md: 8 facts, 4 rejected
+2026-08-16T14:14:56Z [extract] DE 2024-11-21__de-us-20241121-q4-8k__105840.md: 12 facts, 0 rejected
+2026-08-16T14:14:59Z [extract] DE 2023-12-15__de-us-20231215-fy-10k__645297.md: 0 facts, 0 rejected
+2026-08-16T14:15:00Z [extract] DE 2024-02-15__de-us-20240215-q1-10q__105826.md: 4 facts, 2 rejected
+2026-08-16T14:15:01Z [extract] DE 2024-02-15__de-us-20240215-q1-8k__105824.md: 4 facts, 2 rejected
+2026-08-16T14:15:01Z [extract] DE 2024-05-16__de-us-20240516-q2-8k__105819.md: 12 facts, 0 rejected
+2026-08-16T14:15:02Z [extract] DE 2023-11-22__de-us-20231122-q4-10k__105844.md: 0 facts, 0 rejected
+2026-08-16T14:15:02Z [backtest] DE: targets ['FY2026Q2', 'FY2026Q1', 'FY2025Q4', 'FY2025Q3']
+2026-08-16T14:15:06Z [backtest] DE FY2026Q2 net_sales_rev: actual=13369.0 statistical=1.293e+04(miss 440) llm_analyst=1.442e+04(miss 1.05e+03)
+2026-08-16T14:15:11Z [backtest] DE FY2026Q2 eps: actual=6.55 statistical=5.103(miss 1.45) llm_analyst=5.87(miss 0.68)
+2026-08-16T14:15:15Z [backtest] DE FY2026Q2 ppa_op: actual=706.0 statistical=522.6(miss 183) llm_analyst=472(miss 234)
+2026-08-16T14:15:20Z [backtest] DE FY2026Q1 net_sales_rev: actual=9611.0 statistical=7451(miss 2.16e+03) llm_analyst=8508(miss 1.1e+03)
+2026-08-16T14:15:26Z [backtest] DE FY2026Q1 eps: actual=2.42 statistical=2.446(miss 0.0261) llm_analyst=1.63(miss 0.79)
+2026-08-16T14:15:32Z [backtest] DE FY2026Q1 ppa_op: actual=139.0 llm_analyst=338(miss 199)
+2026-08-16T14:15:37Z [backtest] DE FY2025Q4 net_sales_rev: actual=12394.0 statistical=8696(miss 3.7e+03) llm_analyst=1.082e+04(miss 1.58e+03)
+2026-08-16T14:15:42Z [backtest] DE FY2025Q4 eps: actual=3.93 statistical=2.971(miss 0.959) llm_analyst=3.78(miss 0.15)
+2026-08-16T14:15:48Z [backtest] DE FY2025Q3 net_sales_rev: actual=12018.0 statistical=1.023e+04(miss 1.79e+03) llm_analyst=1.02e+04(miss 1.81e+03)
+2026-08-16T14:15:53Z [backtest] DE FY2025Q3 eps: actual=4.75 statistical=3.672(miss 1.08) llm_analyst=4.12(miss 0.63)
+2026-08-16T14:15:58Z [backtest] DE FY2025Q3 ppa_op: actual=580.0 statistical=808.5(miss 228) llm_analyst=560(miss 20)
+2026-08-16T14:15:58Z [backtest] calibration written: weights={'money': {'guidance': 0.5, 'llm_analyst': 0.1, 'statistical': 0.4, 'backtest_score': 3.778, 'n': 19}, 'eps': {'guidance': 0.0, 'llm_analyst': 0.0, 'statistical': 1.0, 'backtest_score': 4.179, 'n': 14}, 'percent': {'guidance': 0.3, 'llm_analyst': 0.3, 'statistical': 0.4, 'backtest_score': 2.525, 'n': 8}}

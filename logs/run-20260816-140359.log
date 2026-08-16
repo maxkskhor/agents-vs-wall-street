@@ -1,0 +1,14 @@
+2026-08-16T14:05:37Z [consensus] HD: 4 entries from offline live-web-evidence corpus
+2026-08-16T14:05:37Z [consensus] HD/net_sales: anchor=47300 from 9 accepted / 0 rejected (['Zacks', 'TipRanks', 'Investing.com', 'TheStreet Pro', 'Benzinga', 'Zacks', 'MarketBeat', 'Finviz', 'Zacks Consensus Estimate (via Yahoo Finance)'])
+2026-08-16T14:05:37Z [consensus] HD/adj_eps: anchor=4.71 from 9 accepted / 0 rejected (['Zacks', 'Barchart', 'Benzinga', 'Investing.com (RBC Capital)', 'TipRanks', 'Finviz', 'Zacks Consensus Estimate (via Yahoo Finance)', 'MarketBeat', 'Motley Fool / Investing.com (provider not named)'])
+2026-08-16T14:05:37Z [consensus] HD/comp_sales: anchor=None from 1 accepted / 0 rejected (['Investing.com (RBC Capital)'])
+2026-08-16T14:07:10Z [consensus] ADI/revenue: anchor=3910 from 7 accepted / 0 rejected (['Benzinga', 'FXEmpire', 'ChartMill', 'Investing.com', 'TipRanks', 'TradingKey', 'Stock Alarm Pro'])
+2026-08-16T14:07:10Z [consensus] ADI/adj_eps: anchor=3.33 from 3 accepted / 0 rejected (['Barchart', 'Benzinga', 'Barchart/Zacks'])
+2026-08-16T14:07:10Z [consensus] ADI/adj_gross_margin: anchor=None from 0 accepted / 0 rejected ([])
+2026-08-16T14:08:06Z [consensus] HAS/net_fees: anchor=902.4 from 3 accepted / 0 rejected (['Hays plc company-compiled analyst consensus', 'Hays plc company-compiled consensus', 'Hays plc (company-compiled consensus; 9 sell-side analysts)'])
+2026-08-16T14:08:06Z [consensus] HAS/preex_eps: anchor=1.13 from 3 accepted / 0 rejected (['Hays plc company-compiled analyst consensus', 'Hays plc company-compiled consensus', 'Hays plc (company-compiled consensus; 9 sell-side analysts)'])
+2026-08-16T14:08:06Z [consensus] HAS/preex_op: anchor=45.3 from 3 accepted / 0 rejected (['Hays plc company-compiled analyst consensus', 'Hays plc company-compiled consensus', 'Hays plc (company-compiled consensus; 9 sell-side analysts)'])
+2026-08-16T14:10:16Z [consensus] DE: 2 entries from offline live-web-evidence corpus
+2026-08-16T14:10:16Z [consensus] DE/net_sales_rev: anchor=10830 from 5 accepted / 0 rejected (['MarketBeat', 'Benzinga', 'TipRanks', 'Zacks Consensus Estimate (via Yahoo Finance)', 'MarketBeat'])
+2026-08-16T14:10:16Z [consensus] DE/eps: anchor=4.74 from 6 accepted / 0 rejected (['Benzinga', 'MarketBeat', 'TipRanks', 'Yahoo Finance', 'Barchart', 'Finviz'])
+2026-08-16T14:10:16Z [consensus] DE/ppa_op: anchor=None from 0 accepted / 0 rejected ([])
