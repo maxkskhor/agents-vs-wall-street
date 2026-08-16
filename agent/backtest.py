@@ -60,7 +60,8 @@ def _targets(company: Company, series_all: dict, facts, quarters: int) -> list[s
     return picked
 
 
-def run_backtest(company_short: str | None, quarters: int = 4) -> int:
+def run_backtest(company_short: str | None, quarters: int = 4,
+                 tag: str = "") -> int:
     run_id = new_run_id()
     log = RunLog(run_id)
     companies = [get_company(company_short)] if company_short else load_companies()
@@ -114,11 +115,11 @@ def run_backtest(company_short: str | None, quarters: int = 4) -> int:
     weights = _calibrate(rows)
     bias = _guidance_bias(rows)
     CACHE.mkdir(exist_ok=True)
-    (CACHE / "calibration.json").write_text(json.dumps(
+    (CACHE / f"calibration{tag}.json").write_text(json.dumps(
         {"weights": weights, "guidance_bias": bias,
          "generated": dt.datetime.now(dt.timezone.utc).isoformat(),
          "n_rows": len(rows)}, indent=1))
-    _write_report(rows, weights, bias)
+    _write_report(rows, weights, bias, tag)
     log.log("backtest", f"calibration written: weights={weights}")
     return 0
 
@@ -244,7 +245,8 @@ def _guidance_bias(rows: list[dict]) -> dict:
     return out
 
 
-def _write_report(rows: list[dict], weights: dict, bias: dict) -> None:
+def _write_report(rows: list[dict], weights: dict, bias: dict,
+                  tag: str = "") -> None:
     RESEARCH.mkdir(exist_ok=True)
     lines = ["# Backtest report (time-travel evaluation)", "",
              "Floor-relative miss = |forecast − actual| / scoring floor, capped at 5.0. ",
@@ -268,4 +270,4 @@ def _write_report(rows: list[dict], weights: dict, bias: dict) -> None:
               json.dumps(bias, indent=1), "```", "",
               "Caveat: LLM-analyst rows for pre-2026 quarters may be contaminated by "
               "model training data; deterministic estimator rows are not."]
-    (RESEARCH / "backtest-report.md").write_text("\n".join(lines))
+    (RESEARCH / f"backtest-report{tag}.md").write_text("\n".join(lines))

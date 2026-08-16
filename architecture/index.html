@@ -151,8 +151,8 @@
             <li><em>LLM analyst</em>: five to eight independent samples, run in parallel. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value.</li>
           </ul>
         </li>
-        <li><strong>Combine.</strong> Weighted median across routes — weights chosen by the backtest, not by us — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>, β = 0.6.</li>
-        <li><strong>Validate, then write.</strong> Deterministic gates (units and magnitudes vs history, cross-metric consistency such as HD comp-sales vs net-sales growth and Hays fee-to-profit conversion, cross-provider disagreement) plus an LLM red-team pass that can block only on unit/scale errors. Any failure stops the workbook writer.</li>
+        <li><strong>Combine.</strong> Weighted median across routes — weights chosen by the backtest, not by us — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>. β is 0.6 when the guidance route contributed and 0.4 when it abstained — we deviate less from the benchmark when our strongest evidence route had nothing to say. An anchor too far from the evidence-built ensemble is refused outright rather than blended.</li>
+        <li><strong>Validate, then write.</strong> Deterministic gates (units and magnitudes vs history, cross-metric consistency such as HD comp-sales vs net-sales growth and Hays fee-to-profit conversion, sample disagreement) decide; an LLM red-team pass advises but cannot block. Any deterministic failure stops the workbook writer.</li>
       </ol>
     </section>
 
@@ -204,6 +204,7 @@
         <li><strong>Estimators abstain instead of guessing.</strong> Deere gives no quarterly EPS guidance — the guidance route abstains there and the median leans on the other routes, visibly in the audit trail.</li>
         <li><strong>Rejected: one autonomous agent per company.</strong> We built that too, as a baseline — spawn a sandboxed coding agent per company, have it research and return a schema-checked forecast. It works, and its twelve numbers land close to ours. But the schema can only check <em>shape</em> (units present, bear ≤ value ≤ bull, evidence IDs resolve); it cannot check that a cited number appears in the cited document, because the agent authors both the number and the evidence list. Its instruction to "state an arithmetic formula" is a request, not a constraint. We kept the constrained-role design because its guarantees are enforced rather than requested — and because a fresh agent per run cannot be re-run to the same answer.</li>
         <li><strong>External evidence is gated like internal evidence.</strong> A consensus anchor must be corroborated by two independent sources, dated no later than today, on the right basis, and not equal to a period the company has already reported. Uncorroborated numbers are recorded but never used.</li>
+        <li><strong>The Street sometimes quotes a different metric.</strong> Six sources agree Deere's consensus "revenue" is about 11.1bn. Our metric is <em>worldwide net sales and revenues</em>; theirs is equipment-operations net sales. The Q2 FY2026 8-K states both — 13,369 total against 11,778 equipment, a 0.878 ratio — so converted, the Street figure implies about 12,630 on our basis and <em>corroborates</em> our forecast instead of contradicting it. Anchoring on it raw would have pulled us roughly 1,800 low. The mismatch is declared in <code>agent/config.py</code> with that arithmetic attached.</li>
         <li><strong>Sample disagreement as a signal.</strong> Independent analyst samples answer the same prompt; a large spread flags the metric in validation. Planned as cross-provider Claude-vs-GPT, but only one provider's key was available on the day, so the spread is between independent samples of one model — and that model turns out to be highly self-consistent, which makes this check weaker than intended. Declared rather than dressed up.</li>
       </ul>
     </section>
@@ -212,10 +213,10 @@
       <h2>Checks and tests</h2>
       <ul>
         <li>Quote-grounding gate on every extracted fact (number must appear in its verbatim quote; quote must appear in the document).</li>
-        <li>Unit traps handled explicitly: Hays EPS in <em>pence</em>, percentages as points (0.6 not 0.006), USDm magnitudes; the red-team pass may block only on unit/scale errors.</li>
+        <li>Unit traps handled explicitly: Hays EPS in <em>pence</em>, percentages as points (0.6 not 0.006), USDm magnitudes.</li>
         <li>Magnitude bands vs prior-year values; absolute sanity bands (e.g. ADI gross margin 55–80%); conversion-ratio checks (Hays operating profit ÷ net fees; Deere PP&amp;A profit ÷ total revenue).</li>
         <li>Cross-metric consistency: HD net-sales growth vs comp sales within the new-stores/FX wedge.</li>
-        <li>12 offline unit tests cover period math, estimator arithmetic, grounding, combination and the workbook writer: <code>.venv/bin/python -m unittest discover -s tests</code>.</li>
+        <li>26 offline unit tests cover period math, estimator arithmetic, grounding, combination, the consensus gate and the workbook writer: <code>.venv/bin/python -m unittest discover -s tests</code>.</li>
         <li>Consensus-anchor gate: rejects future-dated figures (post-release leakage), company guidance sold as Street consensus, full-year figures quoted against a quarterly target, and values equal to an already-reported period; then requires two corroborating sources and takes their median. It earned its place — an early run anchored Home Depot adjusted EPS on a lone 4.87 that four independent providers contradicted at 4.62–4.73, and it had already moved our submitted number.</li>
         <li>A failed validation <em>blocks the workbook</em>; the run log records every check with its outcome.</li>
       </ul>
@@ -226,7 +227,7 @@
       <ul>
         <li>Extraction quality bounds everything: a guidance sentence the extractor misses is an estimate the ensemble never sees. The grounding gate stops hallucination, not omission.</li>
         <li>The consensus anchor trusts public websites found during the event; a stale or wrong consensus shifts the final number by up to β of the gap. The snapshot is cited and timestamped so judges can inspect it.</li>
-        <li>Backtest sample sizes are small (≈4 quarters × 3 metrics per company) and partially contaminated for the LLM route (declared above).</li>
+        <li>Backtest samples are still small (10 reporting periods per company at most) and partially contaminated for the LLM route on pre-2026 quarters (declared above). Deeper history also spans structural breaks — Home Depot acquired SRS and GMS inside the window — so more data is not uniformly better data.</li>
         <li>Deere's segment metric (PP&amp;A operating profit) has the thinnest guidance signal; we lean on seasonality and the analyst route there, and its answers varied the most between runs.</li>
       </ul>
       <h3>What actually went wrong today (and what it changed)</h3>
@@ -236,7 +237,7 @@
         <li>A newer 8-K's "an <em>increase</em> of $1.8 billion" was recorded as the quarter's level and, being newest, beat the correct 45,277 in the series. Fix: majority-vote clustering across every document that restates a figure — the truth appears many times, an extraction slip once.</li>
         <li>The grounding gate rejected true facts for surprising reasons: Hays writes "pre -exceptional" with an OCR space, "£4 3.5m" with digits split, and tables get reconstructed rather than quoted. We added normalisation plus a fallback that accepts a fact only if all its numbers co-occur next to the metric's name in the document.</li>
         <li>The red-team reviewer originally chose its own "blocking" severity and blocked ADI over a 0.2-in-6,784 rounding difference; it now only reports <code>unit_error</code> true/false, and only unit errors block.</li>
-        <li>We planned cross-provider ensembling (Claude vs GPT); only an OpenAI key was available on the day, so the disagreement check runs between independent gpt-5.1 samples instead.</li>
+        <li>We planned cross-provider ensembling (Claude vs GPT); only an OpenAI key was available on the day, so the disagreement check runs between independent samples of a single model — which turned out to be highly self-consistent, so the check is weaker than designed.</li>
         <li><code>rg</code>'s parallel file walk returned evidence in a different order on each run, which changed analyst prompts and made Deere's numbers wobble between runs — search output is now deterministically sorted.</li>
       </ul>
     </section>
