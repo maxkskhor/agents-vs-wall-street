@@ -98,8 +98,13 @@ Rules:
   "UK&I", "Private sector") — UNLESS the metric itself names a segment (e.g.
   Production & Precision Ag operating profit, which IS that segment's figure).
 - Record LEVELS, never changes: "an increase of $1.8 billion" is a change, not
-  a value of the metric. Growth-rate guidance is the only exception and must
-  use units "% growth".
+  a value of the metric. Two exceptions, both using units "% growth":
+  (a) growth-rate guidance, and (b) trading updates stating a completed period's
+  COMPANY-TOTAL year-on-year change before full results are published (e.g.
+  "Group net fees decreased by 5% YoY" in a quarterly update) — record those
+  with fact_type "preannounce", value = the signed percentage. When both
+  like-for-like and actual/reported-currency changes are given, record BOTH
+  (note the basis in units, e.g. "% growth actual basis").
 - quote: copy VERBATIM the sentence or table row containing the number
   (max ~300 chars). The value must be visible inside the quote.
 - Do not invent facts. Skip vague statements without numbers.
@@ -211,8 +216,14 @@ def extract_doc_facts(company: Company, doc: Doc, log: RunLog,
         data = json.loads(cp.read_text())
         return [Fact(**f) for f in data["facts"]], data["rejected"]
 
-    raw = llm.chat_json(provider, _SYSTEM, user, max_tokens=8000,
-                        model=llm.extract_model(provider))
+    try:
+        raw = llm.chat_json(provider, _SYSTEM, user, max_tokens=8000,
+                            model=llm.extract_model(provider))
+    except llm.LLMError:
+        # cheap extraction model gave malformed output — one shot on the
+        # stronger default model before giving up on the document
+        raw = llm.chat_json(provider, _SYSTEM, user, max_tokens=8000,
+                            model=llm.default_model(provider))
     if not isinstance(raw, list):
         raw = []
 
@@ -279,6 +290,8 @@ def reported_series(company: Company, facts: list[Fact],
     for f in facts:
         if f.fact_type != "reported" or f.value is None:
             continue
+        if "growth" in f.units.lower():
+            continue   # growth rates are guidance-shaped, never series levels
         if asof is not None and dt.date.fromisoformat(f.published) > asof:
             continue
         blob = (f.units + " " + f.quote).lower()

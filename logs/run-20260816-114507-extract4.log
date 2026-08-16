@@ -46,3 +46,20 @@
 2026-08-16T11:47:06Z [extract] HAS 2024-04-16__has-ln-20240416-q3-8k__119732.md: 0 facts, 0 rejected
 2026-08-16T11:47:11Z [extract] HAS 2024-08-22__has-ln-20240822-h2-8k-2__671217.md: 5 facts, 2 rejected
 2026-08-16T11:47:18Z [extract] HAS 2024-08-22__has-ln-20240822-h2-8k__119721.md: 8 facts, 21 rejected
+2026-08-16T11:47:28Z [extract] DE 2026-05-21__de-us-20260521-q2-10q__1055929.md: 4 facts, 8 rejected
+2026-08-16T11:47:29Z [extract] DE 2026-05-21__de-us-20260521-q2-8k-2__1042168.md: 8 facts, 4 rejected
+2026-08-16T11:47:33Z [extract] DE 2026-05-28__de-us-20260528-q2-10q__1055932.md: 0 facts, 12 rejected
+2026-08-16T11:47:41Z [extract] DE 2026-02-19__de-us-20260219-q1-10q__648937.md: 6 facts, 2 rejected
+2026-08-16T11:47:43Z [extract] DE 2025-12-18__de-us-20251218-fy-10k__393777.md: 0 facts, 0 rejected
+2026-08-16T11:47:43Z [extract] DE 2026-02-19__de-us-20260219-q1-8k__603009.md: 13 facts, 2 rejected
+2026-08-16T11:47:45Z [extract] DE 2025-11-26__de-us-20251126-q4-10k__469216.md: 0 facts, 0 rejected
+2026-08-16T11:47:45Z [extract] DE 2026-02-26__de-us-20260226-q1-10q__636995.md: 6 facts, 10 rejected
+2026-08-16T11:47:55Z [extract] DE 2025-11-26__de-us-20251126-q4-8k__361233.md: 12 facts, 0 rejected
+2026-08-16T11:47:58Z [extract] DE 2025-08-14__de-us-20250814-q3-10q__155834.md: 4 facts, 8 rejected
+2026-08-16T11:48:02Z [extract] DE 2025-08-15__de-us-20250815-q3-8k__143410.md: 12 facts, 0 rejected
+2026-08-16T11:48:04Z [extract] DE 2025-05-15__de-us-20250515-q2-10q__105831.md: 8 facts, 4 rejected
+2026-08-16T11:48:07Z [extract] DE 2025-05-15__de-us-20250515-q2-8k__105808.md: 10 facts, 2 rejected
+2026-08-16T11:48:09Z [extract] DE 2025-02-13__de-us-20250213-q1-10q__105832.md: 0 facts, 6 rejected
+2026-08-16T11:48:10Z [extract] DE 2025-02-13__de-us-20250213-q1-8k__105841.md: 4 facts, 2 rejected
+2026-08-16T11:54:22Z [extract] DE 2026-05-21__de-us-20260521-q2-8k__1042167.md: EXTRACTION FAILED openai: response was not valid JSON: Expecting value: line 1 column 1 (char 0)
+
