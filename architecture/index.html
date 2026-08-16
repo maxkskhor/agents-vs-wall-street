@@ -38,7 +38,7 @@
       <p>Agent name: <strong>Glasshouse</strong></p>
       <p>Team: <strong><span class="fill-me">ADD TEAM NAMES</span></strong></p>
       <p>Build style and harness: <strong>Hybrid — custom Python pipeline written during the event with Claude Code; no agent framework</strong></p>
-      <p>Models: <strong>claude-sonnet-5 (extraction, analyst, red-team) and gpt-5.1 (second analyst, consensus web search)</strong></p>
+      <p>Models: <strong>gpt-5.6-luna (high-volume fact extraction, A/B-checked against gpt-5.1) and gpt-5.1 (analyst estimator, red-team, consensus web search)</strong></p>
     </div>
 
     <section>
@@ -94,7 +94,7 @@
           <text class="s" x="344" y="296">no LLM anywhere</text>
 
           <rect class="box stage" x="330" y="352" width="180" height="88" rx="10"/>
-          <text class="t" x="344" y="378">3c · LLM analyst ×4</text>
+          <text class="t" x="344" y="378">3c · LLM analyst ×N</text>
           <text class="s" x="344" y="396">cited base + itemised deltas;</text>
           <text class="s" x="344" y="412">final recomputed by engine</text>
 
@@ -147,7 +147,7 @@
           <ul>
             <li><em>Guidance-anchored</em>: pure arithmetic on extracted guidance — midpoints, full-year "catch-up" math (implied remaining-quarter growth given already-reported quarters), historical seasonal shares.</li>
             <li><em>Statistical</em>: prior-year base × median YoY growth (additive in points for percent metrics). Contains no model call at all.</li>
-            <li><em>LLM analyst</em>: two samples each from claude-sonnet-5 and gpt-5.1. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value.</li>
+            <li><em>LLM analyst</em>: independent gpt-5.1 samples. The model must pick a base figure <em>from the supplied history table</em> and propose itemised, cited adjustments; the engine recomputes base + Σdeltas and rejects any sample whose base is not a real historical value.</li>
           </ul>
         </li>
         <li><strong>Combine.</strong> Weighted median across routes — weights chosen by the backtest, not by us — then an optional shrink toward the live public consensus anchor: <code>final = consensus + β·(ensemble − consensus)</code>, β = 0.6.</li>
@@ -180,7 +180,7 @@
         <li><strong>Per-document extraction with caching.</strong> A fact depends only on its document, so the fact table time-slices for free — that is what makes the backtest nearly free and the final run fast and resumable.</li>
         <li><strong>No vector database.</strong> Rejected: embeddings over 1,139 files. The corpus is small, dated and structured; recency-plus-type selection and <code>rg</code> are transparent and reproducible.</li>
         <li><strong>Estimators abstain instead of guessing.</strong> Deere gives no quarterly EPS guidance — the guidance route abstains there and the median leans on the other routes, visibly in the audit trail.</li>
-        <li><strong>Cross-provider ensembling as a check, not a gimmick.</strong> Claude and GPT answer the same analyst prompt independently; large spread flags the metric for review in validation.</li>
+        <li><strong>Sample disagreement as a signal.</strong> Independent analyst samples answer the same prompt; a large spread between them flags the metric in validation. (Planned as cross-provider Claude-vs-GPT; on the day only an OpenAI key was available, so the spread is between independent gpt-5.1 samples — declared honestly here.)</li>
       </ul>
     </section>
 

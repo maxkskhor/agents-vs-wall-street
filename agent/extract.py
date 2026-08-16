@@ -21,7 +21,7 @@ from .config import CACHE, Company
 from .corpus import Doc
 from .runlog import RunLog
 
-PROMPT_VERSION = "v5"
+PROMPT_VERSION = "v6"
 
 MAX_DOC_CHARS = 110_000
 
@@ -120,7 +120,9 @@ _NUM_RE = re.compile(r"-?\d[\d,]*\.?\d*")
 
 
 def _norm_ws(s: str) -> str:
-    return re.sub(r"[\s ]+", " ", s).strip().lower()
+    s = s.replace("&amp;", "&").replace("&nbsp;", " ")
+    s = re.sub(r"\s*-\s*", "-", s)      # OCR drift: "pre -exceptional"
+    return re.sub(r"[\s\u00a0]+", " ", s).strip().lower()
 
 
 def _quote_in_doc(quote: str, text: str) -> bool:

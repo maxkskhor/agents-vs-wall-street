@@ -51,7 +51,7 @@ class Company:
 _METRIC_EXTRAS: dict[tuple[str, str], dict] = {
     ("HD", "Net sales"): dict(
         key="net_sales", kind="money",
-        aliases=["net sales", "sales of $", "reported sales"]),
+        aliases=["net sales", "sales of $", "reported sales", "total sales"]),
     ("HD", "Adjusted diluted EPS"): dict(
         key="adj_eps", kind="eps",
         aliases=["adjusted diluted earnings per share", "adjusted diluted EPS"]),
