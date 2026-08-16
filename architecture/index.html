@@ -340,7 +340,7 @@
       <p>Two honest caveats about reproducing our exact figures. First, <code>cache/calibration.json</code> — the backtest-fitted weights and validated bias corrections — is committed deliberately, because the engine reads it and would otherwise silently fall back to untuned defaults and produce different numbers. Second, our reruns are bit-identical <em>with a warm response cache</em>; a clean clone re-calls the models, and model outputs are not guaranteed identical, so the analyst route can move a little. The deterministic routes, the arithmetic and every gate reproduce exactly.</p>
       <div class="card">
         <p><code>uv venv .venv &amp;&amp; uv pip install --python .venv/bin/python -r requirements.txt</code></p>
-        <p>Final commit: <code><span class="fill-me">ADD COMMIT HASH</span></code></p>
+        <p>Final commit: <code>bff96b99048bdd6738584e6f38499ac4c04ef14d</code></p>
         <p>Final command: <code>.venv/bin/python -m agent run --all</code></p>
         <p>Expected output: four completed workbooks in <code>submission/</code>, a timestamped log in <code>logs/</code>, and per-company <code>audit.md</code> trails under <code>runs/</code>.</p>
       </div>
