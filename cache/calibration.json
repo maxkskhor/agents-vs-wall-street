@@ -1,0 +1,116 @@
+{
+ "weights": {
+  "money": {
+   "guidance": 0.0,
+   "llm_analyst": 0.6,
+   "statistical": 0.4,
+   "backtest_score": 3.479,
+   "n": 27
+  },
+  "eps": {
+   "guidance": 0.0,
+   "llm_analyst": 0.0,
+   "statistical": 1.0,
+   "backtest_score": 4.425,
+   "n": 20
+  },
+  "percent": {
+   "guidance": 0.0,
+   "llm_analyst": 0.6,
+   "statistical": 0.4,
+   "backtest_score": 2.076,
+   "n": 12
+  }
+ },
+ "guidance_bias": {
+  "HD/net_sales": {
+   "n": 5,
+   "median_signed": 0.04,
+   "median_abs": 0.04,
+   "p80_abs": 0.0422,
+   "pct_actual_above": 100,
+   "correction_recommended": false,
+   "reason": "insufficient walk-forward evidence (2 tests, need 3)",
+   "walk_forward_tests": 2,
+   "wf_raw_median_abs": 448.81,
+   "wf_corrected_median_abs": 1197.407,
+   "pct_periods_improved": 0
+  },
+  "HD/adj_eps": {
+   "n": 4,
+   "median_signed": 0.0195,
+   "median_abs": 0.0375,
+   "p80_abs": 0.0554,
+   "pct_actual_above": 75,
+   "correction_recommended": false,
+   "reason": "insufficient walk-forward evidence (1 tests, need 3)",
+   "walk_forward_tests": 1,
+   "wf_raw_median_abs": 0.2012,
+   "wf_corrected_median_abs": 0.2726,
+   "pct_periods_improved": 0
+  },
+  "HD/comp_sales": {
+   "n": 6,
+   "median_signed": -0.8667,
+   "median_abs": 1.375,
+   "p80_abs": 2.7,
+   "pct_actual_above": 17,
+   "correction_recommended": true,
+   "reason": "walk-forward median error 1.45 -> 1.0167, 67% of periods improved",
+   "walk_forward_tests": 3,
+   "wf_raw_median_abs": 1.45,
+   "wf_corrected_median_abs": 1.0167,
+   "pct_periods_improved": 67,
+   "mean_signed": -0.8666666666666667
+  },
+  "ADI/revenue": {
+   "n": 5,
+   "median_signed": 0.0353,
+   "median_abs": 0.0353,
+   "p80_abs": 0.0474,
+   "pct_actual_above": 100,
+   "correction_recommended": false,
+   "reason": "insufficient walk-forward evidence (2 tests, need 3)",
+   "walk_forward_tests": 2,
+   "wf_raw_median_abs": 99.791,
+   "wf_corrected_median_abs": 40.0279,
+   "pct_periods_improved": 100
+  },
+  "ADI/adj_eps": {
+   "n": 6,
+   "median_signed": 0.0703,
+   "median_abs": 0.0703,
+   "p80_abs": 0.0742,
+   "pct_actual_above": 100,
+   "correction_recommended": true,
+   "reason": "walk-forward median error 0.17 -> 0.0372, 67% of periods improved",
+   "walk_forward_tests": 3,
+   "wf_raw_median_abs": 0.17,
+   "wf_corrected_median_abs": 0.0372,
+   "pct_periods_improved": 67,
+   "mean_signed": 0.06
+  },
+  "HAS/net_fees": {
+   "n": 2,
+   "median_signed": -0.0019,
+   "median_abs": 0.0019,
+   "p80_abs": 0.0009,
+   "pct_actual_above": 0,
+   "correction_recommended": false,
+   "reason": "insufficient walk-forward evidence (0 tests, need 3)",
+   "walk_forward_tests": 0
+  },
+  "HAS/preex_op": {
+   "n": 2,
+   "median_signed": 0.0071,
+   "median_abs": 0.0071,
+   "p80_abs": 0.001,
+   "pct_actual_above": 100,
+   "correction_recommended": false,
+   "reason": "insufficient walk-forward evidence (0 tests, need 3)",
+   "walk_forward_tests": 0
+  }
+ },
+ "generated": "2026-08-16T13:19:05.583171+00:00",
+ "n_rows": 59
+}

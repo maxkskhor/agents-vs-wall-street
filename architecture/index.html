@@ -243,7 +243,8 @@
 
     <section>
       <h2>Reproducing the final run</h2>
-      <p>Requires Python 3.12, <code>uv</code>, Node (for the supplied checkers) and two API keys in <code>.env</code> (see <code>.env.example</code>).</p>
+      <p>Requires Python 3.12, <code>uv</code>, Node (for the supplied checkers) and an OpenAI API key in <code>.env</code> (see <code>.env.example</code>). Secrets are never committed.</p>
+      <p>Two honest caveats about reproducing our exact figures. First, <code>cache/calibration.json</code> — the backtest-fitted weights and validated bias corrections — is committed deliberately, because the engine reads it and would otherwise silently fall back to untuned defaults and produce different numbers. Second, our reruns are bit-identical <em>with a warm response cache</em>; a clean clone re-calls the models, and model outputs are not guaranteed identical, so the analyst route can move a little. The deterministic routes, the arithmetic and every gate reproduce exactly.</p>
       <div class="card">
         <p><code>uv venv .venv &amp;&amp; uv pip install --python .venv/bin/python -r requirements.txt</code></p>
         <p>Final commit: <code><span class="fill-me">ADD COMMIT HASH</span></code></p>

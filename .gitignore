@@ -2,6 +2,7 @@ node_modules/
 __pycache__/
 .venv/
 cache/
+!cache/calibration.json
 runs/
 *.py[cod]
 .DS_Store

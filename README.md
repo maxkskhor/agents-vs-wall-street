@@ -31,6 +31,13 @@ cp .env.example .env   # then fill in ANTHROPIC_API_KEY and OPENAI_API_KEY
 npm run check:submission
 ```
 
+`cache/calibration.json` is committed: it holds the ensemble weights and the
+walk-forward-validated bias corrections produced by `agent backtest`, and the
+final run reads it. Without it the engine falls back to untuned default weights
+and produces different numbers. The rest of `cache/` is a response cache — safe
+to delete, but a fresh clone re-calls the models on the first run, so figures
+can shift slightly from ours until it is warm.
+
 Each run writes timestamped logs to `logs/` and per-company artifacts
 (`facts.json`, `decision.json`, `validation.json`, `audit.md`) to
 `runs/<run-id>/<CO>/`, so every workbook cell can be traced back to quoted
