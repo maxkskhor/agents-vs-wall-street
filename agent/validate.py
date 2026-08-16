@@ -38,13 +38,28 @@ class ValidationReport:
 
 
 _BANDS = {"money": (0.65, 1.45), "eps": (0.40, 1.75)}
+# segment/operating-profit lines swing far more than revenue in a cycle
+_METRIC_BANDS = {"ppa_op": (0.30, 2.50), "preex_op": (0.30, 2.50)}
 _PERCENT_MAX_DELTA = 6.0     # pp vs prior-year level
 
-# conversion-ratio sanity per company: (numerator, denominator, lo, hi)
+# conversion-ratio sanity per company: numerator/denominator checked against a
+# band derived from the extracted history (hardcoded bands proved wrong across
+# the cycle: Hays' real FY2025 conversion was 4.7%)
 _RATIOS = {
-    "HAS": ("preex_op", "net_fees", 0.08, 0.35),
-    "DE": ("ppa_op", "net_sales_rev", 0.05, 0.30),
+    "HAS": ("preex_op", "net_fees"),
+    "DE": ("ppa_op", "net_sales_rev"),
 }
+
+
+def _ratio_band(series: Series, num_k: str, den_k: str) -> tuple[float, float] | None:
+    ratios = []
+    for period, den in series.get(den_k, {}).items():
+        num = series.get(num_k, {}).get(period)
+        if num is not None and den:
+            ratios.append(num / den)
+    if len(ratios) < 2:
+        return None
+    return min(ratios) * 0.5, max(ratios) * 1.5
 
 
 def validate(company: Company, target: str, finals: dict[str, float],
@@ -69,7 +84,7 @@ def validate(company: Company, target: str, finals: dict[str, float],
             rep.add(f"{key}: plausibility vs prior year", ok,
                     f"{v}pp vs prior-year {prior}pp (max delta {_PERCENT_MAX_DELTA}pp)")
         else:
-            lo, hi = _BANDS[metric.kind]
+            lo, hi = _METRIC_BANDS.get(key, _BANDS[metric.kind])
             ratio = v / prior if prior else float("inf")
             rep.add(f"{key}: magnitude vs prior year", lo <= ratio <= hi,
                     f"{v} vs prior-year {prior} (ratio {ratio:.2f}, band {lo}-{hi})")
@@ -97,12 +112,14 @@ def validate(company: Company, target: str, finals: dict[str, float],
                     f"adjusted gross margin {gm}% must be a percentage level (55-80)")
     ratio_rule = _RATIOS.get(company.short)
     if ratio_rule:
-        num_k, den_k, lo, hi = ratio_rule
+        num_k, den_k = ratio_rule
         num, den = finals.get(num_k), finals.get(den_k)
-        if num and den:
+        band = _ratio_band(series, num_k, den_k)
+        if num and den and band:
+            lo, hi = band
             r = num / den
             rep.add(f"{company.short}: {num_k}/{den_k} conversion ratio", lo <= r <= hi,
-                    f"ratio {r:.3f}, historical sanity band {lo}-{hi}")
+                    f"ratio {r:.3f}, history-derived band {lo:.3f}-{hi:.3f}")
 
     if red_team and llm.available_providers():
         _red_team(company, target, finals, series, rep, log)

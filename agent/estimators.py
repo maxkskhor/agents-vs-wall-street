@@ -77,31 +77,45 @@ def statistical(metric: Metric, series: Series, target: str) -> Estimate | None:
 
 # ------------------------------------------------------------------ guidance
 
-def _pick_guidance(metric: Metric, gfacts: list[Fact], target: str) -> Fact | None:
+def _pick_guidance(metric: Metric, gfacts: list[Fact], target: str,
+                   series: Series) -> Fact | None:
     """Newest guidance/preannounce fact for this metric aimed at the target
-    period or the target fiscal year. Prefers adjusted/pre-exceptional wording
-    for adjusted metrics, pre-announcements over guidance, and newer over older."""
+    period or the target fiscal year. Prefers plausible-scale facts (a stray
+    '£15m contribution' must not outrank real guidance), adjusted wording for
+    adjusted metrics, pre-announcements over guidance, and newer over older."""
     fy = periods.parse(target)[0]
     cands = [f for f in gfacts
              if f.metric == metric.key and periods.parse(f.period)[0] == fy]
     if not cands:
         return None
     wants_adj = metric.key.startswith(("adj", "preex"))
+    prior = series.get(periods.prior_year(target))
+
+    def plausible(f: Fact) -> bool:
+        if "growth" in f.units or prior in (None, 0):
+            return True
+        return 0.4 <= abs(f.mid / prior) <= 2.5
 
     def score(f: Fact) -> tuple:
         return (
+            plausible(f),
             f.period == target,                          # exact period beats FY
             f.fact_type == "preannounce",
             (not wants_adj) or ("adjust" in f.quote.lower()
                                 or "pre-exceptional" in f.quote.lower()),
             f.published,
         )
-    return max(cands, key=score)
+    best = max(cands, key=score)
+    return best if plausible(best) else None
 
 
 def guidance(metric: Metric, series: Series, gfacts: list[Fact],
              target: str) -> Estimate | None:
-    g = _pick_guidance(metric, gfacts, target)
+    if periods.parse(target)[1] == "Y" and metric.kind == "money":
+        derived = _fy_from_halves(metric, series, gfacts, target)
+        if derived is not None:
+            return derived
+    g = _pick_guidance(metric, gfacts, target, series)
     if g is None:
         return None
     tfy, tkind, tn = periods.parse(target)
@@ -156,6 +170,42 @@ def guidance(metric: Metric, series: Series, gfacts: list[Fact],
                               f"(1 + guided growth midpoint {mid}%)")
         return Estimate(metric.key, "guidance", value, lineage)
     return None
+
+
+def _fy_from_halves(metric: Metric, series: Series, gfacts: list[Fact],
+                    target: str) -> Estimate | None:
+    """Hays-style full-year build-up: reported H1 + prior-year H2 scaled by the
+    quarterly growth rates that trading updates pre-announce for Q3/Q4."""
+    tfy = periods.parse(target)[0]
+    h1_cur = series.get(f"FY{tfy}H1")
+    fy_prior = series.get(f"FY{tfy - 1}")
+    h1_prior = series.get(f"FY{tfy - 1}H1")
+    if None in (h1_cur, fy_prior, h1_prior):
+        return None
+    picks: list[Fact] = []
+    for q in (3, 4):
+        cands = [f for f in gfacts
+                 if f.metric == metric.key and f.period == f"FY{tfy}Q{q}"
+                 and "growth" in f.units]
+        if cands:
+            # reported money is FX-actual, so prefer the actual-basis figure
+            # over like-for-like when the update states both
+            cands.sort(key=lambda f: ("actual" in f.quote.lower(), f.published),
+                       reverse=True)
+            picks.append(cands[0])
+    if not picks:
+        return None
+    g = statistics.mean(f.mid for f in picks)
+    h2_prior = fy_prior - h1_prior
+    value = h1_cur + h2_prior * (1 + g / 100)
+    return Estimate(metric.key, "guidance", value, {
+        "formula": (f"reported H1 {h1_cur} + prior-year H2 {h2_prior:.1f} x "
+                    f"(1 + pre-announced H2 growth {g:.1f}%)"),
+        "h2_growth_quotes": [{"period": f.period, "growth": f.mid,
+                              "doc": f.doc_id, "quote": f.quote[:200]}
+                             for f in picks],
+        "fact_type": "preannounce", "guidance_doc": picks[-1].doc_id,
+        "quote": picks[-1].quote})
 
 
 def _seasonal_share(series: Series, target: str) -> dict | None:

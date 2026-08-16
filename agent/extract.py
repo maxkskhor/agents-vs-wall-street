@@ -21,7 +21,7 @@ from .config import CACHE, Company
 from .corpus import Doc
 from .runlog import RunLog
 
-PROMPT_VERSION = "v4"
+PROMPT_VERSION = "v5"
 
 MAX_DOC_CHARS = 110_000
 
@@ -46,9 +46,12 @@ class Fact:
         return (self.low + self.high) / 2  # type: ignore[operator]
 
 
-_SYSTEM = """You are a meticulous financial-data transcriber. You copy numbers out of one
-company document into JSON. You never estimate, never compute, and never use
-outside knowledge. If the document does not state a number, you leave it out."""
+_SYSTEM = """You are a meticulous financial-data extractor. You copy explicitly stated
+figures out of one company document into JSON. Mechanical unit conversion is
+expected (e.g. "$41.8 billion" -> 41800 when the target unit is USD millions);
+inventing, estimating or deriving figures that are not stated is forbidden.
+Extract generously: when in doubt whether a stated figure matches a target
+metric, include it — a separate grounding step will filter."""
 
 
 def _user_prompt(company: Company, doc: Doc, text: str) -> str:
@@ -79,7 +82,21 @@ Rules:
 - For a growth-rate guidance statement that is relative (e.g. "sales growth of
   2.5% to 4.5%"), DO NOT convert to absolute values; instead record it with
   units "% growth" and metric key of the metric it refers to, fact_type
-  "guidance", low/high as the percentage bounds.
+  "guidance", low/high as the percentage bounds. "Approximately flat" means 0:
+  "to grow approximately flat to 4.0% from $14.69" -> units "% growth", low 0,
+  high 4.0 (never record the prior-year base as the guidance value).
+- Guidance stated as "X plus or minus Y" (e.g. "revenue of $3.0 billion,
+  +/-$100 million"): record low = X-Y and high = X+Y in workbook units.
+- Accounting negatives use parentheses: "(0.3)%" means -0.3.
+- Figures reported in thousands (e.g. "$2,880,348" thousands) must be converted
+  to millions (2880.348) when the workbook unit is millions.
+- COMPANY-TOTAL (Group) figures only. Skip regional, country, divisional,
+  sector or business-line breakdowns ("Germany net fees", "Temp & Contracting",
+  "UK&I", "Private sector") — UNLESS the metric itself names a segment (e.g.
+  Production & Precision Ag operating profit, which IS that segment's figure).
+- Record LEVELS, never changes: "an increase of $1.8 billion" is a change, not
+  a value of the metric. Growth-rate guidance is the only exception and must
+  use units "% growth".
 - quote: copy VERBATIM the sentence or table row containing the number
   (max ~300 chars). The value must be visible inside the quote.
 - Do not invent facts. Skip vague statements without numbers.
@@ -88,7 +105,12 @@ Return ONLY a JSON array of objects:
 {{"metric": key, "fact_type": "reported"|"guidance"|"preannounce",
   "period": "FY2026Q1", "value": number|null, "low": number|null,
   "high": number|null, "units": "as-recorded units", "quote": "..."}}
-Return [] if nothing matches."""
+Return [] if nothing matches.
+
+DOCUMENT TEXT:
+<<<
+{text}
+>>>"""
 
 
 _NUM_RE = re.compile(r"-?\d[\d,]*\.?\d*")
@@ -109,28 +131,54 @@ def _quote_in_doc(quote: str, text: str) -> bool:
     return False
 
 
-def _value_in_quote(value: float, quote: str) -> bool:
+def _value_in_quote(value: float, quote: str, units: str = "") -> bool:
+    growthish = "%" in units or "growth" in units.lower()
+    if value == 0 and growthish and "flat" in quote.lower():
+        return True   # "approximately flat" = 0% growth
     nums = [float(n.replace(",", "")) for n in _NUM_RE.findall(quote)]
     if not nums:
         return False
     for n in nums:
-        for cand in (n, n * 1000, n * 100, n / 100):
-            if abs(cand - value) <= max(abs(value) * 0.006, 0.011):
-                return True
+        # accounting negatives appear as "(0.3)%" so try both signs; scale
+        # candidates cover billions->millions (x1000) and thousands->millions
+        # (/1000), which ADI's statements use
+        for signed in (n, -n):
+            for cand in (signed, signed * 1000, signed / 1000,
+                         signed * 100, signed / 100):
+                if abs(cand - value) <= max(abs(value) * 0.006, 0.011):
+                    return True
     return False
 
 
-def _ground(fact: dict, text: str) -> str | None:
+def _ground(fact: dict, text: str, metric) -> str | None:
     """Return rejection reason or None if the fact is grounded."""
     quote = fact.get("quote") or ""
+    units = str(fact.get("units", ""))
     if not _quote_in_doc(quote, text):
         return "quote not found in document"
-    for field in ("value", "low", "high"):
-        v = fact.get(field)
-        if v is not None and not _value_in_quote(float(v), quote):
-            return f"{field}={v} not present in quote"
-    if fact.get("value") is None and (fact.get("low") is None or fact.get("high") is None):
+
+    value, low, high = fact.get("value"), fact.get("low"), fact.get("high")
+    if value is None and (low is None or high is None):
         return "no value and no complete range"
+
+    if value is not None and not _value_in_quote(float(value), quote, units):
+        return f"value={value} not present in quote"
+    if value is None:
+        lo, hi = float(low), float(high)
+        direct = (_value_in_quote(lo, quote, units)
+                  and _value_in_quote(hi, quote, units))
+        # "X ± Y" ranges: the quote shows the midpoint and the half-width
+        pm = (_value_in_quote((lo + hi) / 2, quote, units)
+              and _value_in_quote((hi - lo) / 2, quote, units))
+        if not (direct or pm):
+            return f"range {lo}..{hi} not present in quote (as bounds or mid±width)"
+
+    # attribution check: money metrics must mention the metric by name in the
+    # quote, otherwise a nearby number gets credited to the wrong metric
+    if metric.kind == "money":
+        blob = _norm_ws(quote)
+        if not any(_norm_ws(a) in blob for a in metric.aliases):
+            return "quote does not mention the metric (attribution)"
     return None
 
 
@@ -140,25 +188,29 @@ _PERIOD_RE = re.compile(r"^FY\d{4}(Q[1-4]|H[12])?$")
 def extract_doc_facts(company: Company, doc: Doc, log: RunLog,
                       provider: str) -> tuple[list[Fact], list[dict]]:
     """Returns (grounded facts, rejected raw facts with reasons). Cached."""
+    import hashlib
+
+    text = doc.text()[:MAX_DOC_CHARS]
+    user = _user_prompt(company, doc, text)
+    ph = hashlib.sha256((_SYSTEM + user).encode()).hexdigest()[:10]
     cache = CACHE / "facts"
     cache.mkdir(parents=True, exist_ok=True)
-    cp = cache / f"{PROMPT_VERSION}__{provider}__{doc.doc_id}.json"
+    cp = cache / f"{PROMPT_VERSION}-{ph}__{provider}__{doc.doc_id}.json"
     if cp.exists():
         data = json.loads(cp.read_text())
         return [Fact(**f) for f in data["facts"]], data["rejected"]
 
-    text = doc.text()[:MAX_DOC_CHARS]
-    raw = llm.chat_json(provider, _SYSTEM, _user_prompt(company, doc, text),
-                        max_tokens=8000)
+    raw = llm.chat_json(provider, _SYSTEM, user, max_tokens=8000,
+                        model=llm.extract_model(provider))
     if not isinstance(raw, list):
         raw = []
 
-    metric_keys = {m.key for m in company.metrics}
+    by_key = {m.key: m for m in company.metrics}
     facts: list[Fact] = []
     rejected: list[dict] = []
     for f in raw:
         try:
-            if f.get("metric") not in metric_keys:
+            if f.get("metric") not in by_key:
                 rejected.append({**f, "reason": "unknown metric"})
                 continue
             if not _PERIOD_RE.match(str(f.get("period", ""))):
@@ -167,7 +219,7 @@ def extract_doc_facts(company: Company, doc: Doc, log: RunLog,
             if f.get("fact_type") not in ("reported", "guidance", "preannounce"):
                 rejected.append({**f, "reason": "bad fact_type"})
                 continue
-            reason = _ground(f, text)
+            reason = _ground(f, text, by_key[f["metric"]])
             if reason:
                 rejected.append({**f, "reason": reason})
                 continue
@@ -212,18 +264,32 @@ def build_fact_table(company: Company, docs: list[Doc], log: RunLog,
 def reported_series(company: Company, facts: list[Fact],
                     asof: dt.date | None = None) -> dict[str, dict[str, float]]:
     """metric key -> {canonical period -> value}. Later documents win (restatements)."""
-    best: dict[tuple[str, str], tuple[str, float]] = {}
+    candidates: dict[tuple[str, str], list[tuple[tuple, float]]] = {}
     for f in facts:
         if f.fact_type != "reported" or f.value is None:
             continue
         if asof is not None and dt.date.fromisoformat(f.published) > asof:
             continue
-        k = (f.metric, f.period)
-        if k not in best or f.published > best[k][0]:
-            best[k] = (f.published, f.value)
+        blob = (f.units + " " + f.quote).lower()
+        precise = 0 if ("billion" in blob or "derived" in blob) else 1
+        candidates.setdefault((f.metric, f.period), []).append(
+            ((f.published, precise), f.value))
+
     out: dict[str, dict[str, float]] = {m.key: {} for m in company.metrics}
-    for (metric, period), (_, value) in best.items():
-        out[metric][period] = value
+    for (metric, period), cands in candidates.items():
+        # a true value is restated across many documents; an extraction slip
+        # appears once — pick the largest agreement cluster (1% tolerance),
+        # then the newest / most precise member of it
+        clusters: list[list[tuple[tuple, float]]] = []
+        for rank, v in cands:
+            for cl in clusters:
+                if abs(v - cl[0][1]) <= max(abs(cl[0][1]) * 0.01, 0.011):
+                    cl.append((rank, v))
+                    break
+            else:
+                clusters.append([(rank, v)])
+        best = max(clusters, key=lambda cl: (len(cl), max(r for r, _ in cl)))
+        out[metric][period] = max(best, key=lambda rv: rv[0])[1]
     return out
 
 

@@ -52,6 +52,15 @@ def default_model(provider: str) -> str:
     return os.environ.get("OPENAI_MODEL") or "gpt-5.1"
 
 
+def extract_model(provider: str) -> str:
+    """Cheaper model for high-volume transcription; A/B-checked against the
+    default model on sample docs with identical output."""
+    load_env()
+    if provider == "openai":
+        return os.environ.get("EXTRACT_MODEL") or "gpt-5.6-luna"
+    return default_model(provider)
+
+
 class LLMError(RuntimeError):
     pass
 
