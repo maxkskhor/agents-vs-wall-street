@@ -9,5 +9,6 @@ runs/
 .env.*
 !.env.example
 entry.json
+research
 submission/*.xlsx
 logs/*-test.log
