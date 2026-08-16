@@ -93,8 +93,11 @@ def search(company: Company, pattern: str, asof: dt.date | None = None,
     """rg search across the company corpus; returns (doc, line_no, line)."""
     by_name = {d.path.name: d for d in index(company, asof)}
     try:
+        # --sort path keeps output deterministic; rg's default parallel walk
+        # reshuffles hits run-to-run, which reshuffled analyst evidence
         out = subprocess.run(
-            ["rg", "-i", "-n", "--no-heading", "-m", "6", pattern, str(company.folder)],
+            ["rg", "-i", "-n", "--no-heading", "--sort", "path", "-m", "6",
+             pattern, str(company.folder)],
             capture_output=True, text=True, timeout=30).stdout
     except (subprocess.TimeoutExpired, FileNotFoundError):
         return []
@@ -110,6 +113,7 @@ def search(company: Company, pattern: str, asof: dt.date | None = None,
         hits.append((doc, int(line_no), content.strip()))
         if len(hits) >= max_hits:
             break
-    # newest documents first so recency dominates
-    hits.sort(key=lambda h: h[0].published, reverse=True)
+    # newest documents first so recency dominates; fully deterministic order
+    hits.sort(key=lambda h: (h[0].published.toordinal(), h[0].doc_id, -h[1]),
+              reverse=True)
     return hits
