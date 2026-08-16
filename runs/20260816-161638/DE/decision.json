@@ -1,0 +1,772 @@
+{
+ "target": "FY2026Q3",
+ "finals": {
+  "net_sales_rev": 12980.0,
+  "ppa_op": 327.0,
+  "eps": 4.4276
+ },
+ "lineage": {
+  "net_sales_rev": {
+   "methods": {
+    "llm_analyst": {
+     "value": 12981.0,
+     "n_samples": 8,
+     "spread": 366.0,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Prior-year third-quarter sales provide the closest seasonal comparison."
+       },
+       "adjustments": [
+        {
+         "delta": 900.0,
+         "reason": "Apply a positive year-over-year carry-through consistent with FY2026 first-half sales growth.",
+         "evidence": "FY2026H1 sales were 22981.0 versus 21272.0 in FY2025H1, an increase of approximately 8.0%."
+        },
+        {
+         "delta": -300.0,
+         "reason": "Temper the first-half growth run-rate for evidence of sequential deceleration.",
+         "evidence": "Year-over-year growth declined from approximately 13.0% in FY2026Q1 (9611.0 versus 8508.0) to 4.7% in FY2026Q2 (13369.0 versus 12763.0)."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [900.0, -300.0]",
+       "value": 12618.0
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Prior-year comparable quarter provides the most direct seasonal base."
+       },
+       "adjustments": [
+        {
+         "delta": 965.0,
+         "reason": "Carry forward the reported first-half year-over-year sales growth.",
+         "evidence": "FY2026H1 sales of 22981.0 versus FY2025H1 sales of 21272.0, approximately 8.0% growth applied to FY2025Q3."
+        },
+        {
+         "delta": -180.0,
+         "reason": "Moderate the first-half run-rate to reflect the slower second-quarter growth rate.",
+         "evidence": "FY2026Q2 sales growth was approximately 4.7% versus FY2025Q2, below the approximately 8.0% FY2026H1 growth rate."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [965.0, -180.0]",
+       "value": 12803.0
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Prior-year third-quarter revenue provides the closest reported quarterly comparison for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 966.0,
+         "reason": "Apply the FY2026 first-half year-over-year growth rate to the comparable prior-year third quarter.",
+         "evidence": "FY2026H1 revenue of 22981.0 versus FY2025H1 revenue of 21272.0, an increase of approximately 8.0%."
+        },
+        {
+         "delta": -300.0,
+         "reason": "Temper the first-half growth carry-through because quarterly year-over-year growth decelerated from Q1 to Q2.",
+         "evidence": "FY2026Q1 of 9611.0 versus FY2025Q1 of 8508.0 (+13.0%), while FY2026Q2 of 13369.0 versus FY2025Q2 of 12763.0 (+4.7%)."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [966.0, -300.0]",
+       "value": 12684.0
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Comparable third-quarter worldwide net sales and revenues from the prior fiscal year."
+       },
+       "adjustments": [
+        {
+         "delta": 965.0,
+         "reason": "Apply the FY2026 first-half year-over-year growth rate to the comparable FY2025Q3 figure.",
+         "evidence": "FY2026H1 sales of 22981.0 versus FY2025H1 sales of 21272.0, an increase of approximately 8.0%."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [965.0]",
+       "value": 12983.0
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Latest comparable third-quarter reported worldwide net sales and revenues."
+       },
+       "adjustments": [
+        {
+         "delta": 961.0,
+         "reason": "Apply the FY2026H1 year-over-year growth rate to the comparable FY2025Q3 base as a proxy for continued sales growth.",
+         "evidence": "FY2026H1 sales of 22981.0 versus FY2025H1 sales of 21272.0, an increase of approximately 8.0%."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [961.0]",
+       "value": 12979.0
+      },
+      {
+       "provider": "openai",
+       "sample": 5,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Same-quarter prior-year worldwide net sales and revenues provide the most direct seasonal comparison."
+       },
+       "adjustments": [
+        {
+         "delta": 965.0,
+         "reason": "Apply the FY2026H1 year-over-year growth rate to the comparable FY2025Q3 base.",
+         "evidence": "FY2026H1 sales of 22981.0 versus FY2025H1 sales of 21272.0, an 8.0% increase."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [965.0]",
+       "value": 12983.0
+      },
+      {
+       "provider": "openai",
+       "sample": 6,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Same-quarter prior-year sales provide the clearest seasonal comparison for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 966.0,
+         "reason": "Apply the FY2026H1 year-over-year sales growth rate to the comparable FY2025Q3 base.",
+         "evidence": "FY2026H1 sales of 22981.0 versus FY2025H1 sales of 21272.0, representing approximately 8.0% growth."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [966.0]",
+       "value": 12984.0
+      },
+      {
+       "provider": "openai",
+       "sample": 7,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 12018.0,
+        "why": "Prior-year comparable quarter provides the most direct seasonal baseline for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 965.0,
+         "reason": "Apply the FY2026H1 year-over-year sales growth rate to the comparable FY2025Q3 base.",
+         "evidence": "FY2026H1 sales of 22981.0 versus FY2025H1 sales of 21272.0, approximately 8.0% growth."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 12018.0 + adjustments [965.0]",
+       "value": 12983.0
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025Q3",
+     "base_value": 12018.0,
+     "yoy_pairs": [
+      {
+       "period": "FY2026Q2",
+       "value": 13369.0,
+       "prior": 12763.0
+      },
+      {
+       "period": "FY2026Q1",
+       "value": 9611.0,
+       "prior": 8508.0
+      },
+      {
+       "period": "FY2025Q4",
+       "value": 12394.0,
+       "prior": 11143.0
+      },
+      {
+       "period": "FY2025Q3",
+       "value": 12018.0,
+       "prior": 13152.0
+      }
+     ],
+     "formula": "prior-year value 12018.0 x (1 + median YoY growth +7.987%)",
+     "value": 12977.930486341931
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 12979.772194536772,
+    "formula": "weighted mean of method values"
+   },
+   "final": 12980.0
+  },
+  "ppa_op": {
+   "methods": {
+    "llm_analyst": {
+     "value": 330.0,
+     "n_samples": 8,
+     "spread": 27.5,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 580.0,
+        "why": "Prior-year third-quarter operating profit provides the closest directly comparable seasonal base."
+       },
+       "adjustments": [
+        {
+         "delta": -250.5,
+         "reason": "Apply the FY2026H1 year-over-year decline to the prior-year third-quarter base.",
+         "evidence": "FY2026H1 operating profit was USD845m versus USD1,486m in FY2025H1, a 43.1% decline."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 580.0 + adjustments [-250.5]",
+       "value": 329.5
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 706.0,
+        "why": "Most recent reported quarter and the closest available operating-profit base for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": -349.0,
+         "reason": "Apply the latest observed Q3-to-Q2 seasonal pattern to the FY2026Q2 base.",
+         "evidence": "FY2025Q3 operating profit was 580.0 versus FY2025Q2 at 1148.0, implying a Q3 reduction of 568.0; applying that reduction to FY2026Q2 gives -349.0."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 706.0 + adjustments [-349.0]",
+       "value": 357.0
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 706.0,
+        "why": "Most recent reported quarterly Production & Precision Ag operating profit."
+       },
+       "adjustments": [
+        {
+         "delta": -349.0,
+         "reason": "Apply the latest comparable Q3-to-Q2 seasonal conversion to the current Q2 result.",
+         "evidence": "FY2025Q3 operating profit was 580.0 versus FY2025Q2 of 1148.0, implying a 50.5% Q3/Q2 ratio; applying this to FY2026Q2 of 706.0 gives approximately 357.0, or a -349.0 adjustment."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 706.0 + adjustments [-349.0]",
+       "value": 357.0
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 580.0,
+        "why": "Prior-year third-quarter operating profit provides the closest reported seasonal comparison."
+       },
+       "adjustments": [
+        {
+         "delta": -250.0,
+         "reason": "Apply the pronounced year-over-year deterioration evident in first-half operating profit to the comparable third-quarter base.",
+         "evidence": "FY2026H1 operating profit was 845.0 versus 1,486.0 in FY2025H1, a decline of approximately 43%."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 580.0 + adjustments [-250.0]",
+       "value": 330.0
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 580.0,
+        "why": "Prior-year third-quarter operating profit provides the closest seasonal comparison."
+       },
+       "adjustments": [
+        {
+         "delta": -250.0,
+         "reason": "Apply the FY2026H1 year-over-year decline rate to the prior-year third-quarter base, reflecting materially weaker year-to-date segment profitability.",
+         "evidence": "FY2026H1 operating profit was 845.0 versus 1,486.0 in FY2025H1, a decline of approximately 43%; FY2025Q3 was 580.0."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 580.0 + adjustments [-250.0]",
+       "value": 330.0
+      },
+      {
+       "provider": "openai",
+       "sample": 5,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 580.0,
+        "why": "Prior-year third-quarter operating profit provides the closest seasonal comparison."
+       },
+       "adjustments": [
+        {
+         "delta": -250.1,
+         "reason": "Apply the FY2026H1 year-over-year decline to the prior-year third-quarter base, reflecting substantially weaker first-half profitability.",
+         "evidence": "Production & Precision Ag operating profit declined from FY2025H1 USD1,486m to FY2026H1 USD845m, a 43.2% decrease; applying this rate to FY2025Q3 USD580m implies a USD250.1m reduction."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 580.0 + adjustments [-250.1]",
+       "value": 329.9
+      },
+      {
+       "provider": "openai",
+       "sample": 6,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 580.0,
+        "why": "Latest comparable third-quarter reported operating profit."
+       },
+       "adjustments": [
+        {
+         "delta": -250.0,
+         "reason": "Apply the FY2026H1 year-over-year decline to the comparable FY2025Q3 result, implying weaker third-quarter profitability.",
+         "evidence": "FY2026H1 operating profit was 845.0 versus 1,486.0 in FY2025H1, a decline of approximately 43%; FY2025Q3 was 580.0."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 580.0 + adjustments [-250.0]",
+       "value": 330.0
+      },
+      {
+       "provider": "openai",
+       "sample": 7,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 580.0,
+        "why": "Prior-year third-quarter Production & Precision Ag operating profit provides the closest seasonal reference."
+       },
+       "adjustments": [
+        {
+         "delta": -250.0,
+         "reason": "Apply the FY2026H1 year-over-year decline rate to the prior-year third-quarter base, reflecting materially weaker first-half segment profitability.",
+         "evidence": "FY2026H1 operating profit was 845.0 versus 1486.0 in FY2025H1, while FY2025Q3 was 580.0."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 580.0 + adjustments [-250.0]",
+       "value": 330.0
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025Q3",
+     "base_value": 580.0,
+     "yoy_pairs": [
+      {
+       "period": "FY2026Q2",
+       "value": 706.0,
+       "prior": 1148.0
+      },
+      {
+       "period": "FY2026Q1",
+       "value": 139.0,
+       "prior": 338.0
+      },
+      {
+       "period": "FY2025Q3",
+       "value": 580.0,
+       "prior": 1162.0
+      },
+      {
+       "period": "FY2025Q2",
+       "value": 1148.0,
+       "prior": 1650.0
+      }
+     ],
+     "formula": "prior-year value 580.0 x (1 + median YoY growth -44.294%)",
+     "value": 323.09537802779056
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 327.23815121111625,
+    "formula": "weighted mean of method values"
+   },
+   "final": 327.0
+  },
+  "eps": {
+   "methods": {
+    "llm_analyst": {
+     "value": 4.34,
+     "n_samples": 8,
+     "spread": 0.3600000000000012,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 6.55,
+        "why": "Most recent reported quarterly diluted GAAP EPS."
+       },
+       "adjustments": [
+        {
+         "delta": -2.07,
+         "reason": "Apply the average Q2-to-Q3 seasonal decline observed in the two prior fiscal years.",
+         "evidence": "FY2024Q2 EPS of 8.53 fell to 6.29 in FY2024Q3 (-2.24); FY2025Q2 EPS of 6.64 fell to 4.75 in FY2025Q3 (-1.89)."
+        },
+        {
+         "delta": -0.1,
+         "reason": "Reflect the modest year-over-year decline in first-half diluted EPS entering the quarter.",
+         "evidence": "FY2026H1 EPS of 8.97 versus FY2025H1 EPS of 9.82, a decline of 0.85 overall."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 6.55 + adjustments [-2.07, -0.1]",
+       "value": 4.38
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 4.75,
+        "why": "Prior-year third-quarter diluted EPS provides the most direct seasonal comparison for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": -0.41,
+         "reason": "Apply the FY2026H1 year-over-year EPS decline to the comparable third-quarter base.",
+         "evidence": "FY2026H1 EPS was 8.97 versus 9.82 in FY2025H1, a decline of approximately 8.7%."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 4.75 + adjustments [-0.41]",
+       "value": 4.34
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 4.75,
+        "why": "Prior-year third-quarter diluted EPS provides the closest seasonal comparison."
+       },
+       "adjustments": [
+        {
+         "delta": -0.4,
+         "reason": "Reduce for the lower first-half FY2026 earnings run-rate versus the prior year.",
+         "evidence": "FY2026H1 diluted EPS was 8.97 versus 9.82 in FY2025H1, while FY2026Q1 was 2.42 versus 3.19 in FY2025Q1."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 4.75 + adjustments [-0.4]",
+       "value": 4.35
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 4.75,
+        "why": "Prior-year third-quarter diluted GAAP EPS provides the closest directly comparable seasonal base."
+       },
+       "adjustments": [
+        {
+         "delta": -0.41,
+         "reason": "Apply the FY2026 first-half year-over-year EPS decline to the prior-year third-quarter base.",
+         "evidence": "FY2026H1 EPS of 8.97 versus FY2025H1 EPS of 9.82, a decline of approximately 8.7%."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 4.75 + adjustments [-0.41]",
+       "value": 4.34
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 4.75,
+        "why": "Uses the most recent comparable third-quarter diluted GAAP EPS as the seasonal base."
+       },
+       "adjustments": [
+        {
+         "delta": -0.41,
+         "reason": "Applies the FY2026 first-half EPS decline to the comparable FY2025Q3 result.",
+         "evidence": "FY2026H1 EPS of 8.97 versus FY2025H1 EPS of 9.82, a decline of approximately 8.7%."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 4.75 + adjustments [-0.41]",
+       "value": 4.34
+      },
+      {
+       "provider": "openai",
+       "sample": 5,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 4.75,
+        "why": "Prior-year third-quarter diluted GAAP EPS provides the closest seasonal reference for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": -0.27,
+         "reason": "Apply the recent Q2-to-Q3 seasonal decline observed in the two prior fiscal years to the FY2026Q2 base, implying modestly lower Q3 EPS.",
+         "evidence": "FY2024Q2 to FY2024Q3 declined from 8.53 to 6.29; FY2025Q2 to FY2025Q3 declined from 6.64 to 4.75; FY2026Q2 was 6.55."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 4.75 + adjustments [-0.27]",
+       "value": 4.48
+      },
+      {
+       "provider": "openai",
+       "sample": 6,
+       "base": {
+        "period": "FY2025Q3",
+        "value": 4.75,
+        "why": "Same-quarter prior-year diluted GAAP EPS provides the closest seasonal reference for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": -0.41,
+         "reason": "Reflects the 8.7% year-over-year decline in first-half diluted EPS applied to the prior-year third-quarter base.",
+         "evidence": "FY2026H1 EPS of 8.97 versus FY2025H1 EPS of 9.82; FY2025Q3 EPS was 4.75."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 4.75 + adjustments [-0.41]",
+       "value": 4.34
+      },
+      {
+       "provider": "openai",
+       "sample": 7,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 6.55,
+        "why": "Latest reported quarterly diluted EPS provides the most current starting point."
+       },
+       "adjustments": [
+        {
+         "delta": -2.0,
+         "reason": "Apply the typical Q2-to-Q3 seasonal decline in diluted EPS.",
+         "evidence": "Q2-to-Q3 declined by $2.24 in FY2024 (8.53 to 6.29) and by $1.89 in FY2025 (6.64 to 4.75)."
+        },
+        {
+         "delta": -0.43,
+         "reason": "Reflect the year-over-year reduction in first-half diluted EPS.",
+         "evidence": "FY2026H1 diluted EPS was 8.97 versus 9.82 in FY2025H1, a decline of $0.85 or approximately $0.43 per quarter."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 6.55 + adjustments [-2.0, -0.43]",
+       "value": 4.119999999999999
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025Q3",
+     "base_value": 4.75,
+     "yoy_pairs": [
+      {
+       "period": "FY2026Q2",
+       "value": 6.55,
+       "prior": 6.64
+      },
+      {
+       "period": "FY2026Q1",
+       "value": 2.42,
+       "prior": 3.19
+      },
+      {
+       "period": "FY2025Q4",
+       "value": 3.93,
+       "prior": 4.55
+      },
+      {
+       "period": "FY2025Q3",
+       "value": 4.75,
+       "prior": 6.29
+      }
+     ],
+     "formula": "prior-year value 4.75 x (1 + median YoY growth -18.882%)",
+     "value": 3.853097764304661
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 4.145239105721864,
+    "formula": "weighted mean of method values"
+   },
+   "consensus_blend": {
+    "consensus": 4.71,
+    "beta": 0.5,
+    "formula": "consensus + 0.5 x (ensemble - consensus)",
+    "value": 4.427619552860932
+   },
+   "final": 4.4276
+  }
+ },
+ "consensus": {
+  "fetched_at": "2026-08-16T14:29:24.709747+00:00",
+  "period": "FY2026Q3",
+  "gated_on_date": "2026-08-16",
+  "net_sales_rev": {
+   "value": 10811.7,
+   "sources": [
+    {
+     "source": "finanzen.net",
+     "value": 10811.75,
+     "basis": "unclear",
+     "as_of": "2026-08-02",
+     "url": "https://www.finanzen.net/schaetzungen/deere"
+    },
+    {
+     "source": "MarketBeat",
+     "value": 10810,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-14",
+     "url": "https://www.marketbeat.com/earnings/reports/2026-8-20-deere-company-stock/"
+    },
+    {
+     "source": "Benzinga",
+     "value": 10750,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-16",
+     "url": "https://www.benzinga.com/quote/DE/earnings"
+    },
+    {
+     "source": "Zacks Consensus Estimate (via Yahoo Finance)",
+     "value": 10830,
+     "basis": "",
+     "as_of": "2026-07-14",
+     "url": "https://finance.yahoo.com/markets/stocks/articles/deere-company-attracting-investor-attention-130006294.html"
+    },
+    {
+     "source": "MarketBeat",
+     "value": 10811.7,
+     "basis": "",
+     "as_of": "2026-08-13",
+     "url": "https://www.marketbeat.com/instant-alerts/deere-company-de-projected-to-announce-earnings-on-thursday-2026-08-13/"
+    }
+   ],
+   "rejected": [],
+   "corroboration": 5,
+   "usable": true,
+   "why": "median of agreeing sources"
+  },
+  "eps": {
+   "value": 4.71,
+   "sources": [
+    {
+     "source": "Finviz",
+     "value": 4.72,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-07-09",
+     "url": "https://finviz.com/quote.ashx?b=1&p=d&r=y1&t=DE&ty=ea"
+    },
+    {
+     "source": "finanzen.net",
+     "value": 4.71,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-02",
+     "url": "https://www.finanzen.net/schaetzungen/deere"
+    },
+    {
+     "source": "MarketBeat",
+     "value": 4.71,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-14",
+     "url": "https://www.marketbeat.com/earnings/reports/2026-8-20-deere-company-stock/"
+    },
+    {
+     "source": "Benzinga",
+     "value": 4.73,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-16",
+     "url": "https://www.benzinga.com/quote/DE/earnings"
+    },
+    {
+     "source": "TipRanks",
+     "value": 4.69,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-16",
+     "url": "https://www.tipranks.com/stocks/de/earnings"
+    }
+   ],
+   "rejected": [],
+   "corroboration": 5,
+   "usable": true,
+   "why": "median of agreeing sources"
+  },
+  "ppa_op": {
+   "value": null,
+   "sources": [],
+   "rejected": [],
+   "corroboration": 0,
+   "usable": false,
+   "why": "not used: fewer than two independent sources agreed"
+  }
+ }
+}

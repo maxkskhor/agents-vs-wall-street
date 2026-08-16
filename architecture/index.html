@@ -33,7 +33,7 @@
   <main>
     <p class="eyebrow">Agents vs Wall Street</p>
     <h1>Glasshouse</h1>
-    <p class="lede">A forecasting agent built on one rule: <strong>the language model is never allowed to say a forecast number.</strong> Models transcribe cited evidence and propose assumptions; deterministic arithmetic computes all twelve figures; a time-travel backtest — not taste — chooses how the estimates are combined.</p>
+    <p class="lede">A forecasting agent built on one rule: <strong>no forecast is ever a model's bare assertion.</strong> Models transcribe cited evidence and propose decompositions — a base copied from reported history plus itemised, evidence-tagged adjustments — and deterministic arithmetic recomputes every figure from those parts. A time-travel backtest calibrates and validates how the estimates are combined; where its fit failed to clear its own quality bar, we kept declared priors rather than trust a weak fit — and we say which is which below.</p>
 
     <div class="card">
       <p>Agent name: <strong>Glasshouse</strong></p>
@@ -103,8 +103,8 @@
           <rect class="box stage" x="620" y="184" width="180" height="104" rx="10"/>
           <text class="t" x="634" y="210">4 · Combine</text>
           <text class="s" x="634" y="228">bias-correct guidance route;</text>
-          <text class="s" x="634" y="244">weighted median, backtest</text>
-          <text class="s" x="634" y="260">weights; consensus shrink</text>
+          <text class="s" x="634" y="244">weighted mean (median for %),</text>
+          <text class="s" x="634" y="260">backtest wts; consensus shrink</text>
 
           <rect class="box gate" x="620" y="330" width="180" height="98" rx="10"/>
           <text class="t" x="634" y="356">5 · Validation gates</text>
@@ -138,9 +138,8 @@
           <path class="flow" d="M710,288 L710,330"/>
           <path class="flow" d="M710,428 L710,470"/>
           <path class="flow" d="M560,500 C590,500 600,300 620,264" stroke-dasharray="5 4"/>
-          <path class="flow" d="M400,470 L400,440" stroke-dasharray="5 4"/>
         </svg>
-        <figcaption>Solid arrows: the final run. Dashed: the backtest feeds calibration back into the pipeline — ensemble weights and the validated guidance bias correction into stage 4, and the same bias finding into stage 3c as narrative evidence for the analyst. Yellow boxes are gates that can reject work; green are supporting harnesses.</figcaption>
+        <figcaption>Solid arrows: the final run. Dashed: the backtest feeds calibration back into stage 4 only — ensemble weights and the walk-forward-validated guidance bias corrections. (An earlier build also fed the bias finding to the stage-3c analyst as prompt evidence; that double-counted it and was removed.) Yellow boxes are gates that can reject work; green are supporting harnesses.</figcaption>
       </figure>
 
       <h3>The five stages</h3>
@@ -148,7 +147,7 @@
         <li><strong>Retrieve</strong> — newest results filings per company, picked by date and type. No embeddings; filenames carry the dates, which is what makes time-travel possible.</li>
         <li><strong>Extract</strong> — a model copies out figures one document at a time, each with a verbatim quote. <em>Gate:</em> the quote must exist in the document and the number must exist in the quote.</li>
         <li><strong>Estimate</strong> — three independent routes (below). Each abstains rather than guess.</li>
-        <li><strong>Combine</strong> — validated bias correction, then weighted median, then a shrink toward gated public consensus.</li>
+        <li><strong>Combine</strong> — validated bias correction, then a weighted mean of the routes (weighted median for percent metrics), then a shrink toward gated public consensus. A weighted median of 2–3 values just returns one input verbatim, so a validated correction on a non-median route could never move the answer — we learned this the hard way, below.</li>
         <li><strong>Validate</strong> — deterministic gates block the workbook. The LLM reviewer only advises.</li>
       </ol>
 
@@ -186,10 +185,10 @@
           <text class="ln" x="152" y="275">46,862</text>
 
           <rect class="lb" x="330" y="120" width="210" height="86" rx="9"/>
-          <text class="lt" x="344" y="142">Weighted median</text>
+          <text class="lt" x="344" y="142">Weighted mean</text>
           <text class="ls" x="344" y="161">guidance .5 · analyst .3</text>
           <text class="ls" x="344" y="177">statistical .2</text>
-          <text class="ln" x="344" y="198">46,675</text>
+          <text class="ln" x="344" y="198">46,796</text>
 
           <rect class="lb lc" x="600" y="34" width="270" height="72" rx="9"/>
           <text class="lt" x="614" y="56">Consensus anchor (gated)</text>
@@ -198,9 +197,9 @@
 
           <rect class="lb" x="600" y="140" width="270" height="96" rx="9"/>
           <text class="lt" x="614" y="162">Shrink toward consensus</text>
-          <text class="ls" x="614" y="181">47,325 + 0.6 × (46,675 − 47,325)</text>
-          <text class="ls" x="614" y="197">β = 0.6 because guidance contributed</text>
-          <text class="ln" x="614" y="222">46,935  → workbook</text>
+          <text class="ls" x="614" y="181">47,325 + 0.85 × (46,796 − 47,325)</text>
+          <text class="ls" x="614" y="197">β = 0.85 because guidance contributed</text>
+          <text class="ln" x="614" y="222">46,876  → workbook</text>
 
           <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#667085"/></marker></defs>
           <path class="la" d="M135,84 L135,108"/>
@@ -218,8 +217,8 @@
       <p>The scoring rule shaped the design. Accuracy is judged <em>relative to Wall Street</em>: <code>|our miss| / max(WS miss, floor)</code>, capped at 5.0. Three consequences:</p>
       <ul>
         <li><strong>All four fiscal periods have already ended.</strong> We are predicting reported numbers for completed periods, so the freshest signals dominate: the latest guidance, and pre-announcements. Hays' 10 July trading update effectively pre-announces FY2026 net fees — the extractor treats it as a first-class <em>pre-announcement</em> fact that outranks older guidance.</li>
-        <li><strong>Median beats mean.</strong> Under absolute-error scoring the optimal point forecast is the median of our belief distribution — hence weighted <em>medians</em>, never averages, everywhere in the engine.</li>
-        <li><strong>Consensus is the benchmark, so know where it is.</strong> A cited, timestamped snapshot of public consensus (fetched by the models' web-search tools, cached to <code>research/</code>) anchors the final number; the ensemble moves us away from consensus only where extracted evidence pushes. If the network fails, the run proceeds un-anchored — the anchor is an input, not a dependency.</li>
+        <li><strong>Medians where they mean something, means where they must.</strong> Under absolute-error scoring the optimal point forecast is the median of a belief <em>distribution</em> — so the analyst's independent samples are collapsed by median, and percent metrics keep a weighted median across routes. But three correlated point estimates are not a belief distribution, and a weighted median of them simply selects one input, silently discarding any validated correction applied to the others. Money and EPS routes are therefore combined by weighted mean, so every input can move the answer continuously.</li>
+        <li><strong>Consensus is the benchmark, so exploit the asymmetry.</strong> The score caps our downside at 5.0 and pays unboundedly below 1.0, so matching the Street can never win. A cited, timestamped snapshot of public consensus (fetched by the models' web-search tools, cached to <code>research/</code>) anchors the final number, but deliberately loosely: shrink factor β = 0.85 where our guidance-arithmetic route spoke, 0.5 where it abstained — deviate on evidence, lean on the Street only where our own routes are weakest. If the network fails, the run proceeds un-anchored — the anchor is an input, not a dependency.</li>
       </ul>
       <p>Conflicting evidence is resolved structurally rather than by vibes: later documents win for restatements; pre-announcements outrank guidance; adjusted-basis quotes are required for adjusted metrics; and quarterly figures are reconciled against full-year guidance through the catch-up arithmetic.</p>
     </section>
@@ -235,14 +234,14 @@
             .bs { font: 11.5px Inter, sans-serif; fill:#667085; }
             .bn { font: 700 13px Inter, sans-serif; fill:#101828; }
           </style>
-          <text class="bt" x="0" y="16">Mean floor-relative miss by route — 85 forecasts, 10 periods per company (lower is better)</text>
+          <text class="bt" x="0" y="16">Mean floor-relative miss by route — 86 forecasts, 10 periods per company (lower is better)</text>
           <line class="ax" x1="150" y1="30" x2="150" y2="130"/>
           <rect x="150" y="38" width="303" height="22" fill="#067647" rx="3"/>
-          <text class="bs" x="0" y="54">Guidance arithmetic</text><text class="bn" x="463" y="54">3.79</text><text class="bs" x="500" y="54">n=40, abstains on 45</text>
-          <rect x="150" y="70" width="314" height="22" fill="#155eef" rx="3"/>
-          <text class="bs" x="0" y="86">LLM analyst</text><text class="bn" x="474" y="86">3.92</text><text class="bs" x="512" y="86">n=85, always available</text>
+          <text class="bs" x="0" y="54">Guidance arithmetic</text><text class="bn" x="463" y="54">3.79</text><text class="bs" x="500" y="54">n=41, abstains on 45</text>
+          <rect x="150" y="70" width="325" height="22" fill="#155eef" rx="3"/>
+          <text class="bs" x="0" y="86">LLM analyst</text><text class="bn" x="485" y="86">4.06</text><text class="bs" x="523" y="86">n=86, always available</text>
           <rect x="150" y="102" width="350" height="22" fill="#98a2b3" rx="3"/>
-          <text class="bs" x="0" y="118">Statistical (no LLM)</text><text class="bn" x="510" y="118">4.38</text><text class="bs" x="548" y="118">n=60, honest baseline</text>
+          <text class="bs" x="0" y="118">Statistical (no LLM)</text><text class="bn" x="510" y="118">4.38</text><text class="bs" x="548" y="118">n=61, honest baseline</text>
 
           <text class="bt" x="0" y="170">Bias corrections: 7 candidates measured → 2 survived walk-forward validation</text>
           <g>
@@ -282,7 +281,7 @@
           </g>
           <text class="ss" x="0" y="80">Median spread 0.1%. Every metric that moves belongs to the one company with no usable quarterly guidance.</text>
         </svg>
-        <figcaption>Where the deterministic routes have evidence, swapping the model changes nothing — because the model is not the thing deciding.</figcaption>
+        <figcaption>Where the deterministic routes have evidence, swapping the model changes almost nothing — because the model is not the thing deciding. Measured under the earlier weighted-median combiner; the shipped weighted mean lets analyst variation move money/EPS figures slightly more (weight 0.3), so the "identical to the digit" count would be lower today, with the spread still concentrated in Deere.</figcaption>
       </figure>
 
       <p>Caveat, stated plainly: for quarters reported before the models' training cutoffs the LLM-analyst route may have seen the actuals; quarters reported in 2026 are the cleanest window, and the two deterministic routes are contamination-free by construction.</p>
@@ -309,7 +308,7 @@
         <li>Unit traps handled explicitly: Hays EPS in <em>pence</em>, percentages as points (0.6 not 0.006), USDm magnitudes.</li>
         <li>Magnitude bands vs prior-year values; absolute sanity bands (e.g. ADI gross margin 55–80%); conversion-ratio checks (Hays operating profit ÷ net fees; Deere PP&amp;A profit ÷ total revenue).</li>
         <li>Cross-metric consistency: HD net-sales growth vs comp sales within the new-stores/FX wedge.</li>
-        <li>26 offline unit tests cover period math, estimator arithmetic, grounding, combination, the consensus gate and the workbook writer: <code>.venv/bin/python -m unittest discover -s tests</code>.</li>
+        <li>29 offline unit tests cover period math, estimator arithmetic, grounding, combination (including that a bias-corrected route can actually move the weighted-mean ensemble — the regression that motivated the combiner change), the consensus gate and the workbook writer: <code>.venv/bin/python -m unittest discover -s tests</code>.</li>
         <li>Consensus-anchor gate: rejects future-dated figures (post-release leakage), company guidance sold as Street consensus, full-year figures quoted against a quarterly target, and values equal to an already-reported period; then requires two corroborating sources and takes their median. It earned its place — an early run anchored Home Depot adjusted EPS on a lone 4.87 that four independent providers contradicted at 4.62–4.73, and it had already moved our submitted number.</li>
         <li>A failed validation <em>blocks the workbook</em>; the run log records every check with its outcome.</li>
       </ul>
@@ -330,6 +329,9 @@
         <li>The red-team reviewer blocked ADI over a 0.2-in-6,784 rounding difference, then blocked a correct 0.75pp comps figure. It is now advisory; deterministic gates decide.</li>
         <li><code>rg</code>'s parallel file walk returned evidence in a different order each run, which changed analyst prompts and made Deere wobble. Search output is now deterministically sorted.</li>
         <li>We reported the cheap model as a measurably better analyst on a 31–25 head-to-head. That is p≈0.24 — a coin toss. It is retained for being cheaper and no worse, not better.</li>
+        <li>Our walk-forward-validated ADI bias corrections never reached a workbook: they were applied to the guidance route and then fed into a weighted median, which returns one input verbatim and cannot be moved by shifting a non-median point. The only edge the backtest ever validated was being silently discarded by the combiner. Fix: weighted mean for money/EPS; the correction now visibly flows through the lineage (ADI revenue guidance 3,900 → 4,004 in <code>audit.md</code>).</li>
+        <li>The same bias finding was also stated to the LLM analyst as prompt evidence — double-counting the correction, and making backtest prompts depend on the previous backtest's output. Removed; the correction is applied exactly once, in the engine.</li>
+        <li>Early validation bands were so wide they could only catch unit errors (a 35% revenue miss passed; Deere's profit-conversion band spanned 23×). Tightened to bands a scoring-relevant error can actually trip, and the stale docstring that claimed the red-team could block was corrected — it advises, deterministic gates decide.</li>
       </ul>
     </section>
 

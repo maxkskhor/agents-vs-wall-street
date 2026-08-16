@@ -1,0 +1,729 @@
+{
+ "target": "FY2026Q3",
+ "finals": {
+  "revenue": 3910.0,
+  "adj_gross_margin": 73.0,
+  "adj_eps": 3.3279
+ },
+ "lineage": {
+  "revenue": {
+   "methods": {
+    "llm_analyst": {
+     "value": 3900.0,
+     "n_samples": 5,
+     "spread": 0.0,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3623.465,
+        "why": "Latest reported quarterly revenue before the FY2026Q3 forecast period."
+       },
+       "adjustments": [
+        {
+         "delta": 276.535,
+         "reason": "Aligns the latest reported quarter with management's FY2026Q3 revenue guidance midpoint of $3.9 billion.",
+         "evidence": "Guidance FY2026Q3, 2026-05-20: \"we are forecasting revenue of $3.9 billion, +/- $100 million.\""
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3623.465 + adjustments [276.535]",
+       "value": 3900.0
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3623.465,
+        "why": "Most recent reported quarterly revenue before the FY2026Q3 forecast period."
+       },
+       "adjustments": [
+        {
+         "delta": 276.535,
+         "reason": "Increase revenue to the midpoint of management's FY2026Q3 guidance.",
+         "evidence": "[guidance FY2026Q3, 2026-05-20] revenue forecast of $3.9 billion, +/- $100 million."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3623.465 + adjustments [276.535]",
+       "value": 3900.0
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3623.465,
+        "why": "Latest reported quarterly revenue before the target period."
+       },
+       "adjustments": [
+        {
+         "delta": 276.535,
+         "reason": "Raises revenue to the midpoint of the explicit FY2026Q3 guidance of $3.9 billion.",
+         "evidence": "Guidance FY2026Q3: revenue of $3.9 billion, +/- $100 million (2026-05-20)."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3623.465 + adjustments [276.535]",
+       "value": 3900.0
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3623.465,
+        "why": "Most recent reported quarterly revenue before the target period."
+       },
+       "adjustments": [
+        {
+         "delta": 276.535,
+         "reason": "Raises revenue to the midpoint of management's FY2026Q3 guidance.",
+         "evidence": "FY2026Q3 guidance: revenue of $3.9 billion, +/- $100 million."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3623.465 + adjustments [276.535]",
+       "value": 3900.0
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3623.465,
+        "why": "Latest reported quarterly revenue before the FY2026Q3 forecast period."
+       },
+       "adjustments": [
+        {
+         "delta": 276.535,
+         "reason": "Aligns the latest reported revenue with the midpoint of management's FY2026Q3 revenue guidance.",
+         "evidence": "FY2026Q3 guidance: revenue of $3.9 billion, +/- $100 million."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3623.465 + adjustments [276.535]",
+       "value": 3900.0
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025Q3",
+     "base_value": 2880.348,
+     "yoy_pairs": [
+      {
+       "period": "FY2026Q2",
+       "value": 3623.465,
+       "prior": 2640.068
+      },
+      {
+       "period": "FY2026Q1",
+       "value": 3160.063,
+       "prior": 2423.174
+      },
+      {
+       "period": "FY2025Q4",
+       "value": 3076.117,
+       "prior": 2443.205
+      },
+      {
+       "period": "FY2025Q3",
+       "value": 2880.348,
+       "prior": 2312.209
+      }
+     ],
+     "formula": "prior-year value 2880.348 x (1 + median YoY growth +28.158%)",
+     "value": 3691.3828994766977
+    },
+    "guidance": {
+     "guidance_doc": "2026-05-20__adi-us-20260520-q2-8k-2__1040614.md",
+     "guidance_period": "FY2026Q3",
+     "guidance_units": "USDm",
+     "quote": "For the third quarter of fiscal 2026, we are forecasting revenue of $3.9 billion, +/- $100 million.",
+     "fact_type": "guidance",
+     "formula": "midpoint of stated guidance = 3900.0",
+     "bias_correction": {
+      "before": 3900.0,
+      "applied": 0.026743071428571512,
+      "n": 10,
+      "walk_forward": "walk-forward median error 76.117 -> 30.1733, 100% of periods improved",
+      "why": "walk-forward-validated bias of the guidance route for this company/metric"
+     },
+     "value": 4004.2979785714288
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 3910.425569181054,
+    "formula": "weighted mean of method values"
+   },
+   "consensus_blend": {
+    "consensus": 3910.0,
+    "beta": 0.85,
+    "formula": "consensus + 0.85 x (ensemble - consensus)",
+    "value": 3910.3617338038957
+   },
+   "final": 3910.0
+  },
+  "adj_gross_margin": {
+   "methods": {
+    "llm_analyst": {
+     "value": 73.0,
+     "n_samples": 8,
+     "spread": 0.7000000000000028,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Most recent reported adjusted gross margin and closest evidence to the FY2026Q3 target."
+       },
+       "adjustments": [
+        {
+         "delta": -0.2,
+         "reason": "Apply the recent seasonal Q2-to-Q3 margin pattern.",
+         "evidence": "FY2025Q2 adjusted gross margin was 69.4% versus 69.2% in FY2025Q3, a decline of 0.2 percentage points."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [-0.2]",
+       "value": 72.8
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Latest reported adjusted gross margin and the closest available period to FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 0.2,
+         "reason": "Recent sequential margin momentum supports a modest upward adjustment.",
+         "evidence": "Adjusted gross margin increased from 71.2% in FY2026Q1 to 73.0% in FY2026Q2."
+        },
+        {
+         "delta": -0.2,
+         "reason": "A small seasonal offset reflects the prior-year sequential pattern into the third quarter.",
+         "evidence": "Adjusted gross margin declined from 69.4% in FY2025Q2 to 69.2% in FY2025Q3."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [0.2, -0.2]",
+       "value": 73.0
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Most recent reported adjusted gross margin provides the closest evidence base for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 0.2,
+         "reason": "Carry forward part of the recent margin expansion into the next quarter.",
+         "evidence": "Adjusted gross margin increased from 71.2% in FY2026Q1 to 73.0% in FY2026Q2, following 69.8% in FY2025Q4."
+        },
+        {
+         "delta": -0.2,
+         "reason": "Allow for potentially weaker or less favorable Q3 seasonality given the mixed historical pattern.",
+         "evidence": "FY2025Q3 margin was 69.2%, down from 69.4% in FY2025Q2, although FY2024Q3 increased to 67.9% from 66.7% in FY2024Q2."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [0.2, -0.2]",
+       "value": 73.0
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Latest reported adjusted gross margin and the closest available period to FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": -0.2,
+         "reason": "Apply a modest sequential seasonal reduction ahead of the target quarter.",
+         "evidence": "FY2025Q3 was 0.2 percentage points below FY2025Q2 (69.2% versus 69.4%)."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [-0.2]",
+       "value": 72.8
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Most recent reported adjusted gross margin and the closest comparable quarter to FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 0.5,
+         "reason": "Apply the average FY2024Q2-to-Q3 and FY2025Q2-to-Q3 sequential movement as a limited historical seasonality adjustment.",
+         "evidence": "FY2024Q2 to FY2024Q3: +1.2 percentage points; FY2025Q2 to FY2025Q3: -0.2 percentage points."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [0.5]",
+       "value": 73.5
+      },
+      {
+       "provider": "openai",
+       "sample": 5,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Latest reported adjusted gross margin before the FY2026Q3 target period."
+       },
+       "adjustments": [
+        {
+         "delta": 0.5,
+         "reason": "Apply the average historical Q3-versus-Q2 adjusted gross-margin change as a modest seasonal continuation.",
+         "evidence": "FY2024Q3 was 1.2 percentage points above FY2024Q2, while FY2025Q3 was 0.2 points below FY2025Q2; average change is approximately +0.5 points."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [0.5]",
+       "value": 73.5
+      },
+      {
+       "provider": "openai",
+       "sample": 6,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Latest reported adjusted gross margin and the closest available evidence to FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": -0.2,
+         "reason": "Apply a modest sequential seasonal reduction based on the prior-year Q2-to-Q3 movement.",
+         "evidence": "FY2025Q2 to FY2025Q3 declined from 69.4% to 69.2%."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [-0.2]",
+       "value": 72.8
+      },
+      {
+       "provider": "openai",
+       "sample": 7,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 73.0,
+        "why": "Most recent reported adjusted gross margin and the closest quarter to FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 0.5,
+         "reason": "Carry forward the recent sequential improvement in adjusted gross margin.",
+         "evidence": "Adjusted gross margin increased from 71.2% in FY2026Q1 to 73.0% in FY2026Q2."
+        },
+        {
+         "delta": -0.2,
+         "reason": "Temper the sequential uplift because no FY2026Q3 guidance or pre-announcement evidence was supplied.",
+         "evidence": "Guidance / pre-announcement evidence: none extracted."
+        }
+       ],
+       "confidence": "low",
+       "model": "gpt-5.6-luna",
+       "formula": "base 73.0 + adjustments [0.5, -0.2]",
+       "value": 73.3
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025Q3",
+     "base_value": 69.2,
+     "yoy_pairs": [
+      {
+       "period": "FY2026Q2",
+       "value": 73.0,
+       "prior": 69.4
+      },
+      {
+       "period": "FY2026Q1",
+       "value": 71.2,
+       "prior": 68.8
+      },
+      {
+       "period": "FY2025Q4",
+       "value": 69.8,
+       "prior": 67.9
+      },
+      {
+       "period": "FY2025Q3",
+       "value": 69.2,
+       "prior": 67.9
+      }
+     ],
+     "formula": "prior-year level 69.2 + median YoY delta +2.15pp",
+     "value": 71.35
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.25,
+    "llm_analyst": 0.45,
+    "statistical": 0.3
+   },
+   "ensemble": {
+    "value": 73.0,
+    "formula": "weighted median of method values"
+   },
+   "final": 73.0
+  },
+  "adj_eps": {
+   "methods": {
+    "llm_analyst": {
+     "value": 3.3,
+     "n_samples": 5,
+     "spread": 0.0,
+     "samples": [
+      {
+       "provider": "openai",
+       "sample": 0,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3.09,
+        "why": "Most recent reported adjusted diluted EPS provides the closest historical base to the FY2026Q3 target."
+       },
+       "adjustments": [
+        {
+         "delta": 0.21,
+         "reason": "Move the base to management's midpoint guidance for the target quarter.",
+         "evidence": "FY2026Q3 guidance: adjusted EPS planned at $3.30, +/-$0.15; FY2026Q2 reported adjusted EPS was $3.09."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3.09 + adjustments [0.21]",
+       "value": 3.3
+      },
+      {
+       "provider": "openai",
+       "sample": 1,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3.09,
+        "why": "Most recent reported adjusted diluted EPS before the FY2026Q3 target period."
+       },
+       "adjustments": [
+        {
+         "delta": 0.21,
+         "reason": "Move from FY2026Q2 actual EPS to the midpoint of explicit FY2026Q3 adjusted EPS guidance.",
+         "evidence": "FY2026Q3 guidance: adjusted EPS planned at $3.30, +/-$0.15, versus FY2026Q2 reported adjusted EPS of $3.09."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3.09 + adjustments [0.21]",
+       "value": 3.3
+      },
+      {
+       "provider": "openai",
+       "sample": 2,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3.09,
+        "why": "Latest reported adjusted diluted EPS provides the most recent earnings baseline."
+       },
+       "adjustments": [
+        {
+         "delta": 0.21,
+         "reason": "Increase to ADI's explicit FY2026Q3 adjusted EPS guidance midpoint of $3.30 from the FY2026Q2 reported adjusted EPS of $3.09.",
+         "evidence": "Guidance FY2026Q3: adjusted EPS $3.30 +/-$0.15; FY2026Q2 reported adjusted diluted EPS: $3.09."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3.09 + adjustments [0.21]",
+       "value": 3.3
+      },
+      {
+       "provider": "openai",
+       "sample": 3,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3.09,
+        "why": "Latest reported adjusted diluted EPS before the target quarter."
+       },
+       "adjustments": [
+        {
+         "delta": 0.21,
+         "reason": "Move to management's midpoint guidance for the target quarter.",
+         "evidence": "FY2026Q3 guidance: adjusted EPS of $3.30, +/-$0.15, versus FY2026Q2 reported adjusted EPS of $3.09."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3.09 + adjustments [0.21]",
+       "value": 3.3
+      },
+      {
+       "provider": "openai",
+       "sample": 4,
+       "base": {
+        "period": "FY2026Q2",
+        "value": 3.09,
+        "why": "Most recent reported adjusted diluted EPS provides the closest historical base for FY2026Q3."
+       },
+       "adjustments": [
+        {
+         "delta": 0.21,
+         "reason": "Apply the sequential increase implied by management's FY2026Q3 adjusted EPS guidance relative to the FY2026Q2 reported result.",
+         "evidence": "FY2026Q3 guidance: adjusted EPS of $3.30 +/-$0.15; FY2026Q2 history: $3.09."
+        }
+       ],
+       "confidence": "high",
+       "model": "gpt-5.6-luna",
+       "formula": "base 3.09 + adjustments [0.21]",
+       "value": 3.3
+      }
+     ]
+    },
+    "statistical": {
+     "base_period": "FY2025Q3",
+     "base_value": 2.05,
+     "yoy_pairs": [
+      {
+       "period": "FY2026Q2",
+       "value": 3.09,
+       "prior": 1.85
+      },
+      {
+       "period": "FY2026Q1",
+       "value": 2.46,
+       "prior": 1.63
+      },
+      {
+       "period": "FY2025Q4",
+       "value": 2.26,
+       "prior": 1.67
+      },
+      {
+       "period": "FY2025Q3",
+       "value": 2.05,
+       "prior": 1.58
+      }
+     ],
+     "formula": "prior-year value 2.05 x (1 + median YoY growth +43.125%)",
+     "value": 2.934058263840417
+    },
+    "guidance": {
+     "guidance_doc": "2026-05-20__adi-us-20260520-q2-8k-2__1040614.md",
+     "guidance_period": "FY2026Q3",
+     "guidance_units": "USD/share",
+     "quote": "We are planning for reported EPS to be $2.60, +/-$0.15, and adjusted EPS to be $3.30, +/-$0.15.",
+     "fact_type": "guidance",
+     "formula": "midpoint of stated guidance = 3.3",
+     "bias_correction": {
+      "before": 3.3,
+      "applied": 0.06,
+      "n": 10,
+      "walk_forward": "walk-forward median error 0.13 -> 0.0404, 71% of periods improved",
+      "why": "walk-forward-validated bias of the guidance route for this company/metric"
+     },
+     "value": 3.4979999999999998
+    }
+   },
+   "weights": {
+    "derived": 0.6,
+    "guidance": 0.5,
+    "llm_analyst": 0.3,
+    "statistical": 0.2
+   },
+   "ensemble": {
+    "value": 3.325811652768083,
+    "formula": "weighted mean of method values"
+   },
+   "consensus_blend": {
+    "consensus": 3.34,
+    "beta": 0.85,
+    "formula": "consensus + 0.85 x (ensemble - consensus)",
+    "value": 3.3279399048528706
+   },
+   "final": 3.3279
+  }
+ },
+ "consensus": {
+  "fetched_at": "2026-08-16T14:26:27.749354+00:00",
+  "period": "FY2026Q3",
+  "gated_on_date": "2026-08-16",
+  "revenue": {
+   "value": 3910.0,
+   "sources": [
+    {
+     "source": "Reuters/LSEG via Investing.com",
+     "value": 3620,
+     "basis": "unclear",
+     "as_of": "2026-05-20",
+     "url": "https://www.investing.com/news/stock-market-news/chipmaker-analog-devices-forecasts-thirdquarter-revenue-above-estimates-amid-ai-boom-4701086"
+    },
+    {
+     "source": "Benzinga",
+     "value": 3910,
+     "basis": "unclear",
+     "as_of": "2026-08-16",
+     "url": "https://www.benzinga.com/quote/adi/earnings"
+    },
+    {
+     "source": "TipRanks",
+     "value": 3910,
+     "basis": "unclear",
+     "as_of": "2026-08-16",
+     "url": "https://www.tipranks.com/stocks/adi/forecast"
+    },
+    {
+     "source": "ChartMill",
+     "value": 3957,
+     "basis": "unclear",
+     "as_of": "2026-08-16",
+     "url": "https://www.chartmill.com/stock/quote/ADI/analyst-ratings"
+    },
+    {
+     "source": "MarketBeat",
+     "value": 3600,
+     "basis": "unclear",
+     "as_of": "2026-08-16",
+     "url": "https://www.marketbeat.com/stocks/NASDAQ/ADI/earnings/"
+    },
+    {
+     "source": "Investing.com",
+     "value": 3910,
+     "basis": "quarterly adjusted",
+     "as_of": "2026-08-16",
+     "url": "https://www.investing.com/equities/analog-devices-earnings"
+    },
+    {
+     "source": "EvidInvest",
+     "value": 3910,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-16",
+     "url": "https://evidinvest.com/earnings/ADI"
+    },
+    {
+     "source": "TheStreet Pro",
+     "value": 3910,
+     "basis": "quarterly GAAP",
+     "as_of": "2026-08-16",
+     "url": "https://pro.thestreet.com/earnings/2026-08-19"
+    }
+   ],
+   "rejected": [],
+   "corroboration": 8,
+   "usable": true,
+   "why": "median of agreeing sources"
+  },
+  "adj_eps": {
+   "value": 3.34,
+   "sources": [
+    {
+     "source": "Reuters/LSEG via Investing.com",
+     "value": 3.0,
+     "basis": "quarterly adjusted",
+     "as_of": "2026-05-20",
+     "url": "https://www.investing.com/news/stock-market-news/chipmaker-analog-devices-forecasts-thirdquarter-revenue-above-estimates-amid-ai-boom-4701086"
+    },
+    {
+     "source": "Benzinga",
+     "value": 3.32,
+     "basis": "quarterly adjusted",
+     "as_of": "2026-08-16",
+     "url": "https://www.benzinga.com/quote/adi/earnings"
+    },
+    {
+     "source": "TipRanks",
+     "value": 3.34,
+     "basis": "quarterly adjusted",
+     "as_of": "2026-08-16",
+     "url": "https://www.tipranks.com/stocks/adi/earnings"
+    },
+    {
+     "source": "ChartMill",
+     "value": 3.37,
+     "basis": "quarterly adjusted",
+     "as_of": "2026-08-16",
+     "url": "https://www.chartmill.com/stock/quote/ADI/analyst-ratings"
+    },
+    {
+     "source": "MarketBeat",
+     "value": 2.91,
+     "basis": "quarterly adjusted",
+     "as_of": "2026-08-16",
+     "url": "https://www.marketbeat.com/stocks/NASDAQ/ADI/earnings/"
+    },
+    {
+     "source": "Barchart",
+     "value": 3.33,
+     "basis": "quarterly adjusted",
+     "as_of": "2026-07-24",
+     "url": "https://www.barchart.com/stocks/quotes/ADI/earnings-estimates"
+    },
+    {
+     "source": "Investing.com",
+     "value": 3.34,
+     "basis": "unclear",
+     "as_of": "2026-08-16",
+     "url": "https://www.investing.com/equities/analog-devices-earnings"
+    },
+    {
+     "source": "EvidInvest",
+     "value": 3.34,
+     "basis": "unclear",
+     "as_of": "2026-08-16",
+     "url": "https://evidinvest.com/earnings/ADI"
+    },
+    {
+     "source": "TheStreet Pro",
+     "value": 3.34,
+     "basis": "unclear",
+     "as_of": "2026-08-16",
+     "url": "https://pro.thestreet.com/earnings/2026-08-19"
+    }
+   ],
+   "rejected": [],
+   "corroboration": 9,
+   "usable": true,
+   "why": "median of agreeing sources"
+  },
+  "adj_gross_margin": {
+   "value": null,
+   "sources": [],
+   "rejected": [],
+   "corroboration": 0,
+   "usable": false,
+   "why": "not used: fewer than two independent sources agreed"
+  }
+ }
+}

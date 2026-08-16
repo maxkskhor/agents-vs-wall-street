@@ -1,0 +1,57 @@
+[
+ {
+  "name": "revenue: value present",
+  "status": "pass",
+  "detail": "final=3910.0"
+ },
+ {
+  "name": "revenue: magnitude vs prior year",
+  "status": "pass",
+  "detail": "3910.0 vs prior-year 2880.348 (ratio 1.36, band 0.7-1.42)"
+ },
+ {
+  "name": "revenue: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 0 (0.0% of final)"
+ },
+ {
+  "name": "adj_eps: value present",
+  "status": "pass",
+  "detail": "final=3.3279"
+ },
+ {
+  "name": "adj_eps: magnitude vs prior year",
+  "status": "pass",
+  "detail": "3.3279 vs prior-year 2.05 (ratio 1.62, band 0.55-1.7)"
+ },
+ {
+  "name": "adj_eps: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 0 (0.0% of final)"
+ },
+ {
+  "name": "adj_gross_margin: value present",
+  "status": "pass",
+  "detail": "final=73.0"
+ },
+ {
+  "name": "adj_gross_margin: plausibility vs prior year",
+  "status": "pass",
+  "detail": "73.0pp vs prior-year 69.2pp (max delta 4.0pp)"
+ },
+ {
+  "name": "adj_gross_margin: analyst-sample agreement",
+  "status": "pass",
+  "detail": "cross-provider spread 0.7 (1.0% of final)"
+ },
+ {
+  "name": "ADI: gross margin absolute range",
+  "status": "pass",
+  "detail": "adjusted gross margin 73.0% must be a percentage level (55-80)"
+ },
+ {
+  "name": "red-team review",
+  "status": "pass",
+  "detail": "no objections (openai)"
+ }
+]
