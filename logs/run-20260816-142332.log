@@ -1,0 +1,14 @@
+2026-08-16T14:25:05Z [consensus] HD: 4 entries from offline live-web-evidence corpus
+2026-08-16T14:25:05Z [consensus] HD/net_sales: anchor=47325.0 from 8 accepted / 0 rejected (['Zacks', 'Investing.com', 'NextEarningsDate.com', 'Benzinga', 'Kiplinger', 'Investing.com', 'Trefis', 'Zacks Consensus Estimate (via Yahoo Finance)'])
+2026-08-16T14:25:05Z [consensus] HD/adj_eps: anchor=4.73 from 11 accepted / 0 rejected (['Barchart', 'Zacks', 'Benzinga', 'Kiplinger', 'MarketBeat', 'NextEarningsDate.com', 'Trefis', 'TipRanks', 'Zacks Consensus Estimate (via Yahoo Finance)', 'MarketBeat', 'Motley Fool / Investing.com (provider not named)'])
+2026-08-16T14:25:05Z [consensus] HD/comp_sales: anchor=None from 0 accepted / 0 rejected ([])
+2026-08-16T14:26:27Z [consensus] ADI/revenue: anchor=3910.0 from 8 accepted / 0 rejected (['Reuters/LSEG via Investing.com', 'Benzinga', 'TipRanks', 'ChartMill', 'MarketBeat', 'Investing.com', 'EvidInvest', 'TheStreet Pro'])
+2026-08-16T14:26:27Z [consensus] ADI/adj_eps: anchor=3.34 from 9 accepted / 0 rejected (['Reuters/LSEG via Investing.com', 'Benzinga', 'TipRanks', 'ChartMill', 'MarketBeat', 'Barchart', 'Investing.com', 'EvidInvest', 'TheStreet Pro'])
+2026-08-16T14:26:27Z [consensus] ADI/adj_gross_margin: anchor=None from 0 accepted / 0 rejected ([])
+2026-08-16T14:27:29Z [consensus] HAS/net_fees: anchor=902.4 from 2 accepted / 0 rejected (['Hays plc — company-compiled analyst consensus', 'Hays plc company-compiled consensus'])
+2026-08-16T14:27:29Z [consensus] HAS/preex_eps: anchor=1.13 from 2 accepted / 0 rejected (['Hays plc — company-compiled analyst consensus', 'Hays plc company-compiled consensus'])
+2026-08-16T14:27:29Z [consensus] HAS/preex_op: anchor=45.3 from 2 accepted / 0 rejected (['Hays plc — company-compiled analyst consensus', 'Hays plc company-compiled consensus'])
+2026-08-16T14:29:24Z [consensus] DE: 2 entries from offline live-web-evidence corpus
+2026-08-16T14:29:24Z [consensus] DE/net_sales_rev: anchor=10811.7 from 5 accepted / 0 rejected (['finanzen.net', 'MarketBeat', 'Benzinga', 'Zacks Consensus Estimate (via Yahoo Finance)', 'MarketBeat'])
+2026-08-16T14:29:24Z [consensus] DE/eps: anchor=4.71 from 5 accepted / 0 rejected (['Finviz', 'finanzen.net', 'MarketBeat', 'Benzinga', 'TipRanks'])
+2026-08-16T14:29:24Z [consensus] DE/ppa_op: anchor=None from 0 accepted / 0 rejected ([])

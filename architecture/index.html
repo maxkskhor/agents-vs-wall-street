@@ -170,27 +170,37 @@
     <section>
       <h2>What the backtest measured</h2>
       <p>The corpus is frozen and dated, so the same pipeline can run "as of" the day before each past earnings report and be scored against the actual that later filings reveal. We report the <em>floor-relative miss</em> (our miss ÷ scoring floor, capped at 5.0) — the score we would receive if Wall Street were perfect, an upper bound on the real score.</p>
-      <p>We backtested 59 metric-level forecasts across the four companies — every reporting event since mid-2024 that the corpus can score. Mean floor-relative miss per route:</p>
+      <p>We backtested <strong>85 metric-level forecasts</strong> — up to 10 reporting periods per company. Mean floor-relative miss per route:</p>
       <table>
         <tr><th>Route</th><th class="num">n</th><th class="num">Mean floor-relative miss</th><th>Reading</th></tr>
-        <tr><td>LLM analyst</td><td class="num">59</td><td class="num"><span class="ok">3.55</span></td><td>Always available; best overall, and best on percent metrics</td></tr>
-        <tr><td>Guidance arithmetic</td><td class="num">30</td><td class="num">3.71</td><td>Strong where it applies; abstains on 29/59 (Deere gives no usable quarterly guidance)</td></tr>
-        <tr><td>Statistical (no LLM)</td><td class="num">52</td><td class="num">4.39</td><td>Honest baseline, and the only route that survives on Hays EPS</td></tr>
+        <tr><td>Guidance arithmetic</td><td class="num">40</td><td class="num"><span class="ok">3.79</span></td><td>Best where it applies; abstains on 45 of 85, because Deere gives no usable quarterly guidance</td></tr>
+        <tr><td>LLM analyst</td><td class="num">85</td><td class="num">3.92</td><td>Always available, so it carries the metrics no deterministic route can reach</td></tr>
+        <tr><td>Statistical (no LLM)</td><td class="num">60</td><td class="num">4.38</td><td>Honest baseline; the only route that survives on Hays EPS</td></tr>
       </table>
-      <p>We also used the backtest to settle a question we would otherwise have guessed at: <strong>is a bigger model a better analyst?</strong> Running the identical backtest with a stronger model in the analyst role scored <em>worse</em> — 3.99 against 3.55, losing the head-to-head 25–31. The cheap model stayed.</p>
 
       <h3>Corrections must earn their place</h3>
-      <p>Finding that a company's guidance has been systematically optimistic is not a reason to correct for it — the pattern may be noise. Every candidate correction is replayed chronologically, estimating the bias from earlier periods only, and is applied only if it reduced walk-forward median error and improved a majority of periods. <strong>Two of seven candidates passed:</strong></p>
+      <p>Finding that a company's guidance has been systematically optimistic is not a reason to correct for it — the pattern may be noise. Every candidate is replayed chronologically, estimating the bias from earlier periods only, and applied only if it reduced walk-forward median error and improved a majority of periods. <strong>Two of seven candidates passed:</strong></p>
       <table>
         <tr><th>Company / metric</th><th class="num">n</th><th>Outcome</th></tr>
-        <tr><td>HD comparable sales</td><td class="num">6</td><td><span class="ok">Applied</span> — walk-forward error 1.45 → 1.02pp, 67% of periods improved. Home Depot's comp guidance runs ~0.9pp optimistic.</td></tr>
-        <tr><td>ADI adjusted EPS</td><td class="num">6</td><td><span class="ok">Applied</span> — 0.17 → 0.04, 67% improved. ADI beats its own guide midpoint consistently.</td></tr>
-        <tr><td>ADI revenue, HD net sales</td><td class="num">5</td><td>Withheld — only 2 walk-forward tests, need 3</td></tr>
-        <tr><td>HD adjusted EPS</td><td class="num">4</td><td>Withheld — 1 test</td></tr>
-        <tr><td>Hays net fees, operating profit</td><td class="num">2</td><td>Withheld — annual metric, no walk-forward tests available</td></tr>
+        <tr><td>ADI revenue</td><td class="num">9</td><td><span class="ok">Applied</span> — walk-forward error 99.8 → 30.0, <strong>100%</strong> of periods improved. ADI consistently beats its own revenue guide.</td></tr>
+        <tr><td>ADI adjusted EPS</td><td class="num">10</td><td><span class="ok">Applied</span> — 0.13 → 0.04, 71% improved.</td></tr>
+        <tr><td>HD comparable sales</td><td class="num">8</td><td>Withheld — passed on 6 periods, <em>failed</em> once tested on 8. See below.</td></tr>
+        <tr><td>HD net sales, HD adjusted EPS</td><td class="num">4–5</td><td>Withheld — too few walk-forward tests</td></tr>
+        <tr><td>Hays net fees, operating profit</td><td class="num">2</td><td>Withheld — annual metric, no walk-forward tests possible</td></tr>
       </table>
-      <p>The withheld five are visible in <code>cache/calibration.json</code> with the measured bias and the reason it was not used. A bias we can see but cannot validate is reported, not applied.</p>
-      <p>One correctness fix the backtest forced: bias was originally measured relative to the <em>actual</em> but applied multiplicatively to the <em>estimate</em>, which systematically under-corrects. Signed error is now measured in the space the correction acts in — relative to the estimate for money and EPS, in percentage points for percent metrics, where a relative error is meaningless for a series that crosses zero.</p>
+      <p>The HD comparable-sales row is the one we would point a judge at. On six periods the correction looked good and pushed our forecast down to 0.27%. Extending to ten periods, it stopped clearing the gate, and the forecast returned to 1.13% — near the level company guidance implies. The gate removed a correction we had already shipped once. That is the entire argument for having it.</p>
+      <p>The five withheld candidates are in <code>cache/calibration.json</code> with their measured bias and the reason it was not used. A bias we can see but cannot validate is reported, not applied.</p>
+      <p>One correctness fix the backtest forced: bias was measured relative to the <em>actual</em> but applied multiplicatively to the <em>estimate</em>, which systematically under-corrects. Signed error is now measured in the space the correction acts in.</p>
+
+      <h3>How much would the numbers move if we had chosen differently?</h3>
+      <p>We ran the complete pipeline three times, swapping the model in the analyst role each time, and compared all twelve submitted figures:</p>
+      <table>
+        <tr><th>Spread across three models</th><th class="num">Metrics</th></tr>
+        <tr><td>Identical to the digit</td><td class="num">7 of 12</td></tr>
+        <tr><td>Under 1%</td><td class="num">9 of 12</td></tr>
+        <tr><td>Largest single move (Deere segment profit)</td><td class="num">4.2%</td></tr>
+      </table>
+      <p>Median spread across the twelve metrics is <strong>0.1%</strong>. That is the constrained-role design showing up as a measurement: where the guidance route has evidence to work with, swapping the model changes nothing at all, because the model is not the thing deciding. Every metric that does move belongs to Deere — the one company with no usable quarterly guidance, where the deterministic routes abstain and the analyst necessarily carries more weight. Our least-anchored company is also our least stable one, which is exactly the honest shape for this to have.</p>
 
       <p>Caveat, stated plainly: for quarters reported before the models' training cutoffs the LLM-analyst route may have seen the actuals; quarters reported in 2026 are the cleanest window, and the two deterministic routes are contamination-free by construction.</p>
     </section>
@@ -228,6 +238,7 @@
         <li>Extraction quality bounds everything: a guidance sentence the extractor misses is an estimate the ensemble never sees. The grounding gate stops hallucination, not omission.</li>
         <li>The consensus anchor trusts public websites found during the event; a stale or wrong consensus shifts the final number by up to β of the gap. The snapshot is cited and timestamped so judges can inspect it.</li>
         <li>Backtest samples are still small (10 reporting periods per company at most) and partially contaminated for the LLM route on pre-2026 quarters (declared above). Deeper history also spans structural breaks — Home Depot acquired SRS and GMS inside the window — so more data is not uniformly better data.</li>
+        <li>We tried to answer "is a bigger model a better analyst?" from the backtest. A first comparison favoured the cheap model, but at 31–25 on 56 rows that is p≈0.24 — indistinguishable from a coin toss, and we had initially reported it as a finding. It is not one. The cheap model is retained because it is cheaper and no worse, not because it was shown to be better.</li>
         <li>Deere's segment metric (PP&amp;A operating profit) has the thinnest guidance signal; we lean on seasonality and the analyst route there, and its answers varied the most between runs.</li>
       </ul>
       <h3>What actually went wrong today (and what it changed)</h3>

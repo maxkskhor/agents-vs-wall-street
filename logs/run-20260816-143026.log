@@ -1,0 +1,86 @@
+2026-08-16T14:30:26Z [start] run 20260816-143026 companies=['HD', 'ADI', 'HAS', 'DE'] offline=False asof=latest
+2026-08-16T14:30:26Z [retrieve] ADI: 16 results docs (2026-05-20 back to 2024-11-26)
+2026-08-16T14:30:26Z [retrieve] DE: 16 results docs (2026-05-28 back to 2025-02-13)
+2026-08-16T14:30:26Z [retrieve] HAS: 16 results docs (2026-07-10 back to 2024-04-16)
+2026-08-16T14:30:26Z [retrieve] HD: 16 results docs (2026-05-19 back to 2025-03-20)
+2026-08-16T14:30:26Z [facts] ADI: 130 grounded facts (39 rejected by grounding), series sizes ['revenue:17', 'adj_eps:17', 'adj_gross_margin:17'], 15 guidance/preannounce
+2026-08-16T14:30:26Z [facts] HAS: 114 grounded facts (29 rejected by grounding), series sizes ['net_fees:6', 'preex_eps:6', 'preex_op:6'], 42 guidance/preannounce
+2026-08-16T14:30:26Z [facts] DE: 124 grounded facts (60 rejected by grounding), series sizes ['net_sales_rev:15', 'eps:15', 'ppa_op:11'], 0 guidance/preannounce
+2026-08-16T14:30:26Z [facts] HD: 118 grounded facts (5 rejected by grounding), series sizes ['net_sales:13', 'adj_eps:13', 'comp_sales:13'], 20 guidance/preannounce
+2026-08-16T14:30:26Z [estimate] HAS/net_fees: statistical=842.8; guidance=901.1; llm_analyst=898.7; llm_analyst=898.7; llm_analyst=903.5; llm_analyst=898.7; llm_analyst=923.8
+2026-08-16T14:30:26Z [combine] HAS/net_fees: final=900.0
+2026-08-16T14:30:26Z [estimate] HAS/preex_op: statistical=22.06; guidance=46; llm_analyst=46; llm_analyst=46; llm_analyst=46; llm_analyst=46; llm_analyst=46
+2026-08-16T14:30:26Z [combine] HAS/preex_op: final=46.0
+2026-08-16T14:30:26Z [estimate] HAS/preex_eps: derived=1.053; statistical=0.5202; llm_analyst=0.96; llm_analyst=0.96; llm_analyst=0.96; llm_analyst=0.96; llm_analyst=0.74; llm_analyst=0.96; llm_analyst=0.74; llm_analyst=0.96
+2026-08-16T14:30:26Z [combine] HAS/preex_eps: final=1.1
+2026-08-16T14:30:26Z [validate] HAS [PASS] net_fees: value present: final=900.0
+2026-08-16T14:30:26Z [validate] HAS [PASS] net_fees: magnitude vs prior year: 900.0 vs prior-year 972.4 (ratio 0.93, band 0.65-1.45)
+2026-08-16T14:30:26Z [validate] HAS [PASS] net_fees: analyst-sample agreement: cross-provider spread 25.1 (2.8% of final)
+2026-08-16T14:30:26Z [validate] HAS [PASS] preex_eps: value present: final=1.1
+2026-08-16T14:30:26Z [validate] HAS [PASS] preex_eps: magnitude vs prior year: 1.1 vs prior-year 1.31 (ratio 0.84, band 0.4-1.75)
+2026-08-16T14:30:26Z [validate] HAS [WARN] preex_eps: analyst-sample agreement: cross-provider spread 0.22 (20.0% of final)
+2026-08-16T14:30:26Z [validate] HAS [PASS] preex_op: value present: final=46.0
+2026-08-16T14:30:26Z [validate] HAS [PASS] preex_op: magnitude vs prior year: 46.0 vs prior-year 45.6 (ratio 1.01, band 0.3-2.5)
+2026-08-16T14:30:26Z [validate] HAS [PASS] preex_op: analyst-sample agreement: cross-provider spread 0 (0.0% of final)
+2026-08-16T14:30:26Z [validate] HAS [PASS] HAS: preex_op/net_fees conversion ratio: ratio 0.051, history-derived band 0.022-0.228
+2026-08-16T14:30:26Z [validate] HAS [PASS] red-team review: no objections (openai)
+2026-08-16T14:30:26Z [workbook] HAS: wrote /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/HAS-FY2026.xlsx
+2026-08-16T14:30:26Z [done] HAS: Net fees=900.0, Pre-exceptional basic EPS=1.1, Pre-exceptional operating profit=46.0
+2026-08-16T14:30:26Z [estimate] ADI/revenue: statistical=3691; guidance=3900; llm_analyst=4009; llm_analyst=4009; llm_analyst=4009; llm_analyst=4009; llm_analyst=4009
+2026-08-16T14:30:26Z [combine] ADI/revenue: final=3970.0
+2026-08-16T14:30:26Z [estimate] ADI/adj_gross_margin: statistical=71.35; llm_analyst=73.1; llm_analyst=73.2; llm_analyst=72.8; llm_analyst=73.1; llm_analyst=73; llm_analyst=73.4; llm_analyst=73.2; llm_analyst=73.5
+2026-08-16T14:30:26Z [combine] ADI/adj_gross_margin: final=73.15
+2026-08-16T14:30:26Z [estimate] ADI/adj_eps: statistical=2.934; guidance=3.3; llm_analyst=3.498; llm_analyst=3.5; llm_analyst=3.498; llm_analyst=3.498; llm_analyst=3.498
+2026-08-16T14:30:26Z [combine] ADI/adj_eps: final=3.43
+2026-08-16T14:30:26Z [estimate] DE/net_sales_rev: statistical=1.298e+04; llm_analyst=1.298e+04; llm_analyst=1.298e+04; llm_analyst=1.308e+04; llm_analyst=1.262e+04; llm_analyst=1.287e+04; llm_analyst=1.298e+04; llm_analyst=1.298e+04; llm_analyst=1.298e+04
+2026-08-16T14:30:26Z [combine] DE/net_sales_rev: final=12980.0
+2026-08-16T14:30:26Z [estimate] DE/ppa_op: statistical=289.5; llm_analyst=405; llm_analyst=330; llm_analyst=330; llm_analyst=356; llm_analyst=330; llm_analyst=330; llm_analyst=330; llm_analyst=330
+2026-08-16T14:30:26Z [combine] DE/ppa_op: final=330.0
+2026-08-16T14:30:26Z [estimate] HD/net_sales: statistical=4.7e+04; guidance=4.668e+04; llm_analyst=4.686e+04; llm_analyst=4.686e+04; llm_analyst=4.731e+04; llm_analyst=4.686e+04; llm_analyst=4.745e+04
+2026-08-16T14:30:26Z [combine] HD/net_sales: final=46935.0
+2026-08-16T14:30:26Z [estimate] DE/eps: statistical=3.853; llm_analyst=4.34; llm_analyst=4.66; llm_analyst=4.34; llm_analyst=4.46; llm_analyst=4.48; llm_analyst=4.48; llm_analyst=4.34; llm_analyst=4.48
+2026-08-16T14:30:26Z [combine] DE/eps: final=4.61
+2026-08-16T14:30:26Z [estimate] HD/comp_sales: statistical=2.2; guidance=1.133; llm_analyst=1; llm_analyst=1; llm_analyst=1; llm_analyst=1; llm_analyst=1
+2026-08-16T14:30:26Z [combine] HD/comp_sales: final=1.13
+2026-08-16T14:30:26Z [validate] DE [PASS] net_sales_rev: value present: final=12980.0
+2026-08-16T14:30:26Z [validate] DE [PASS] net_sales_rev: magnitude vs prior year: 12980.0 vs prior-year 12018.0 (ratio 1.08, band 0.65-1.45)
+2026-08-16T14:30:26Z [validate] DE [PASS] net_sales_rev: analyst-sample agreement: cross-provider spread 467 (3.6% of final)
+2026-08-16T14:30:26Z [validate] DE [PASS] eps: value present: final=4.61
+2026-08-16T14:30:26Z [validate] DE [PASS] eps: magnitude vs prior year: 4.61 vs prior-year 4.75 (ratio 0.97, band 0.4-1.75)
+2026-08-16T14:30:26Z [validate] DE [PASS] eps: analyst-sample agreement: cross-provider spread 0.32 (6.9% of final)
+2026-08-16T14:30:26Z [validate] DE [PASS] ppa_op: value present: final=330.0
+2026-08-16T14:30:26Z [validate] DE [PASS] ppa_op: magnitude vs prior year: 330.0 vs prior-year 580.0 (ratio 0.57, band 0.3-2.5)
+2026-08-16T14:30:26Z [validate] DE [WARN] ppa_op: analyst-sample agreement: cross-provider spread 75 (22.7% of final)
+2026-08-16T14:30:26Z [validate] DE [PASS] DE: ppa_op/net_sales_rev conversion ratio: ratio 0.025, history-derived band 0.007-0.147
+2026-08-16T14:30:26Z [validate] DE [PASS] red-team review: no objections (openai)
+2026-08-16T14:30:26Z [estimate] HD/adj_eps: statistical=4.57; guidance=4.858; llm_analyst=4.56; llm_analyst=4.55; llm_analyst=4.56; llm_analyst=4.67; llm_analyst=4.63
+2026-08-16T14:30:26Z [combine] HD/adj_eps: final=4.63
+2026-08-16T14:30:26Z [workbook] DE: wrote /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/DE-FY2026Q3.xlsx
+2026-08-16T14:30:26Z [done] DE: Worldwide net sales and revenues=12980.0, Diluted EPS (GAAP)=4.61, Production & Precision Ag operating profit=330.0
+2026-08-16T14:30:27Z [validate] ADI [PASS] revenue: value present: final=3970.0
+2026-08-16T14:30:27Z [validate] ADI [PASS] revenue: magnitude vs prior year: 3970.0 vs prior-year 2880.348 (ratio 1.38, band 0.65-1.45)
+2026-08-16T14:30:27Z [validate] ADI [PASS] revenue: analyst-sample agreement: cross-provider spread 0 (0.0% of final)
+2026-08-16T14:30:27Z [validate] ADI [PASS] adj_eps: value present: final=3.43
+2026-08-16T14:30:27Z [validate] ADI [PASS] adj_eps: magnitude vs prior year: 3.43 vs prior-year 2.05 (ratio 1.67, band 0.4-1.75)
+2026-08-16T14:30:27Z [validate] ADI [PASS] adj_eps: analyst-sample agreement: cross-provider spread 0.002 (0.1% of final)
+2026-08-16T14:30:27Z [validate] ADI [PASS] adj_gross_margin: value present: final=73.15
+2026-08-16T14:30:27Z [validate] ADI [PASS] adj_gross_margin: plausibility vs prior year: 73.15pp vs prior-year 69.2pp (max delta 6.0pp)
+2026-08-16T14:30:27Z [validate] ADI [PASS] adj_gross_margin: analyst-sample agreement: cross-provider spread 0.7 (1.0% of final)
+2026-08-16T14:30:27Z [validate] ADI [PASS] ADI: gross margin absolute range: adjusted gross margin 73.15% must be a percentage level (55-80)
+2026-08-16T14:30:27Z [validate] ADI [PASS] red-team review: no objections (openai)
+2026-08-16T14:30:28Z [workbook] ADI: wrote /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/ADI-FY2026Q3.xlsx
+2026-08-16T14:30:28Z [done] ADI: Revenue=3970.0, Adjusted diluted EPS=3.43, Adjusted gross margin=73.15
+2026-08-16T14:30:28Z [validate] HD [PASS] net_sales: value present: final=46935.0
+2026-08-16T14:30:28Z [validate] HD [PASS] net_sales: magnitude vs prior year: 46935.0 vs prior-year 45277.0 (ratio 1.04, band 0.65-1.45)
+2026-08-16T14:30:28Z [validate] HD [PASS] net_sales: analyst-sample agreement: cross-provider spread 589 (1.3% of final)
+2026-08-16T14:30:28Z [validate] HD [PASS] adj_eps: value present: final=4.63
+2026-08-16T14:30:28Z [validate] HD [PASS] adj_eps: magnitude vs prior year: 4.63 vs prior-year 4.68 (ratio 0.99, band 0.4-1.75)
+2026-08-16T14:30:28Z [validate] HD [PASS] adj_eps: analyst-sample agreement: cross-provider spread 0.12 (2.6% of final)
+2026-08-16T14:30:28Z [validate] HD [PASS] comp_sales: value present: final=1.13
+2026-08-16T14:30:28Z [validate] HD [PASS] comp_sales: plausibility vs prior year: 1.13pp vs prior-year 1.0pp (max delta 6.0pp)
+2026-08-16T14:30:28Z [validate] HD [PASS] comp_sales: analyst-sample agreement: cross-provider spread 0 (0.0% of final)
+2026-08-16T14:30:28Z [validate] HD [PASS] HD: net sales growth vs comp sales: sales growth 3.7pp vs comps 1.1pp (gap covers new stores/FX/53rd week; limit 8pp)
+2026-08-16T14:30:28Z [validate] HD [PASS] red-team: No unit or scale errors identified in the forecasts.: No unit or scale errors identified in the forecasts.
+2026-08-16T14:30:28Z [workbook] HD: wrote /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/HD-FY2026Q2.xlsx
+2026-08-16T14:30:28Z [done] HD: Net sales=46935.0, Adjusted diluted EPS=4.63, Comparable sales, total company=1.13
+2026-08-16T14:30:28Z [end] all workbooks written to /Users/maxkhor/workarea/projects/agents-vs-wall-street/submission/

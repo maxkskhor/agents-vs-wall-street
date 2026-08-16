@@ -1,164 +1,141 @@
 {
- "fetched_at": "2026-08-16T12:57:48.516412+00:00",
+ "fetched_at": "2026-08-16T14:26:27.749354+00:00",
  "period": "FY2026Q3",
  "gated_on_date": "2026-08-16",
  "revenue": {
-  "value": 3920,
+  "value": 3910.0,
   "sources": [
    {
-    "source": "Zacks (article: \"Analog Devices (ADI) Ascends While Market Falls: Some Facts to Note\")",
-    "value": 3930,
-    "basis": "quarterly adjusted",
-    "as_of": "2026-06-25",
-    "url": "https://www.zacks.com/stock/news/2943258/analog-devices-adi-ascends-while-market-falls-some-facts-to-note"
+    "source": "Reuters/LSEG via Investing.com",
+    "value": 3620,
+    "basis": "unclear",
+    "as_of": "2026-05-20",
+    "url": "https://www.investing.com/news/stock-market-news/chipmaker-analog-devices-forecasts-thirdquarter-revenue-above-estimates-amid-ai-boom-4701086"
    },
    {
-    "source": "Benzinga earnings page (compiling analyst estimates)",
+    "source": "Benzinga",
     "value": 3910,
-    "basis": "quarterly adjusted",
-    "as_of": "2026-07-15",
+    "basis": "unclear",
+    "as_of": "2026-08-16",
     "url": "https://www.benzinga.com/quote/adi/earnings"
-   },
-   {
-    "source": "Yahoo Finance (article: \"Analog Devices (ADI) Stock Dips While Market Gains: Key Facts\")",
-    "value": 3920,
-    "basis": "quarterly adjusted",
-    "as_of": "2026-07-28",
-    "url": "https://finance.yahoo.com/markets/stocks/articles/analog-devices-adi-stock-dips-220003755.html"
    },
    {
     "source": "TipRanks",
     "value": 3910,
-    "basis": "quarterly adjusted (sell-side consensus for next quarter\u2019s sales)",
-    "as_of": "2026-07-28",
+    "basis": "unclear",
+    "as_of": "2026-08-16",
     "url": "https://www.tipranks.com/stocks/adi/forecast"
    },
    {
-    "source": "Zacks (article: \"Analog Devices, Inc. (ADI) is Attracting Investor Attention: Here is What You Should Know\")",
-    "value": 3920,
-    "basis": "quarterly adjusted (consensus sales estimate for current quarter, i.e., upcoming FY2026 Q3)",
-    "as_of": "2026-07-30",
-    "url": "https://www.zacks.com/stock/news/2964242/analog-devices-inc-adi-is-attracting-investor-attention-here-is-what-you-should-know"
-   }
-  ],
-  "rejected": [
-   {
-    "source": "Barchart",
-    "value": null,
-    "basis": "unclear (EPS-only consensus; no revenue detail for current quarter)",
-    "as_of": "2026-07-28",
-    "url": "https://www.barchart.com/stocks/quotes/ADI",
-    "reason": "no numeric value"
+    "source": "ChartMill",
+    "value": 3957,
+    "basis": "unclear",
+    "as_of": "2026-08-16",
+    "url": "https://www.chartmill.com/stock/quote/ADI/analyst-ratings"
    },
    {
-    "source": "StockAnalysis",
-    "value": null,
-    "basis": "unclear (page summarizes historical and FY data; no explicit next-quarter revenue consensus found)",
-    "as_of": "2026-07-28",
-    "url": "https://stockanalysis.com/stocks/adi/",
-    "reason": "no numeric value"
+    "source": "MarketBeat",
+    "value": 3600,
+    "basis": "unclear",
+    "as_of": "2026-08-16",
+    "url": "https://www.marketbeat.com/stocks/NASDAQ/ADI/earnings/"
    },
    {
-    "source": "Benzinga earnings estimates page",
+    "source": "Investing.com",
     "value": 3910,
-    "basis": "quarterly (basis for revenue not explicitly labeled GAAP vs adjusted; treated as total quarterly revenue consensus)",
-    "as_of": "2026-07-? (page last crawled July 2026, exact publication date for the estimate not clearly stated)",
-    "url": "https://www.benzinga.com/quote/adi/earnings",
-    "reason": "unparsable as_of '2026-07-? (page last crawled July 2026, exact publication date for the estimate not clearly stated)'"
+    "basis": "quarterly adjusted",
+    "as_of": "2026-08-16",
+    "url": "https://www.investing.com/equities/analog-devices-earnings"
+   },
+   {
+    "source": "EvidInvest",
+    "value": 3910,
+    "basis": "quarterly GAAP",
+    "as_of": "2026-08-16",
+    "url": "https://evidinvest.com/earnings/ADI"
+   },
+   {
+    "source": "TheStreet Pro",
+    "value": 3910,
+    "basis": "quarterly GAAP",
+    "as_of": "2026-08-16",
+    "url": "https://pro.thestreet.com/earnings/2026-08-19"
    }
   ],
-  "corroboration": 5,
+  "rejected": [],
+  "corroboration": 8,
   "usable": true,
   "why": "median of agreeing sources"
  },
  "adj_eps": {
-  "value": 3.33,
+  "value": 3.34,
   "sources": [
    {
-    "source": "Zacks (article: \"Analog Devices (ADI) Ascends While Market Falls: Some Facts to Note\")",
-    "value": 3.32,
+    "source": "Reuters/LSEG via Investing.com",
+    "value": 3.0,
     "basis": "quarterly adjusted",
-    "as_of": "2026-06-25",
-    "url": "https://www.zacks.com/stock/news/2943258/analog-devices-adi-ascends-while-market-falls-some-facts-to-note"
+    "as_of": "2026-05-20",
+    "url": "https://www.investing.com/news/stock-market-news/chipmaker-analog-devices-forecasts-thirdquarter-revenue-above-estimates-amid-ai-boom-4701086"
    },
    {
-    "source": "Benzinga earnings page (compiling analyst estimates)",
+    "source": "Benzinga",
     "value": 3.32,
     "basis": "quarterly adjusted",
-    "as_of": "2026-07-15",
+    "as_of": "2026-08-16",
     "url": "https://www.benzinga.com/quote/adi/earnings"
-   },
-   {
-    "source": "TipRanks (ADI stock page, next quarter earnings estimate)",
-    "value": 3.34,
-    "basis": "quarterly adjusted",
-    "as_of": "2026-07-25",
-    "url": "https://www.tipranks.com/stocks/adi"
    },
    {
     "source": "TipRanks",
     "value": 3.34,
-    "basis": "quarterly adjusted EPS (Wall Street consensus for next quarter)",
-    "as_of": "2026-07-28",
-    "url": "https://www.tipranks.com/stocks/adi/forecast"
+    "basis": "quarterly adjusted",
+    "as_of": "2026-08-16",
+    "url": "https://www.tipranks.com/stocks/adi/earnings"
+   },
+   {
+    "source": "ChartMill",
+    "value": 3.37,
+    "basis": "quarterly adjusted",
+    "as_of": "2026-08-16",
+    "url": "https://www.chartmill.com/stock/quote/ADI/analyst-ratings"
+   },
+   {
+    "source": "MarketBeat",
+    "value": 2.91,
+    "basis": "quarterly adjusted",
+    "as_of": "2026-08-16",
+    "url": "https://www.marketbeat.com/stocks/NASDAQ/ADI/earnings/"
    },
    {
     "source": "Barchart",
     "value": 3.33,
-    "basis": "quarterly adjusted EPS (current quarter consensus)",
-    "as_of": "2026-07-28",
-    "url": "https://www.barchart.com/stocks/quotes/ADI"
+    "basis": "quarterly adjusted",
+    "as_of": "2026-07-24",
+    "url": "https://www.barchart.com/stocks/quotes/ADI/earnings-estimates"
    },
    {
-    "source": "TipRanks (embedded on Nasdaq / brokers)",
+    "source": "Investing.com",
     "value": 3.34,
-    "basis": "quarterly adjusted EPS (next quarter estimate, same data backbone as standalone TipRanks)",
-    "as_of": "2026-07-28",
-    "url": "https://www.tipranks.com/stocks/adi"
+    "basis": "unclear",
+    "as_of": "2026-08-16",
+    "url": "https://www.investing.com/equities/analog-devices-earnings"
    },
    {
-    "source": "Zacks (article: \"Analog Devices, Inc. (ADI) is Attracting Investor Attention: Here is What You Should Know\")",
-    "value": 3.33,
-    "basis": "quarterly adjusted (non\u2011GAAP) EPS consensus for current quarter",
-    "as_of": "2026-07-30",
-    "url": "https://www.zacks.com/stock/news/2964242/analog-devices-inc-adi-is-attracting-investor-attention-here-is-what-you-should-know"
+    "source": "EvidInvest",
+    "value": 3.34,
+    "basis": "unclear",
+    "as_of": "2026-08-16",
+    "url": "https://evidinvest.com/earnings/ADI"
+   },
+   {
+    "source": "TheStreet Pro",
+    "value": 3.34,
+    "basis": "unclear",
+    "as_of": "2026-08-16",
+    "url": "https://pro.thestreet.com/earnings/2026-08-19"
    }
   ],
-  "rejected": [
-   {
-    "source": "Investing.com (contextual; prior-article consensus for Q3 FY26 EPS)",
-    "value": 3.0,
-    "basis": "quarterly adjusted EPS (analyst consensus cited versus company guidance range)",
-    "as_of": "2026-05-20",
-    "url": "https://ca.investing.com/news/earnings/analog-devices-earnings-beat-by-019-revenue-topped-estimates-4650748",
-    "reason": "company guidance, not a Street estimate"
-   },
-   {
-    "source": "Barchart earnings estimates page",
-    "value": 3.33,
-    "basis": "quarterly EPS (treated as adjusted consensus for current quarter; Barchart does not explicitly label GAAP vs non\u2011GAAP, but its consensus generally follows Street \u2018adjusted EPS\u2019)",
-    "as_of": "2026-08-? (page snapshot crawled early August 2026, exact calc date not stated; must be on or before 2026-08-16)",
-    "url": "https://www.barchart.com/stocks/quotes/ADI/earnings-estimates",
-    "reason": "unparsable as_of '2026-08-? (page snapshot crawled early August 2026, exact calc date not stated; must be on or before 2026-08-16)'"
-   },
-   {
-    "source": "Benzinga earnings estimates page",
-    "value": 3.32,
-    "basis": "quarterly EPS (treated as adjusted/non\u2011GAAP consensus; GAAP vs non\u2011GAAP not explicitly specified)",
-    "as_of": "2026-07-? (page last crawled July 2026, exact publication date for the estimate not clearly stated)",
-    "url": "https://www.benzinga.com/quote/adi/earnings",
-    "reason": "unparsable as_of '2026-07-? (page last crawled July 2026, exact publication date for the estimate not clearly stated)'"
-   },
-   {
-    "source": "TipRanks forecasts page",
-    "value": 3.34,
-    "basis": "quarterly EPS (TipRanks next\u2011quarter EPS estimate; basis GAAP vs adjusted not stated, so treated as \"unclear\" in strict definitional terms)",
-    "as_of": "2026-08-? (page crawled in early August 2026)",
-    "url": "https://www.tipranks.com/stocks/adi/forecast",
-    "reason": "unparsable as_of '2026-08-? (page crawled in early August 2026)'"
-   }
-  ],
-  "corroboration": 7,
+  "rejected": [],
+  "corroboration": 9,
   "usable": true,
   "why": "median of agreeing sources"
  },
