@@ -37,6 +37,16 @@ Each run writes timestamped logs to `logs/` and per-company artifacts
 evidence. `--offline` skips the live consensus lookup; `--company HD` runs one
 company.
 
+### Final-run checklist (17:15)
+
+1. `git add -A && git commit` — record the final commit hash in `entry.json`.
+2. `.venv/bin/python -m agent consensus --all` — refresh the public consensus snapshot.
+3. `.venv/bin/python -m agent run --all` — the clear run; log lands in `logs/`.
+4. Read each `runs/<run-id>/<CO>/audit.md`; check validation tables are all PASS.
+5. `npm run check:submission`.
+6. From 17:30, upload the four workbooks manually to OpenStocks, and submit
+   `entry.json` + `architecture/index.html` through the private form.
+
 ---
 
 # The challenge

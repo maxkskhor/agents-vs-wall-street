@@ -7,3 +7,17 @@
 2026-08-16T12:02:41Z [extract] HD 2024-03-13__hd-us-20240313-fy-10k__778665.md: 0 facts, 0 rejected
 2026-08-16T12:02:43Z [extract] HD 2024-08-13__hd-us-20240813-q2-8k__101849.md: 10 facts, 0 rejected
 2026-08-16T12:02:44Z [extract] HD 2024-05-14__hd-us-20240514-q1-8k__101830.md: 5 facts, 0 rejected
+2026-08-16T12:02:49Z [extract] HD 2024-05-14__hd-us-20240514-q1-10q__101821.md: 7 facts, 0 rejected
+2026-08-16T12:02:49Z [backtest] HD: targets ['FY2026Q1', 'FY2025Q4', 'FY2025Q3', 'FY2025Q2']
+2026-08-16T12:02:55Z [backtest] HD FY2026Q1 net_sales: actual=41765.0 statistical=4.139e+04(miss 376) guidance=4.125e+04(miss 514) llm_analyst=4.125e+04(miss 514)
+2026-08-16T12:03:02Z [backtest] HD FY2026Q1 adj_eps: actual=3.43 statistical=3.488(miss 0.0578) guidance=3.631(miss 0.201) llm_analyst=3.62(miss 0.19)
+2026-08-16T12:03:06Z [backtest] HD FY2026Q1 comp_sales: actual=0.6 statistical=1.7(miss 1.1) guidance=1(miss 0.4) llm_analyst=1.4(miss 0.8)
+2026-08-16T12:03:10Z [backtest] HD FY2025Q4 net_sales: actual=38198.0 statistical=4.254e+04(miss 4.35e+03) guidance=3.781e+04(miss 384) llm_analyst=4.085e+04(miss 2.65e+03)
+2026-08-16T12:03:14Z [backtest] HD FY2025Q4 adj_eps: actual=2.72 statistical=3.117(miss 0.397) guidance=2.507(miss 0.213) llm_analyst=2.93(miss 0.21)
+2026-08-16T12:03:19Z [backtest] HD FY2025Q4 comp_sales: actual=0.4 statistical=2.8(miss 2.4) guidance=3.1(miss 2.7) llm_analyst=1.1(miss 0.7)
+2026-08-16T12:03:23Z [backtest] HD FY2025Q3 net_sales: actual=41352.0 statistical=4.345e+04(miss 2.1e+03) guidance=3.968e+04(miss 1.68e+03) llm_analyst=4.207e+04(miss 715)
+2026-08-16T12:03:28Z [backtest] HD FY2025Q3 adj_eps: actual=3.74 statistical=3.75(miss 0.00968) guidance=3.668(miss 0.0721) llm_analyst=3.68(miss 0.06)
+2026-08-16T12:03:32Z [backtest] HD FY2025Q3 comp_sales: actual=0.2 statistical=0.8(miss 0.6) guidance=1.65(miss 1.45) llm_analyst=1.3(miss 1.1)
+2026-08-16T12:03:37Z [backtest] HD FY2025Q2 net_sales: actual=45277.0 statistical=4.665e+04(miss 1.37e+03) guidance=4.354e+04(miss 1.74e+03) llm_analyst=4.406e+04(miss 1.22e+03)
+2026-08-16T12:03:40Z [backtest] HD FY2025Q2 adj_eps: actual=4.68 statistical=4.623(miss 0.0574) guidance=4.591(miss 0.0886) llm_analyst=4.58(miss 0.1)
+2026-08-16T12:03:44Z [backtest] HD FY2025Q2 comp_sales: actual=1.0 statistical=-1.6(miss 2.6) guidance=1.433(miss 0.433) llm_analyst=0.9(miss 0.1)
