@@ -129,11 +129,13 @@ def validate(company: Company, target: str, finals: dict[str, float],
     return rep
 
 
-_RED_SYSTEM = """You are a hostile reviewer hunting for unit mistakes and impossible numbers in
-an earnings forecast. Respond with JSON only:
-{"objections": [{"severity": "blocking"|"note", "issue": "..."}]}
-"blocking" is ONLY for wrong units/scale (e.g. billions vs millions, pounds vs
-pence, fraction vs percentage points) or numbers impossible given history."""
+_RED_SYSTEM = """You are a hostile reviewer hunting for unit mistakes in an earnings forecast.
+Respond with JSON only:
+{"objections": [{"unit_error": true|false, "issue": "..."}]}
+unit_error is true ONLY for a wrong unit or scale in the FORECAST itself:
+billions vs millions, pounds vs pence, fraction vs percentage points, or a
+forecast magnitude impossible for the metric. Plausibility opinions, sequential
+trends and tiny rounding differences in the history are unit_error false."""
 
 
 def _red_team(company: Company, target: str, finals: dict[str, float],
@@ -153,11 +155,10 @@ Proposed final forecasts: {finals}
 
 List objections.""", max_tokens=1200)
         objections = resp.get("objections", [])
-        blocking = [o for o in objections if o.get("severity") == "blocking"]
         for o in objections:
+            is_unit = bool(o.get("unit_error"))
             rep.add(f"red-team: {o.get('issue', '?')[:70]}",
-                    o.get("severity") != "blocking", str(o.get("issue")),
-                    warn_only=o.get("severity") != "blocking")
+                    not is_unit, str(o.get("issue")), warn_only=not is_unit)
         if not objections:
             rep.add("red-team review", True, f"no objections ({provider})")
     except llm.LLMError as e:

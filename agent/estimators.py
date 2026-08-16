@@ -262,6 +262,27 @@ def _fy_catchup_percent(series: Series, target: str, level_mid: float) -> dict |
 
 # --------------------------------------------------------------- llm analyst
 
+def _backtest_bias_note(company: Company, metric: Metric) -> str:
+    """Empirical finding from our own time-travel backtest, stated to the
+    analyst as evidence (e.g. ADI's actuals beat its guide midpoint ~3.5%)."""
+    import json as _json
+    from .config import CACHE
+    p = CACHE / "calibration.json"
+    if not p.exists():
+        return ""
+    bias = _json.loads(p.read_text()).get("guidance_bias", {}).get(
+        f"{company.short}/{metric.key}")
+    if not bias or bias.get("n", 0) < 3:
+        return ""
+    b = bias["mean_signed"]
+    unit = "percentage points" if metric.kind == "percent" else "relative"
+    return (f"Backtest finding (our own time-travel evaluation over {bias['n']} past "
+            f"periods): this company's reported {metric.label} differed from a "
+            f"guidance-anchored estimate by {b:+.3f} ({unit}) on average — i.e. it "
+            f"{'beat' if b > 0 else 'missed'} guidance-based expectations. Weigh this "
+            f"pattern when sizing adjustments.")
+
+
 _ANALYST_SYSTEM = """You are a sell-side equity analyst. You never state a final forecast directly.
 You propose (1) a base figure copied from the evidence table and (2) a short
 list of itemised adjustments, each with a magnitude and a reason grounded in
@@ -287,6 +308,9 @@ def llm_analyst(company: Company, metric: Metric, series: Series,
     if extra_evidence:
         gtxt += ("\n\nRecent outlook excerpts from the newest filings "
                  "(verbatim, may cover other metrics):\n" + extra_evidence)
+    bias = _backtest_bias_note(company, metric)
+    if bias:
+        gtxt += "\n\n" + bias
     ctxt = ""
     if consensus and consensus.get(metric.key):
         c = consensus[metric.key]

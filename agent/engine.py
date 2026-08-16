@@ -48,7 +48,9 @@ def combine(company: Company, metric: Metric, estimates: list[Estimate],
     cal = load_calibration()
     weights = dict(DEFAULT_WEIGHTS)
     grid = cal.get("weights", {}).get(metric.kind, {})
-    if grid:
+    # a grid whose own backtest score is ~capped found nothing better than
+    # noise — keep the priors in that case (bit us on EPS: n=14, score 4.2)
+    if grid and grid.get("backtest_score", 5.0) <= 4.0:
         # backtest samples are small (n<=18), so shrink the grid-searched
         # weights halfway toward the priors instead of trusting them outright
         for m in weights:
@@ -108,10 +110,13 @@ def combine(company: Company, metric: Metric, estimates: list[Estimate],
 
     final = ensemble
     if consensus_value is not None:
-        final = consensus_value + CONSENSUS_BETA * (ensemble - consensus_value)
+        # deviate less from the benchmark when our strongest evidence route
+        # (guidance/pre-announcement arithmetic) had nothing to say
+        beta = CONSENSUS_BETA if "guidance" in by_method else 0.4
+        final = consensus_value + beta * (ensemble - consensus_value)
         lineage["consensus_blend"] = {
-            "consensus": consensus_value, "beta": CONSENSUS_BETA,
-            "formula": f"consensus + {CONSENSUS_BETA} x (ensemble - consensus)",
+            "consensus": consensus_value, "beta": beta,
+            "formula": f"consensus + {beta} x (ensemble - consensus)",
             "value": final}
 
     final = _round(metric, final)
