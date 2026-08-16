@@ -47,7 +47,40 @@ def combine(company: Company, metric: Metric, estimates: list[Estimate],
             consensus_value: float | None) -> tuple[float, dict]:
     cal = load_calibration()
     weights = dict(DEFAULT_WEIGHTS)
-    weights.update(cal.get("weights", {}).get(metric.kind, {}))
+    grid = cal.get("weights", {}).get(metric.kind, {})
+    if grid:
+        # backtest samples are small (n<=18), so shrink the grid-searched
+        # weights halfway toward the priors instead of trusting them outright
+        for m in weights:
+            weights[m] = round(0.5 * weights[m] + 0.5 * grid.get(m, weights[m]), 3)
+
+    # empirical guidance bias: e.g. ADI has beaten its revenue-guide midpoint
+    # by ~3.5% on average — correct the guidance estimate by the backtested
+    # mean signed error when it is measured on 3+ quarters, capped for safety
+    bias_all = cal.get("guidance_bias", {})
+    bias = bias_all.get(f"{company.short}/{metric.key}")
+    bias_applied = None
+    if bias and bias.get("n", 0) >= 3:
+        b = bias["mean_signed"]
+        if metric.kind == "percent":
+            b = max(-1.5, min(1.5, b))
+            if abs(b) >= 0.5:
+                bias_applied = b
+        else:
+            b = max(-0.04, min(0.04, b))
+            if abs(b) >= 0.01:
+                bias_applied = b
+    if bias_applied is not None:
+        for e in estimates:
+            if e.method == "guidance":
+                before = e.value
+                e.value = (e.value + bias_applied if metric.kind == "percent"
+                           else e.value * (1 + bias_applied))
+                e.inputs["bias_correction"] = {
+                    "before": before, "mean_signed": bias["mean_signed"],
+                    "applied": bias_applied, "n": bias["n"],
+                    "why": "backtested mean signed error of guidance-anchored "
+                           "estimates vs actuals for this company/metric"}
 
     by_method: dict[str, float] = {}
     lineage: dict = {"methods": {}, "weights": weights}
