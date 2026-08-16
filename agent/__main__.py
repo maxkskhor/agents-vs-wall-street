@@ -106,7 +106,9 @@ def main() -> int:
 
     p = sub.add_parser("backtest", help="time-travel evaluation on past quarters")
     p.add_argument("--company", help="default: all four")
-    p.add_argument("--quarters", type=int, default=4)
+    p.add_argument("--quarters", type=int, default=10,
+                   help="reporting periods per company (default matches "
+                        "the committed calibration)")
     p.add_argument("--tag", default="",
                    help="suffix for output files, so runs can go in parallel")
     p.set_defaults(func=cmd_backtest)

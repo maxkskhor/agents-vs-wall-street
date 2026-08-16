@@ -115,7 +115,8 @@ def run_backtest(company_short: str | None, quarters: int = 4,
     weights = _calibrate(rows)
     bias = _guidance_bias(rows)
     CACHE.mkdir(exist_ok=True)
-    (CACHE / f"calibration{tag}.json").write_text(json.dumps(
+    out_path = CACHE / f"calibration{tag}.json"
+    out_path.write_text(json.dumps(
         {"weights": weights, "guidance_bias": bias,
          "generated": dt.datetime.now(dt.timezone.utc).isoformat(),
          "n_rows": len(rows)}, indent=1))

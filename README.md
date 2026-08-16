@@ -18,8 +18,9 @@ cp .env.example .env   # then fill in ANTHROPIC_API_KEY and OPENAI_API_KEY
 # fetch public consensus anchors (optional, cached to research/)
 .venv/bin/python -m agent consensus --all
 
-# time-travel backtest on past quarters -> cache/calibration.json + research/backtest-report.md
-.venv/bin/python -m agent backtest
+# time-travel backtest -> cache/calibration.json + research/backtest-report.md
+# (10 periods per company; this is what the committed calibration was built from)
+.venv/bin/python -m agent backtest --quarters 10
 
 # FINAL COMMAND: research, forecast, validate and write all four workbooks
 .venv/bin/python -m agent run --all
