@@ -21,7 +21,7 @@ from .config import CACHE, Company
 from .corpus import Doc
 from .runlog import RunLog
 
-PROMPT_VERSION = "v6"
+PROMPT_VERSION = "v7"
 
 MAX_DOC_CHARS = 110_000
 
@@ -126,6 +126,8 @@ _NUM_RE = re.compile(r"-?\d[\d,]*\.?\d*")
 
 def _norm_ws(s: str) -> str:
     s = s.replace("&amp;", "&").replace("&nbsp;", " ")
+    s = s.replace("(", " ").replace(")", " ")   # "(before exceptional items)"
+    s = re.sub(r"(?<=\d)[ \u00a0]+(?=[\d.])", "", s)   # OCR split digits: "4 3.5"
     s = re.sub(r"\s*-\s*", "-", s)      # OCR drift: "pre -exceptional"
     return re.sub(r"[\s\u00a0]+", " ", s).strip().lower()
 
@@ -193,6 +195,7 @@ def _ground(fact: dict, text: str, metric) -> str | None:
     label = metric.label.lower()
     if label.startswith(("adjusted", "pre-exceptional")):
         if not any(q in blob for q in ("adjust", "pre-exception", "pre exception",
+                                       "before exception", "excluding exception",
                                        "non-gaap", "non gaap")):
             return "quote lacks adjusted/pre-exceptional qualifier (attribution)"
     return None

@@ -100,10 +100,11 @@ def _pick_guidance(metric: Metric, gfacts: list[Fact], target: str,
         return (
             plausible(f),
             f.period == target,                          # exact period beats FY
+            f.published,
             f.fact_type == "preannounce",
+            f.value is not None,     # "top of range" point beats the raw range
             (not wants_adj) or ("adjust" in f.quote.lower()
                                 or "pre-exceptional" in f.quote.lower()),
-            f.published,
         )
     best = max(cands, key=score)
     return best if plausible(best) else None
