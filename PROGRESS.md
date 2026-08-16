@@ -1,7 +1,26 @@
 # Glasshouse — build progress (live)
 
-Last updated: 2026-08-16 13:20 BST. This branch mirrors the working tree so the
-team can review in real time. Ask in the group chat before editing shared files.
+Last updated: 2026-08-16 13:35 BST, Team MYS. This branch mirrors the working
+tree so the team can review in real time.
+
+## ⚠️ Three things the team must decide (not decidable by one person)
+
+1. **Two implementations now exist in this repo.** The Codex/Node track
+   (`scripts/run-forecast-agent.mjs`, `npm run forecast`) and the Python track
+   (`agent/`, `python -m agent run --all`). `entry.json` declares ONE
+   `finalCommand`, and the architecture HTML must describe the system that
+   actually produced the submitted numbers. Pick one before 17:15. The HTML
+   currently describes the Python track.
+2. **Team name is inconsistent in the repo**: `architecture/index.html` said
+   "Team MYR", README says "Team MYS". Max confirmed **Team MYS** — applied to
+   the HTML in this PR. Fix anywhere else it appears.
+3. **Run-log timestamps predate the official start.** `logs/run-2026-08-16T09-49-*.jsonl`
+   are ~09:49 UTC = ~10:49 London, before the 11:15 "building starts" line in
+   SCHEDULE.md (flagged by the PM handoff note too). RULES.md treats
+   competition-specific work built before the start as a disqualification risk
+   for *all* prizes. Do not delete them — history must stay intact. Decide as a
+   team how to present this to the organisers, and make sure the *final* run log
+   unambiguously postdates 11:15 (all Python-track logs do: 11:20 UTC onward).
 
 ## Where we are
 
@@ -63,6 +82,24 @@ cross-metric consistency, red-team) must pass before the workbook writer runs.
 - [ ] Retry DE consensus fetch closer to 17:00
 - [ ] 16:00 judge conversation — talk track in docs/talk-track.md
 - [ ] 17:15 final run per README checklist; 17:30–18:00 manual uploads
+
+## Cross-checks against the PM research track
+
+The PM notes in `research/HD-live-web-research.md` disagree with what our live
+consensus fetch pulled, and the research is probably the better number:
+
+- HD adjusted EPS: research found a **$4.62–4.73 band** across providers and
+  says explicitly *do not average them*; our fetch stored a single **4.87**
+  (ChartMill). 4.87 sits above the whole researched band and is currently
+  pulling our HD EPS forecast up to 4.80. Worth reconciling before the final run.
+- HD net sales: research found **$47.5bn** (Zacks); our fetch found none. Our
+  forecast is 47,000 — i.e. we are already below that consensus.
+- HD comp sales: research confirms **no public consensus exists** anywhere, so
+  that metric is corpus-only. Matches our run (no anchor was found).
+- The handoff's **date-gating warning** (searches surfacing post-earnings
+  content dated 19 Aug) applies to our `agent consensus` step, which has no
+  hard date gate. Anchors are cited and timestamped in `research/consensus-*.json`
+  so they can be checked by hand before the final run.
 
 ## Review requests for teammates
 

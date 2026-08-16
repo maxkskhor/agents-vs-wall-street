@@ -4,10 +4,10 @@ __pycache__/
 cache/
 runs/
 *.py[cod]
-research/
 .DS_Store
 .env
 .env.*
 !.env.example
 entry.json
 submission/*.xlsx
+logs/*-test.log

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "forecast": "node scripts/run-forecast-agent.mjs",
     "setup:entry": "node scripts/setup-entry.mjs",
     "check:entry": "node scripts/check-entry.mjs",
     "check:forecasts": "node scripts/check-forecasts.mjs submission",
