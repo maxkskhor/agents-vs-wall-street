@@ -65,7 +65,7 @@ def cmd_run(args) -> int:
 
 def cmd_backtest(args) -> int:
     from .backtest import run_backtest
-    return run_backtest(args.company, quarters=args.quarters)
+    return run_backtest(args.company, quarters=args.quarters, tag=args.tag)
 
 
 def cmd_consensus(args) -> int:
@@ -107,6 +107,8 @@ def main() -> int:
     p = sub.add_parser("backtest", help="time-travel evaluation on past quarters")
     p.add_argument("--company", help="default: all four")
     p.add_argument("--quarters", type=int, default=4)
+    p.add_argument("--tag", default="",
+                   help="suffix for output files, so runs can go in parallel")
     p.set_defaults(func=cmd_backtest)
 
     p = sub.add_parser("consensus", help="fetch public consensus anchors via web search")

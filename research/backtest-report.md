@@ -5,42 +5,61 @@ It is the accuracy-prize score we would get if Wall Street were perfect — an u
 
 | Company | Target | Metric | Actual | Stat | Guid | LLM | Best method | Floor-rel (best) |
 |---|---|---|---:|---:|---:|---:|---|---:|
-| HD | FY2026Q1 | net_sales | 4.176e+04 | 4.139e+04 | 4.125e+04 | 4.225e+04 | statistical | 1.80 |
-| HD | FY2026Q1 | adj_eps | 3.43 | 3.488 | 3.631 | 3.682 | statistical | 3.37 |
-| HD | FY2026Q1 | comp_sales | 0.6 | 1.7 | 1 | -0.246 | guidance | 0.80 |
-| HD | FY2025Q4 | net_sales | 3.82e+04 | 4.254e+04 | 3.781e+04 | 3.876e+04 | guidance | 2.01 |
-| HD | FY2025Q4 | adj_eps | 2.72 | 3.117 | 2.507 | 2.512 | llm_analyst | 5.00 |
-| HD | FY2025Q4 | comp_sales | 0.4 | 2.8 | 3.1 | 2.154 | llm_analyst | 3.51 |
-| HD | FY2025Q3 | net_sales | 4.135e+04 | 4.345e+04 | 3.968e+04 | 4.238e+04 | llm_analyst | 4.96 |
-| HD | FY2025Q3 | adj_eps | 3.74 | 3.75 | 3.668 | 3.71 | statistical | 0.52 |
-| HD | FY2025Q3 | comp_sales | 0.2 | 0.8 | 1.65 | 0.254 | llm_analyst | 0.11 |
-| HD | FY2025Q2 | net_sales | 4.528e+04 | 4.665e+04 | 4.354e+04 | 4.549e+04 | llm_analyst | 0.96 |
-| HD | FY2025Q2 | adj_eps | 4.68 | 4.623 | 4.591 | 4.591 | statistical | 2.45 |
-| HD | FY2025Q2 | comp_sales | 1 | -1.6 | 1.433 | -0.246 | guidance | 0.87 |
-| HD | FY2025Q1 | net_sales | 3.986e+04 | 3.774e+04 | 3.744e+04 | 3.835e+04 | llm_analyst | 5.00 |
-| HD | FY2025Q1 | adj_eps | 3.56 | — | — | 4.591 | llm_analyst | 5.00 |
-| HD | FY2025Q1 | comp_sales | -0.3 | -2.6 | 1 | -0.246 | llm_analyst | 0.11 |
-| HD | FY2024Q4 | net_sales | 3.97e+04 | — | — | 3.994e+04 | llm_analyst | 1.19 |
-| HD | FY2024Q4 | adj_eps | 3.13 | — | — | 3.795 | llm_analyst | 5.00 |
-| HD | FY2024Q4 | comp_sales | 0.8 | — | -2.5 | -3.746 | guidance | 5.00 |
-| ADI | FY2026Q2 | revenue | 3623 | 3306 | 3500 | 3622 | llm_analyst | 0.05 |
-| ADI | FY2026Q2 | adj_eps | 3.09 | 2.474 | 2.88 | 3.035 | llm_analyst | 3.53 |
+| HD | FY2026Q1 | net_sales | 4.176e+04 | 4.139e+04 | 4.125e+04 | 4.125e+04 | statistical | 1.80 |
+| HD | FY2026Q1 | adj_eps | 3.43 | 3.488 | 3.631 | 3.63 | statistical | 3.37 |
+| HD | FY2026Q1 | comp_sales | 0.6 | 1.7 | 1 | 0.133 | guidance | 0.80 |
+| HD | FY2025Q4 | net_sales | 3.82e+04 | 4.254e+04 | 3.781e+04 | 3.781e+04 | guidance | 2.01 |
+| HD | FY2025Q4 | adj_eps | 2.72 | 3.117 | 2.507 | 2.5 | guidance | 5.00 |
+| HD | FY2025Q4 | comp_sales | 0.4 | 2.8 | 3.1 | 1.533 | llm_analyst | 2.27 |
+| HD | FY2025Q3 | net_sales | 4.135e+04 | 4.345e+04 | 3.968e+04 | 4.134e+04 | llm_analyst | 0.04 |
+| HD | FY2025Q3 | adj_eps | 3.74 | 3.75 | 3.668 | 3.66 | statistical | 0.52 |
+| HD | FY2025Q3 | comp_sales | 0.2 | 0.8 | 1.65 | 0.133 | llm_analyst | 0.13 |
+| HD | FY2025Q2 | net_sales | 4.528e+04 | 4.665e+04 | 4.354e+04 | 4.438e+04 | llm_analyst | 3.95 |
+| HD | FY2025Q2 | adj_eps | 4.68 | 4.623 | 4.591 | 4.577 | statistical | 2.45 |
+| HD | FY2025Q2 | comp_sales | 1 | -1.6 | 1.433 | 0.133 | guidance | 0.87 |
+| HD | FY2025Q1 | net_sales | 3.986e+04 | 3.774e+04 | 3.744e+04 | 3.744e+04 | statistical | 5.00 |
+| HD | FY2025Q1 | adj_eps | 3.56 | — | — | 4.58 | llm_analyst | 5.00 |
+| HD | FY2025Q1 | comp_sales | -0.3 | -2.6 | 1 | -1.8 | guidance | 2.60 |
+| HD | FY2024Q4 | net_sales | 3.97e+04 | — | — | 3.897e+04 | llm_analyst | 3.72 |
+| HD | FY2024Q4 | adj_eps | 3.13 | — | — | 3.74 | llm_analyst | 5.00 |
+| HD | FY2024Q4 | comp_sales | 0.8 | — | -2.5 | -3.467 | guidance | 5.00 |
+| HD | FY2024Q3 | net_sales | 4.022e+04 | — | — | 4.425e+04 | llm_analyst | 5.00 |
+| HD | FY2024Q3 | adj_eps | 3.78 | — | — | 4.577 | llm_analyst | 5.00 |
+| HD | FY2024Q3 | comp_sales | -1.3 | — | -3.95 | -4.167 | guidance | 5.00 |
+| HD | FY2024Q2 | net_sales | 4.318e+04 | — | — | 3.678e+04 | llm_analyst | 5.00 |
+| HD | FY2024Q2 | comp_sales | -3.3 | — | -0.4 | -1.867 | llm_analyst | 2.87 |
+| HD | FY2023Q4 | net_sales | 3.479e+04 | — | — | 4.479e+04 | llm_analyst | 5.00 |
+| HD | FY2023Q4 | adj_eps | 2.86 | — | — | 3.81 | llm_analyst | 5.00 |
+| ADI | FY2026Q2 | revenue | 3623 | 3306 | 3500 | 3500 | guidance | 5.00 |
+| ADI | FY2026Q2 | adj_eps | 3.09 | 2.474 | 2.88 | 3.05 | llm_analyst | 2.59 |
 | ADI | FY2026Q2 | adj_gross_margin | 73 | 71.55 | — | 71.2 | statistical | 2.90 |
-| ADI | FY2026Q1 | revenue | 3160 | 2991 | — | 2508 | statistical | 5.00 |
-| ADI | FY2026Q1 | adj_eps | 2.46 | 2.134 | 2.29 | 2.41 | llm_analyst | 4.07 |
+| ADI | FY2026Q1 | revenue | 3160 | 2991 | — | 3152 | llm_analyst | 0.50 |
+| ADI | FY2026Q1 | adj_eps | 2.46 | 2.134 | 2.29 | 2.427 | llm_analyst | 2.68 |
 | ADI | FY2026Q1 | adj_gross_margin | 71.2 | 70.4 | — | 69.9 | statistical | 1.60 |
-| ADI | FY2025Q4 | revenue | 3076 | 2672 | 3000 | 3105 | llm_analyst | 1.88 |
-| ADI | FY2025Q4 | adj_eps | 2.26 | 1.87 | 2.22 | 2.34 | guidance | 3.54 |
+| ADI | FY2025Q4 | revenue | 3076 | 2672 | 3000 | 3000 | guidance | 4.95 |
+| ADI | FY2025Q4 | adj_eps | 2.26 | 1.87 | 2.22 | 2.35 | guidance | 3.54 |
 | ADI | FY2025Q4 | adj_gross_margin | 69.8 | 68.45 | — | 68.9 | llm_analyst | 1.80 |
-| ADI | FY2025Q3 | revenue | 2880 | 2155 | 2750 | 2846 | llm_analyst | 2.37 |
-| ADI | FY2025Q3 | adj_eps | 2.05 | 1.401 | 1.92 | 2.02 | llm_analyst | 2.93 |
+| ADI | FY2025Q3 | revenue | 2880 | 2155 | 2750 | 2750 | guidance | 5.00 |
+| ADI | FY2025Q3 | adj_eps | 2.05 | 1.401 | 1.92 | 1.98 | llm_analyst | 5.00 |
 | ADI | FY2025Q3 | adj_gross_margin | 69.2 | 66.65 | — | 69.4 | llm_analyst | 0.40 |
-| ADI | FY2025Q2 | revenue | 2640 | 1782 | 2500 | 2588 | llm_analyst | 3.98 |
-| ADI | FY2025Q2 | adj_eps | 1.85 | 1.026 | 1.68 | 1.77 | llm_analyst | 5.00 |
+| ADI | FY2025Q2 | revenue | 2640 | 1782 | 2500 | 2500 | guidance | 5.00 |
+| ADI | FY2025Q2 | adj_eps | 1.85 | 1.026 | 1.68 | 1.74 | llm_analyst | 5.00 |
 | ADI | FY2025Q2 | adj_gross_margin | 69.4 | 63.4 | — | 67.8 | llm_analyst | 3.20 |
-| ADI | FY2025Q1 | revenue | 2423 | 1916 | 2350 | 2432 | llm_analyst | 0.75 |
-| ADI | FY2025Q1 | adj_eps | 1.63 | 1.093 | 1.53 | 1.584 | llm_analyst | 4.60 |
+| ADI | FY2025Q1 | revenue | 2423 | 1916 | 2350 | 2350 | guidance | 5.00 |
+| ADI | FY2025Q1 | adj_eps | 1.63 | 1.093 | 1.53 | 1.622 | llm_analyst | 0.80 |
 | ADI | FY2025Q1 | adj_gross_margin | 68.8 | 64.55 | — | 69 | llm_analyst | 0.40 |
+| ADI | FY2024Q4 | revenue | 2443 | 2071 | 2400 | 2400 | guidance | 3.54 |
+| ADI | FY2024Q4 | adj_eps | 1.67 | 1.27 | 1.63 | 1.73 | guidance | 4.00 |
+| ADI | FY2024Q4 | adj_gross_margin | 67.9 | 65.75 | — | 67.1 | llm_analyst | 1.60 |
+| ADI | FY2024Q3 | revenue | 2312 | 2476 | 2270 | 2270 | guidance | 3.65 |
+| ADI | FY2024Q3 | adj_eps | 1.58 | 1.7 | 1.5 | 1.56 | llm_analyst | 2.00 |
+| ADI | FY2024Q3 | adj_gross_margin | 67.9 | 68 | — | 65.2 | statistical | 0.20 |
+| ADI | FY2024Q2 | revenue | 2159 | 2729 | 2100 | 2100 | guidance | 5.00 |
+| ADI | FY2024Q2 | adj_eps | 1.4 | — | 1.26 | 1.336 | llm_analyst | 5.00 |
+| ADI | FY2024Q2 | adj_gross_margin | 66.7 | — | — | 68.5 | llm_analyst | 3.60 |
+| ADI | FY2024Q1 | revenue | 2513 | 2966 | 2500 | 2500 | guidance | 1.01 |
+| ADI | FY2024Q1 | adj_eps | 1.73 | — | 1.7 | 1.802 | guidance | 3.00 |
+| ADI | FY2024Q1 | adj_gross_margin | 69 | — | — | 71.7 | llm_analyst | 5.00 |
 | HAS | FY2025 | net_fees | 972.4 | 1085 | 973.3 | 978.6 | guidance | 0.18 |
 | HAS | FY2025 | preex_eps | 1.31 | 1.891 | — | 2.47 | statistical | 5.00 |
 | HAS | FY2025 | preex_op | 45.6 | 56.07 | 45 | 45 | guidance | 2.63 |
@@ -64,30 +83,37 @@ It is the accuracy-prize score we would get if Wall Street were perfect — an u
 | DE | FY2025Q1 | net_sales_rev | 8508 | 1.041e+04 | — | 1.172e+04 | statistical | 5.00 |
 | DE | FY2025Q1 | eps | 3.19 | 4.674 | — | 5.91 | statistical | 5.00 |
 | DE | FY2025Q1 | ppa_op | 338 | — | — | 1045 | llm_analyst | 5.00 |
+| DE | FY2024Q4 | net_sales_rev | 1.114e+04 | — | — | 1.315e+04 | llm_analyst | 5.00 |
+| DE | FY2024Q4 | eps | 4.55 | — | — | 5.99 | llm_analyst | 5.00 |
+| DE | FY2024Q3 | net_sales_rev | 1.315e+04 | — | — | 1.391e+04 | llm_analyst | 5.00 |
+| DE | FY2024Q3 | eps | 6.29 | — | — | 8.79 | llm_analyst | 5.00 |
+| DE | FY2024Q3 | ppa_op | 1162 | — | — | 1732 | llm_analyst | 5.00 |
+| DE | FY2024Q2 | net_sales_rev | 1.524e+04 | — | — | 1.172e+04 | llm_analyst | 5.00 |
+| DE | FY2024Q2 | eps | 8.53 | — | — | 6.23 | llm_analyst | 5.00 |
 
 ## Calibrated weights
 ```json
 {
  "money": {
-  "guidance": 0.0,
-  "llm_analyst": 0.6,
-  "statistical": 0.4,
-  "backtest_score": 3.479,
-  "n": 27
+  "guidance": 0.3,
+  "llm_analyst": 0.4,
+  "statistical": 0.3,
+  "backtest_score": 4.036,
+  "n": 38
  },
  "eps": {
-  "guidance": 0.0,
+  "guidance": 0.1,
   "llm_analyst": 0.0,
-  "statistical": 1.0,
-  "backtest_score": 4.425,
-  "n": 20
+  "statistical": 0.9,
+  "backtest_score": 4.534,
+  "n": 29
  },
  "percent": {
   "guidance": 0.0,
   "llm_analyst": 0.6,
   "statistical": 0.4,
-  "backtest_score": 2.076,
-  "n": 12
+  "backtest_score": 2.674,
+  "n": 18
  }
 }
 ```
@@ -122,44 +148,44 @@ It is the accuracy-prize score we would get if Wall Street were perfect — an u
   "pct_periods_improved": 0
  },
  "HD/comp_sales": {
-  "n": 6,
+  "n": 8,
   "median_signed": -0.8667,
-  "median_abs": 1.375,
+  "median_abs": 2.05,
   "p80_abs": 2.7,
-  "pct_actual_above": 17,
-  "correction_recommended": true,
-  "reason": "walk-forward median error 1.45 -> 1.0167, 67% of periods improved",
-  "walk_forward_tests": 3,
-  "wf_raw_median_abs": 1.45,
-  "wf_corrected_median_abs": 1.0167,
-  "pct_periods_improved": 67,
-  "mean_signed": -0.8666666666666667
+  "pct_actual_above": 25,
+  "correction_recommended": false,
+  "reason": "only 40% of periods improved (need >=50%)",
+  "walk_forward_tests": 5,
+  "wf_raw_median_abs": 1.3,
+  "wf_corrected_median_abs": 1.1083,
+  "pct_periods_improved": 40
  },
  "ADI/revenue": {
-  "n": 5,
-  "median_signed": 0.0353,
-  "median_abs": 0.0353,
-  "p80_abs": 0.0474,
+  "n": 9,
+  "median_signed": 0.0281,
+  "median_abs": 0.0281,
+  "p80_abs": 0.0353,
   "pct_actual_above": 100,
-  "correction_recommended": false,
-  "reason": "insufficient walk-forward evidence (2 tests, need 3)",
-  "walk_forward_tests": 2,
+  "correction_recommended": true,
+  "reason": "walk-forward median error 99.791 -> 30.0188, 100% of periods improved",
+  "walk_forward_tests": 6,
   "wf_raw_median_abs": 99.791,
-  "wf_corrected_median_abs": 40.0279,
-  "pct_periods_improved": 100
+  "wf_corrected_median_abs": 30.0188,
+  "pct_periods_improved": 100,
+  "mean_signed": 0.028113809523809628
  },
  "ADI/adj_eps": {
-  "n": 6,
-  "median_signed": 0.0703,
-  "median_abs": 0.0703,
+  "n": 10,
+  "median_signed": 0.0665,
+  "median_abs": 0.0665,
   "p80_abs": 0.0742,
   "pct_actual_above": 100,
   "correction_recommended": true,
-  "reason": "walk-forward median error 0.17 -> 0.0372, 67% of periods improved",
-  "walk_forward_tests": 3,
-  "wf_raw_median_abs": 0.17,
-  "wf_corrected_median_abs": 0.0372,
-  "pct_periods_improved": 67,
+  "reason": "walk-forward median error 0.13 -> 0.0404, 71% of periods improved",
+  "walk_forward_tests": 7,
+  "wf_raw_median_abs": 0.13,
+  "wf_corrected_median_abs": 0.0404,
+  "pct_periods_improved": 71,
   "mean_signed": 0.06
  },
  "HAS/net_fees": {
