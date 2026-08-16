@@ -10,6 +10,10 @@ and visible evidence behind every forecast.
 
 - Treat `RULES.md`, `SUBMISSION.md`, `JUDGING.md`, and `SCHEDULE.md` as the
   authoritative event specification.
+- Never commit or push work directly to `main`. Create a feature branch and
+  open a pull request (merge request) targeting `main`.
+- Never force-push to this repository, including feature branches. Do not use
+  `git push --force`, `git push -f`, or `git push --force-with-lease`.
 - Keep changes small and scoped to the assigned component.
 - Do not refactor shared files without coordinating with the team.
 - Never read, print, modify, or commit `.env` or credentials.
