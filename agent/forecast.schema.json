@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["company", "ticker", "period", "asOf", "evidence", "forecasts", "risks"],
+  "properties": {
+    "company": { "type": "string" },
+    "ticker": { "type": "string" },
+    "period": { "type": "string" },
+    "asOf": { "type": "string" },
+    "evidence": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "sourcePath", "sourceUrl", "publishedDate", "claim", "excerpt"],
+        "properties": {
+          "id": { "type": "string" },
+          "sourcePath": { "type": "string" },
+          "sourceUrl": { "type": "string" },
+          "publishedDate": { "type": "string" },
+          "claim": { "type": "string" },
+          "excerpt": { "type": "string" }
+        }
+      }
+    },
+    "forecasts": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["metric", "units", "value", "baseline", "formula", "assumptions", "evidenceIds", "confidence", "bear", "bull"],
+        "properties": {
+          "metric": { "type": "string" },
+          "units": { "type": "string" },
+          "value": { "type": "number" },
+          "baseline": { "type": "number" },
+          "formula": { "type": "string" },
+          "assumptions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "evidenceIds": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "bear": { "type": "number" },
+          "bull": { "type": "number" }
+        }
+      }
+    },
+    "risks": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+  }
+}

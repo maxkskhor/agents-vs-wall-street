@@ -68,6 +68,34 @@ less research/HD.md
 
 Use `HD`, `ADI`, `HAS` or `DE` for the four challenge companies. The output contains search leads rather than verified financial history, so check each figure in its cited document. Read [starter/README.md](starter/README.md) for narrower searches and testing instructions.
 
+## Team MYS forecasting agent
+
+The Team MYS implementation runs four isolated Codex research workers in parallel, one for each company. Each worker reads the frozen local corpus in a read-only sandbox and must return a schema-conforming record containing cited evidence, an explicit baseline and calculation for every metric, bear/base/bull values and known risks. Deterministic validation then checks exact metric names, units, evidence references, numeric ranges and scenario ordering before filling only the forecast cells in copies of the supplied workbooks.
+
+Requirements:
+
+- Node.js and the locked npm dependencies
+- an authenticated `codex` CLI available on `PATH`
+
+Install and test:
+
+```bash
+npm install
+npm run test:starter
+```
+
+Run all four companies:
+
+```bash
+npm run forecast
+```
+
+The command writes private structured research to `research/`, the four required workbooks to `submission/`, and a timestamped JSONL audit log to `logs/`. Generated research and forecasts are ignored by Git. Verify workbook structure with:
+
+```bash
+npm run check:forecasts
+```
+
 ## Repository map
 
 ```text
