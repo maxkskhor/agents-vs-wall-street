@@ -190,15 +190,22 @@ def extract_doc_facts(company: Company, doc: Doc, log: RunLog,
 
 def build_fact_table(company: Company, docs: list[Doc], log: RunLog,
                      provider: str) -> tuple[list[Fact], list[dict]]:
+    from concurrent.futures import ThreadPoolExecutor
+
     all_facts: list[Fact] = []
     all_rejected: list[dict] = []
-    for doc in docs:
+
+    def one(doc: Doc):
         try:
-            facts, rejected = extract_doc_facts(company, doc, log, provider)
-            all_facts.extend(facts)
-            all_rejected.extend(rejected)
+            return extract_doc_facts(company, doc, log, provider)
         except llm.LLMError as e:
             log.log("extract", f"{company.short} {doc.doc_id}: EXTRACTION FAILED {e}")
+            return [], []
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for facts, rejected in pool.map(one, docs):
+            all_facts.extend(facts)
+            all_rejected.extend(rejected)
     return all_facts, all_rejected
 
 
